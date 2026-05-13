@@ -1,0 +1,173 @@
+name,brand,category,price
+Cooler Master Q300L,coolermaster,case,349
+Corsair 4000D Airflow,corsair,case,599
+Fractal Design North,fractal,case,999
+Lian Li O11 Dynamic EVO,lianli,case,899
+Lian Li O11 Dynamic EVO XL,lianli,case,1599
+Lian Li O11 Vision,lianli,case,1699
+NZXT H9 Flow,nzxt,case,1099
+TT 启航者F1,thermaltake,case,169
+先马 黑洞7,sama,case,299
+爱国者 YOGO S1,aigo,case,299
+爱国者 星璨 岚,aigo,case,399
+航嘉 暗夜猎手5,huntkey,case,129
+酷冷至尊 NR200P,coolermaster,case,699
+ARCTIC Liquid Freezer II,arctic,cooling,649
+Corsair iCUE H150i ELITE,corsair,cooling,1299
+Deepcool AK620,deepcool,cooling,349
+ID-COOLING SE-214-XT,idcooling,cooling,129
+NZXT Kraken 360 RGB,nzxt,cooling,1099
+NZXT Kraken Elite 420,nzxt,cooling,1799
+Noctua NH-D15 chromax,noctua,cooling,649
+ROG RYUJIN III 360,asus,cooling,2499
+九州风神 LT720,deepcool,cooling,599
+九州风神 玄冰400,deepcool,cooling,79
+利民 PA120 SE,thermalright,cooling,199
+酷冷至尊 V850,coolermaster,cooling,799
+雅浚 E3,prolimatec,cooling,89
+AMD Ryzen 5 5500,amd,cpu,549
+AMD Ryzen 5 5600,amd,cpu,749
+AMD Ryzen 5 5600X,amd,cpu,899
+AMD Ryzen 5 7600X,amd,cpu,1499
+AMD Ryzen 7 5700X,amd,cpu,1299
+AMD Ryzen 7 7800X3D,amd,cpu,2699
+AMD Ryzen 9 7950X,amd,cpu,3799
+AMD Ryzen 9 7950X3D,amd,cpu,4299
+AMD Ryzen 9 9800X3D,amd,cpu,4999
+AMD Ryzen 9 9900X3D,amd,cpu,4599
+AMD Ryzen 9 9950X,amd,cpu,4999
+AMD Ryzen 9 9950X3D,amd,cpu,5499
+Intel Core i3-14100,intel,cpu,849
+Intel Core i5-12400,intel,cpu,899
+Intel Core i5-13400,intel,cpu,1299
+Intel Core i5-14600K,intel,cpu,2099
+Intel Core i5-14600KF,intel,cpu,1899
+Intel Core i7-14700K,intel,cpu,2999
+Intel Core i7-14700KF,intel,cpu,2799
+Intel Core i9-14900K,intel,cpu,3999
+Intel Core i9-14900KS,intel,cpu,5999
+AMD Radeon RX 6600,amd,gpu,1199
+AMD Radeon RX 6750 GRE,amd,gpu,2099
+AMD Radeon RX 7600,amd,gpu,2149
+AMD Radeon RX 7700 XT,amd,gpu,3699
+AMD Radeon RX 7800 XT,amd,gpu,3799
+AMD Radeon RX 7900 GRE,amd,gpu,4299
+AMD Radeon RX 7900 XTX,amd,gpu,7199
+NVIDIA RTX 3050,nvidia,gpu,1399
+NVIDIA RTX 4060,nvidia,gpu,2399
+NVIDIA RTX 4060 Ti,nvidia,gpu,2999
+NVIDIA RTX 4070,nvidia,gpu,4499
+NVIDIA RTX 4070 SUPER,nvidia,gpu,5499
+NVIDIA RTX 4070 Ti SUPER,nvidia,gpu,5999
+NVIDIA RTX 4080 SUPER,nvidia,gpu,7999
+NVIDIA RTX 4090,nvidia,gpu,11999
+NVIDIA RTX 4090 DUAL,nvidia,gpu,13999
+NVIDIA RTX 5080,nvidia,gpu,9999
+NVIDIA RTX 5090,nvidia,gpu,18999
+NVIDIA RTX 5090D,nvidia,gpu,24999
+HyperX Cloud III,hyperx,headset,599
+JBL QUANTUM 400,jbl,headset,399
+ROG Delta S,asus,headset,1299
+漫步者 G2,edifier,headset,159
+硕美科 G936N,somic,headset,199
+罗技 G PRO X 2,logitech,headset,1299
+赛睿 Arctis Nova Pro,steelseries,headset,1999
+雷柏 VH150,rapoo,headset,59
+雷蛇北海巨妖 V3 Pro,razer,headset,1099
+Cherry MX 3.0S,cherry,keyboard,449
+RK R87,rk,keyboard,199
+ROG 游侠 RX,asus,keyboard,649
+ROG 龙骑士3,asus,keyboard,1499
+Wooting 60HE,wooting,keyboard,1299
+前行者 X87,前行者,keyboard,149
+罗技 G Pro X,logitech,keyboard,899
+雷柏 V500,rapoo,keyboard,129
+雷蛇黑寡妇 V4 Pro,razer,keyboard,1299
+AOC AG274QX,aoc,monitor,2199
+HKC MG27Q,hkc,monitor,1299
+KTC H27T22,ktc,monitor,999
+LG 27GP950,lg,monitor,4299
+LG 32GS95UE,lg,monitor,9999
+三星 Odyssey G8,samsung,monitor,8999
+华硕 ROG PG27AQDM,asus,monitor,5499
+华硕 ROG Swift PG32UCDM,asus,monitor,11999
+小米显示器 27寸 2K,xiaomi,monitor,1299
+戴尔 U2723QE,dell,monitor,3499
+泰坦军团 P27H2V,titanarmy,monitor,1499
+红米 24寸,xiaomi,monitor,549
+红米 27寸 2K,xiaomi,monitor,999
+ASRock B650M PG RIPTIDE,asrock,motherboard,1099
+ASRock B760M Steel Legend,asrock,motherboard,1099
+ASUS PRIME B760M-K,asus,motherboard,699
+ASUS ROG CROSSHAIR X670E HERO,asus,motherboard,5499
+ASUS ROG MAXIMUS Z790 APEX,asus,motherboard,5999
+ASUS TUF GAMING B760-PLUS,asus,motherboard,1399
+ASUS TUF GAMING X670E-PLUS WIFI,asus,motherboard,2499
+ASUS TUF GAMING Z790-PLUS WIFI,asus,motherboard,2199
+GIGABYTE B650 AORUS ELITE,gigabyte,motherboard,1499
+MSI MAG Z790 TOMAHAWK WIFI,msi,motherboard,2099
+MSI MEG X670E GODLIKE,msi,motherboard,6499
+MSI MPG B650I EDGE WIFI,msi,motherboard,1799
+MSI PRO B650M-A WIFI,msi,motherboard,1199
+ROG CROSSHAIR X870E EXTREME,asus,motherboard,6999
+ROG MAXIMUS Z790 EXTREME,asus,motherboard,7999
+ROG MAXIMUS Z790 HERO,asus,motherboard,4299
+华擎 H610M-HDV,asrock,motherboard,469
+微星 A520M-A PRO,msi,motherboard,379
+技嘉 B650M AORUS ELITE AX,gigabyte,motherboard,1199
+技嘉 X870E AORUS MASTER,gigabyte,motherboard,3499
+技嘉 Z790 AORUS ELITE AX,gigabyte,motherboard,1899
+前行者 V8,前行者,mouse,129
+罗技 G PRO X,logitech,mouse,449
+罗技 G PRO X SUPERLIGHT 2,logitech,mouse,1199
+罗技 G502 X,logitech,mouse,499
+联想 ThinkPad X1,lenovo,mouse,99
+赛睿 Rival 5,steelseries,mouse,269
+雷柏 VT350,rapoo,mouse,89
+雷柏 VT9 Pro,rapoo,mouse,299
+雷蛇毒蝰V3,razer,mouse,399
+雷蛇毒蝰V3 Pro,razer,mouse,999
+Corsair AX1600i,corsair,psu,3599
+Corsair RM1000x SHIFT,corsair,psu,1299
+Seasonic PRIME TX-1000,seasonic,psu,1799
+Seasonic PRIME TX-1600,seasonic,psu,3199
+Thermaltake Toughpower GF1,thermaltake,psu,599
+be quiet! Dark Power 13,bequiet,psu,1499
+安钛克 NE850,antec,psu,549
+振华 LEADEX G 850W,superflower,psu,799
+振华 铜皇 550W,superflower,psu,269
+海韵 FOCUS GX-850,seasonic,psu,899
+海韵 PRIME GX-1000,seasonic,psu,1199
+鑫谷 GM850,sigo,psu,599
+鑫谷 GP900,sigo,psu,599
+长城 GX850,greatwall,psu,549
+ADATA XPG Lancer RGB,adata,ram,549
+CORSAIR Dominator Platinum,corsair,ram,2099
+CORSAIR Dominator Titanium,corsair,ram,5999
+Crucial Pro DDR5,crucial,ram,749
+G.SKILL Trident Z5 RGB,gskill,ram,1899
+G.SKILL Trident Z5 RGB,gskill,ram,999
+Kingston FURY Renegade,kingston,ram,849
+TeamGroup T-Force Delta RGB,teamgroup,ram,699
+光威 DDR5 32GB,gowin,ram,459
+威刚 Lancer RGB,adata,ram,449
+芝奇 G.SKILL Trident Z5 RGB 32GB,gskill,ram,799
+金士顿 Fury Beast,kingston,ram,699
+金士顿 Fury DDR4,kingston,ram,399
+金百达 DDR4 16GB,kingbank,ram,269
+金百达 DDR5 32GB,kingbank,ram,499
+Crucial P5 Plus,crucial,storage,549
+Kingston KC3000,kingston,storage,949
+Samsung 990 EVO,samsung,storage,2299
+Samsung 990 PRO,samsung,storage,1099
+Seagate FireCuda 530,seagate,storage,649
+TeamGroup Cardea Z440,teamgroup,storage,899
+WD Black SN850X,wd,storage,1999
+WD Black SN850X,wd,storage,999
+三星 990 EVO Plus,samsung,storage,899
+希捷酷玩520,seagate,storage,449
+致钛 5000,zhitai,storage,279
+致钛 Ti600,zhitai,storage,899
+致钛 TiPlus7100,zhitai,storage,699
+西部数据 SN770,wd,storage,799
+金士顿 NV2,kingston,storage,599

@@ -885,12 +885,12 @@ initializeDatabase().then(async () => {
     // POST /api/panabit/update
     app.post('/api/panabit/update', requireAdmin, async (req, res) => {
         try {
-            const { id, category, shopName, startAt, endAt, maxOnlineIps, sysCode, remark } = req.body;
+            const { id, authCode, category, shopName, startAt, endAt, maxOnlineIps, sysCode, remark } = req.body;
             if (!id) return res.status(400).json({ ok: false, error: '缺少 id' });
             await db.run(`
-                UPDATE panabit SET category=?,shopName=?,startAt=?,endAt=?,maxOnlineIps=?,sysCode=?,remark=?,updated_at=datetime('now','localtime')
+                UPDATE panabit SET authCode=?,category=?,shopName=?,startAt=?,endAt=?,maxOnlineIps=?,sysCode=?,remark=?,updated_at=datetime('now','localtime')
                 WHERE id=?`,
-                [category||'电竞网吧', shopName||'', startAt||'', endAt||'', maxOnlineIps||0, sysCode||'', remark||'', id]);
+                [authCode||'', category||'电竞网吧', shopName||'', startAt||'', endAt||'', maxOnlineIps||0, sysCode||'', remark||'', id]);
             res.json({ ok: true });
         } catch (err) {
             console.error('/api/panabit/update error:', err.message);
