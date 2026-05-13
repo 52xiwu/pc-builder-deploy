@@ -31,6 +31,11 @@
 - 每次 `nginx -t` 确认语法，再 `systemctl reload nginx`
 - 验证命令（见下方自检）
 
+### 5. pre-commit hook 维护
+- `.git/hooks/pre-commit` 写磁盘，不在 Git 跟踪范围内
+- 新机器 clone 后若需要 pre-commit 检查，从以下路径复制或参照 `scripts/` 下的 hook 脚本手动恢复
+- 如需 Husky / `core.hooksPath` 集中管理，可后续引入，不是当前刚需
+
 ---
 
 ## Node.js 升级流程（线上）
