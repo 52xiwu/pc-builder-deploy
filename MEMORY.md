@@ -11,3 +11,15 @@
 **Hermes 仓库地址**：Web UI → EKKOLearnAI/hermes-web-ui；Agent/CLI → NousResearch/hermes-agent（两者不同仓库）
 §
 **PC Builder**：101.42.41.210:/tmp/pc-builder/，PM2 name=pc-builder；发版 `pm2 restart pc-builder`；.env 含 key 禁止提交 Git
+§
+**记忆 Git 同步约定**：
+- 仓库：52xiwu/pc-builder-deploy（站点代码+记忆混用）
+- 分支：master（与 main 约定不同机器混用需注意）
+- 远程：~/.hermes/memories/ 的 git remote 指向该库即可延续
+- 敏感检查：推送前偶尔 git status/diff，避免 Token/口令/隐私写入 MEMORY.md
+- 未来可拆：若仓库变乱，可建 hermes-memories 私有库，git remote set-url 改掉即可
+- 定时任务 ID：记忆同步=07544d412f03，备份=f6f57a26ef38，流控=b45a3dca96fd
+§
+飞书：连接模式 websocket；用户 open_id=ou_4b6425330d6ba82fd770c59e8acd714e；连接状态 connected
+§
+后台入口已改为 /gluidcadmin（隐藏路由）；server.js 已配置，admin.html 保留不断链
