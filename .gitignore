@@ -1,0 +1,52 @@
+# Dependencies
+node_modules/
+
+# Environment
+.env
+.env.*
+!.env.example
+
+# Database
+*.db
+*.sqlite
+*.sqlite3
+
+# Logs
+*.log
+logs/
+
+# Uploads
+uploads/
+data/uploads/
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Build artifacts
+dist/
+build/
+
+# Backup files (keep source code, drop temp backups)
+*.bak
+*.backup
+*.bak.*
+
+# Certbot (managed by server, don't back up locally)
+ssl/
+certs/
+
+# Temp files
+*.tmp
+*.temp
+/tmp/
+/tmp/
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# Misc
+*.pid
