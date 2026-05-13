@@ -1,0 +1,3560 @@
+[
+  {
+    "orderId": "ORD1778598222980",
+    "createdAt": "2026/5/12 23:03:42",
+    "user": {
+      "name": "测试用户",
+      "email": "test@test.com"
+    },
+    "total": 22797,
+    "rows": [
+      {
+        "category": "处理器",
+        "name": "AMD Ryzen 9 9950X3D",
+        "brand": "amd",
+        "specs": "16核32线程",
+        "unitPrice": 5499,
+        "subtotal": 5499
+      },
+      {
+        "category": "显卡",
+        "name": "RTX 5090",
+        "brand": "nvidia",
+        "specs": "32GB",
+        "unitPrice": 16999,
+        "subtotal": 16999
+      }
+    ],
+    "paymentHint": "实体店支付，以门店确认为准；在线支付未开通",
+    "contact": {
+      "tel": "15148605173",
+      "wechat": "88278867"
+    },
+    "cartSnapshot": [
+      {
+        "id": "cfg_test1",
+        "type": "config",
+        "items": [
+          {
+            "category": "处理器",
+            "name": "AMD Ryzen 9 9950X3D",
+            "brand": "amd",
+            "specs": "16核32线程",
+            "price": 5499
+          },
+          {
+            "category": "显卡",
+            "name": "RTX 5090",
+            "brand": "nvidia",
+            "specs": "32GB",
+            "price": 16999
+          }
+        ],
+        "totalPrice": 22797,
+        "quantity": 1,
+        "createdAt": "2026-05-12T12:00:00.000Z"
+      }
+    ],
+    "wecomNotified": false,
+    "wecomError": "WECOM_ORDER_WEBHOOK not set",
+    "createdTs": 1778598223001
+  },
+  {
+    "orderId": "ORD1778598987491",
+    "createdAt": "2026/5/12 23:16:27",
+    "user": {
+      "name": "测试用户",
+      "email": "test@test.com"
+    },
+    "total": 8999,
+    "rows": [
+      {
+        "category": "CPU",
+        "name": "i5-13600K",
+        "brand": "Intel",
+        "specs": "14核/5.1GHz",
+        "unitPrice": 1899,
+        "subtotal": 1899
+      },
+      {
+        "category": "显卡",
+        "name": "RTX4070",
+        "brand": "七彩虹",
+        "specs": "12G",
+        "unitPrice": 3699,
+        "subtotal": 3699
+      }
+    ],
+    "paymentHint": "实体店支付，以门店确认为准；在线支付未开通",
+    "contact": {
+      "tel": "15148605173",
+      "wechat": "88278867"
+    },
+    "cartSnapshot": [
+      {
+        "type": "config",
+        "name": "i5-13600K+RTX4070配置",
+        "totalPrice": 8999,
+        "quantity": 1,
+        "items": [
+          {
+            "category": "CPU",
+            "name": "i5-13600K",
+            "brand": "Intel",
+            "specs": "14核/5.1GHz",
+            "price": 1899
+          },
+          {
+            "category": "显卡",
+            "name": "RTX4070",
+            "brand": "七彩虹",
+            "specs": "12G",
+            "price": 3699
+          }
+        ]
+      }
+    ],
+    "wecomNotified": false,
+    "wecomError": "WECOM_ORDER_WEBHOOK not set",
+    "createdTs": 1778598987510
+  },
+  {
+    "orderId": "ORD1778601114759",
+    "createdAt": "2026/5/12 23:51:54",
+    "user": {
+      "name": "xwqlxkj",
+      "email": "xwqlxkj"
+    },
+    "total": 799,
+    "rows": [
+      {
+        "category": "单品",
+        "name": "Lian Li O11 Dynamic EVO",
+        "brand": "—",
+        "specs": "—",
+        "unitPrice": 799,
+        "subtotal": 799
+      }
+    ],
+    "paymentHint": "实体店支付，以门店确认为准；在线支付未开通",
+    "contact": {
+      "tel": "15148605173",
+      "wechat": "88278867"
+    },
+    "cartSnapshot": [
+      {
+        "id": "item_1778601109169",
+        "type": "single",
+        "name": "Lian Li O11 Dynamic EVO",
+        "price": 799,
+        "specs": "",
+        "brand": "",
+        "category": "",
+        "quantity": 1,
+        "createdAt": "2026-05-12T15:51:49.169Z"
+      }
+    ],
+    "wecomNotified": false,
+    "wecomError": "WECOM_ORDER_WEBHOOK not set",
+    "createdTs": 1778601114759
+  },
+  {
+    "orderId": "ORD1778605261682",
+    "createdAt": "2026/5/13 01:01:01",
+    "user": {
+      "name": "xwqlxkj",
+      "email": "xwqlxkj"
+    },
+    "total": 1199,
+    "rows": [
+      {
+        "category": "单品",
+        "name": "Corsair RM1000x",
+        "brand": "—",
+        "specs": "—",
+        "unitPrice": 1199,
+        "subtotal": 1199
+      }
+    ],
+    "paymentHint": "实体店支付，以门店确认为准；在线支付未开通",
+    "contact": {
+      "tel": "15148605173",
+      "wechat": "88278867"
+    },
+    "cartSnapshot": [
+      {
+        "id": "item_1778605258849",
+        "type": "single",
+        "name": "Corsair RM1000x",
+        "price": 1199,
+        "specs": "",
+        "brand": "",
+        "category": "",
+        "quantity": 1,
+        "createdAt": "2026-05-12T17:00:58.849Z"
+      }
+    ],
+    "wecomNotified": false,
+    "wecomError": "WECOM_ORDER_WEBHOOK not set",
+    "createdTs": 1778605261682
+  },
+  {
+    "orderId": "ORD1778605504536",
+    "createdAt": "2026/5/13 01:05:04",
+    "user": {
+      "name": "xwqlxkj",
+      "email": "xwqlxkj"
+    },
+    "total": 1199,
+    "rows": [
+      {
+        "category": "单品",
+        "name": "Corsair RM1000x",
+        "brand": "—",
+        "specs": "—",
+        "unitPrice": 1199,
+        "subtotal": 1199
+      }
+    ],
+    "paymentHint": "实体店支付，以门店确认为准；在线支付未开通",
+    "contact": {
+      "tel": "15148605173",
+      "wechat": "88278867"
+    },
+    "cartSnapshot": [
+      {
+        "id": "item_1778605501837",
+        "type": "single",
+        "name": "Corsair RM1000x",
+        "price": 1199,
+        "specs": "",
+        "brand": "",
+        "category": "",
+        "quantity": 1,
+        "createdAt": "2026-05-12T17:05:01.837Z"
+      }
+    ],
+    "wecomNotified": false,
+    "wecomError": "WECOM_ORDER_WEBHOOK not set",
+    "createdTs": 1778605504536
+  },
+  {
+    "orderId": "ORD1778605513880",
+    "createdAt": "2026/5/13 01:05:13",
+    "user": {
+      "name": "xwqlxkj",
+      "email": "xwqlxkj"
+    },
+    "total": 1099,
+    "rows": [
+      {
+        "category": "单品",
+        "name": "G.SKILL Trident Z5 RGB",
+        "brand": "—",
+        "specs": "—",
+        "unitPrice": 1099,
+        "subtotal": 1099
+      }
+    ],
+    "paymentHint": "实体店支付，以门店确认为准；在线支付未开通",
+    "contact": {
+      "tel": "15148605173",
+      "wechat": "88278867"
+    },
+    "cartSnapshot": [
+      {
+        "id": "item_1778605511223",
+        "type": "single",
+        "name": "G.SKILL Trident Z5 RGB",
+        "price": 1099,
+        "specs": "",
+        "brand": "",
+        "category": "",
+        "quantity": 1,
+        "createdAt": "2026-05-12T17:05:11.223Z"
+      }
+    ],
+    "wecomNotified": false,
+    "wecomError": "WECOM_ORDER_WEBHOOK not set",
+    "createdTs": 1778605513880
+  },
+  {
+    "orderId": "ORD1778605672014",
+    "createdAt": "2026/5/13 01:07:52",
+    "user": {
+      "name": "xwqlxkj",
+      "email": "xwqlxkj"
+    },
+    "total": 1099,
+    "rows": [
+      {
+        "category": "单品",
+        "name": "G.SKILL Trident Z5 RGB",
+        "brand": "—",
+        "specs": "—",
+        "unitPrice": 1099,
+        "subtotal": 1099
+      }
+    ],
+    "paymentHint": "实体店支付，以门店确认为准；在线支付未开通",
+    "contact": {
+      "tel": "15148605173",
+      "wechat": "88278867"
+    },
+    "cartSnapshot": [
+      {
+        "id": "item_1778605669697",
+        "type": "single",
+        "name": "G.SKILL Trident Z5 RGB",
+        "price": 1099,
+        "specs": "",
+        "brand": "",
+        "category": "",
+        "quantity": 1,
+        "createdAt": "2026-05-12T17:07:49.697Z"
+      }
+    ],
+    "wecomNotified": false,
+    "wecomError": "WECOM_ORDER_WEBHOOK not set",
+    "createdTs": 1778605672014
+  },
+  {
+    "orderId": "ORD1778606801120",
+    "createdAt": "2026/5/13 01:26:41",
+    "user": {
+      "name": "xwqlxkj",
+      "email": "xwqlxkj",
+      "nickname": "xwqlxkj"
+    },
+    "total": 12999,
+    "rows": [
+      {
+        "category": "单品",
+        "name": "NVIDIA GeForce RTX 4090",
+        "brand": "—",
+        "specs": "—",
+        "unitPrice": 12999,
+        "subtotal": 12999
+      }
+    ],
+    "paymentHint": "实体店支付，以门店确认为准；在线支付未开通",
+    "contact": {
+      "tel": "15148605173",
+      "wechat": "88278867"
+    },
+    "cartSnapshot": [
+      {
+        "id": "item_1778606798659",
+        "type": "single",
+        "name": "NVIDIA GeForce RTX 4090",
+        "price": 12999,
+        "specs": "",
+        "brand": "",
+        "category": "",
+        "quantity": 1,
+        "createdAt": "2026-05-12T17:26:38.659Z"
+      }
+    ],
+    "wecomNotified": false,
+    "wecomError": "WECOM_ORDER_WEBHOOK not set",
+    "createdTs": 1778606801134
+  },
+  {
+    "orderId": "ORD1778608435167",
+    "createdAt": "2026/5/13 01:53:55",
+    "user": {
+      "name": "xwqlxkj",
+      "email": "xwqlxkj",
+      "nickname": "xwqlxkj"
+    },
+    "total": 1299,
+    "rows": [
+      {
+        "category": "单品",
+        "name": "Samsung 990 PRO",
+        "brand": "—",
+        "specs": "—",
+        "unitPrice": 1299,
+        "subtotal": 1299
+      }
+    ],
+    "paymentHint": "实体店支付，以门店确认为准；在线支付未开通",
+    "contact": {
+      "tel": "15148605173",
+      "wechat": "88278867"
+    },
+    "cartSnapshot": [
+      {
+        "id": "item_1778608431846",
+        "type": "single",
+        "name": "Samsung 990 PRO",
+        "price": 1299,
+        "specs": "",
+        "brand": "",
+        "category": "",
+        "quantity": 1,
+        "createdAt": "2026-05-12T17:53:51.846Z"
+      }
+    ],
+    "wecomNotified": true,
+    "wecomError": null,
+    "createdTs": 1778608435181
+  },
+  {
+    "orderId": "ORD1778615058117",
+    "createdAt": "2026/5/13 03:44:18",
+    "user": {
+      "name": "xwqlxkj",
+      "email": "xwqlxkj",
+      "nickname": "xwqlxkj"
+    },
+    "total": 25887,
+    "rows": [
+      {
+        "category": "处理器",
+        "name": "AMD Ryzen 7 7800X3D",
+        "brand": "AMD",
+        "specs": "8核16线程 / 5.0GHz / 120W 3D V-Cache",
+        "unitPrice": 2999,
+        "subtotal": 2999
+      },
+      {
+        "category": "显卡",
+        "name": "RTX 4070 Ti Super",
+        "brand": "NVIDIA",
+        "specs": "16GB GDDR6X / 285W",
+        "unitPrice": 6499,
+        "subtotal": 6499
+      },
+      {
+        "category": "主板",
+        "name": "ROG STRIX X670E-E",
+        "brand": "ASUS",
+        "specs": "AMD X670E / DDR5 / AM5",
+        "unitPrice": 4499,
+        "subtotal": 4499
+      },
+      {
+        "category": "内存",
+        "name": "Corsair Vengeance 32GB",
+        "brand": "Corsair",
+        "specs": "DDR5-6000 / 2×16GB / CL30",
+        "unitPrice": 899,
+        "subtotal": 899
+      },
+      {
+        "category": "存储",
+        "name": "Samsung 990 Pro 2TB",
+        "brand": "Samsung",
+        "specs": "NVMe PCIe 4.0 / 7450MB/s",
+        "unitPrice": 1299,
+        "subtotal": 1299
+      },
+      {
+        "category": "散热",
+        "name": "Noctua NH-D15",
+        "brand": "Noctua",
+        "specs": "双塔风冷 / 14cm×2风扇",
+        "unitPrice": 699,
+        "subtotal": 699
+      },
+      {
+        "category": "电源",
+        "name": "Corsair RM1000x",
+        "brand": "Corsair",
+        "specs": "1000W / 80+ Gold / 全模组",
+        "unitPrice": 1199,
+        "subtotal": 1199
+      },
+      {
+        "category": "机箱",
+        "name": "Lian Li O11 Dynamic EVO",
+        "brand": "Lian Li",
+        "specs": "ATX / 双仓设计 / 玻璃侧透",
+        "unitPrice": 899,
+        "subtotal": 899
+      },
+      {
+        "category": "显示器",
+        "name": "ASUS ROG Swift 360Hz",
+        "brand": "ASUS",
+        "specs": "24.5\" FHD 360Hz / G-Sync",
+        "unitPrice": 3999,
+        "subtotal": 3999
+      },
+      {
+        "category": "键盘",
+        "name": "Logitech G Pro X Superlight",
+        "brand": "Logitech",
+        "specs": "无线 / 机械轴 / 紧凑87键",
+        "unitPrice": 799,
+        "subtotal": 799
+      },
+      {
+        "category": "鼠标",
+        "name": "Logitech G Pro X Superlight 2",
+        "brand": "Logitech",
+        "specs": "无线 / 60g / HERO 2传感器",
+        "unitPrice": 899,
+        "subtotal": 899
+      },
+      {
+        "category": "耳麦",
+        "name": "Corsair Virtuoso RGB XT",
+        "brand": "Corsair",
+        "specs": "无线 / 18h续航 / 7.1环绕",
+        "unitPrice": 899,
+        "subtotal": 899
+      }
+    ],
+    "paymentHint": "实体店支付，以门店确认为准；在线支付未开通",
+    "contact": {
+      "tel": "15148605173",
+      "wechat": "88278867"
+    },
+    "cartSnapshot": [
+      {
+        "id": "cfg_1778615048586",
+        "type": "config",
+        "items": [
+          {
+            "name": "AMD Ryzen 7 7800X3D",
+            "price": 2999,
+            "category": "处理器",
+            "brand": "AMD",
+            "specs": "8核16线程 / 5.0GHz / 120W 3D V-Cache"
+          },
+          {
+            "name": "RTX 4070 Ti Super",
+            "price": 6499,
+            "category": "显卡",
+            "brand": "NVIDIA",
+            "specs": "16GB GDDR6X / 285W"
+          },
+          {
+            "name": "ROG STRIX X670E-E",
+            "price": 4499,
+            "category": "主板",
+            "brand": "ASUS",
+            "specs": "AMD X670E / DDR5 / AM5"
+          },
+          {
+            "name": "Corsair Vengeance 32GB",
+            "price": 899,
+            "category": "内存",
+            "brand": "Corsair",
+            "specs": "DDR5-6000 / 2×16GB / CL30"
+          },
+          {
+            "name": "Samsung 990 Pro 2TB",
+            "price": 1299,
+            "category": "存储",
+            "brand": "Samsung",
+            "specs": "NVMe PCIe 4.0 / 7450MB/s"
+          },
+          {
+            "name": "Noctua NH-D15",
+            "price": 699,
+            "category": "散热",
+            "brand": "Noctua",
+            "specs": "双塔风冷 / 14cm×2风扇"
+          },
+          {
+            "name": "Corsair RM1000x",
+            "price": 1199,
+            "category": "电源",
+            "brand": "Corsair",
+            "specs": "1000W / 80+ Gold / 全模组"
+          },
+          {
+            "name": "Lian Li O11 Dynamic EVO",
+            "price": 899,
+            "category": "机箱",
+            "brand": "Lian Li",
+            "specs": "ATX / 双仓设计 / 玻璃侧透"
+          },
+          {
+            "name": "ASUS ROG Swift 360Hz",
+            "price": 3999,
+            "category": "显示器",
+            "brand": "ASUS",
+            "specs": "24.5\" FHD 360Hz / G-Sync"
+          },
+          {
+            "name": "Logitech G Pro X Superlight",
+            "price": 799,
+            "category": "键盘",
+            "brand": "Logitech",
+            "specs": "无线 / 机械轴 / 紧凑87键"
+          },
+          {
+            "name": "Logitech G Pro X Superlight 2",
+            "price": 899,
+            "category": "鼠标",
+            "brand": "Logitech",
+            "specs": "无线 / 60g / HERO 2传感器"
+          },
+          {
+            "name": "Corsair Virtuoso RGB XT",
+            "price": 899,
+            "category": "耳麦",
+            "brand": "Corsair",
+            "specs": "无线 / 18h续航 / 7.1环绕"
+          }
+        ],
+        "totalPrice": 25887,
+        "quantity": 1,
+        "createdAt": "2026-05-12T19:44:08.586Z"
+      }
+    ],
+    "wecomNotified": true,
+    "wecomError": null,
+    "createdTs": 1778615058131
+  },
+  {
+    "orderId": "ORD1778615945214",
+    "createdAt": "2026/5/13 03:59:05",
+    "user": {
+      "name": "测试",
+      "email": "test@test.com",
+      "phone": "13800138000"
+    },
+    "total": 999,
+    "rows": [
+      {
+        "category": "单品",
+        "name": "测试商品",
+        "brand": "—",
+        "specs": "—",
+        "unitPrice": 999,
+        "subtotal": 999
+      }
+    ],
+    "paymentHint": "实体店支付，以门店确认为准；在线支付未开通",
+    "contact": {
+      "tel": "13800138000",
+      "wechat": "88278867"
+    },
+    "cartSnapshot": [
+      {
+        "id": "test",
+        "type": "single",
+        "name": "测试商品",
+        "price": 999,
+        "quantity": 1
+      }
+    ],
+    "wecomNotified": false,
+    "wecomError": "exception: customerTel is not defined",
+    "createdTs": 1778615945238
+  },
+  {
+    "orderId": "ORD1778616142292",
+    "createdAt": "2026/5/13 04:02:22",
+    "user": {
+      "name": "xwqlxkj",
+      "email": "xwqlxkj",
+      "nickname": "xwqlxkj",
+      "phone": "16604790789"
+    },
+    "total": 60879,
+    "rows": [
+      {
+        "category": "单品",
+        "name": "NVIDIA GeForce RTX 4090",
+        "brand": "—",
+        "specs": "—",
+        "unitPrice": 12999,
+        "subtotal": 12999
+      },
+      {
+        "category": "单品",
+        "name": "G.SKILL Trident Z5 RGB",
+        "brand": "—",
+        "specs": "—",
+        "unitPrice": 1099,
+        "subtotal": 1099
+      },
+      {
+        "category": "单品",
+        "name": "Samsung 990 PRO",
+        "brand": "—",
+        "specs": "—",
+        "unitPrice": 1299,
+        "subtotal": 1299
+      },
+      {
+        "category": "单品",
+        "name": "Noctua NH-D15",
+        "brand": "—",
+        "specs": "—",
+        "unitPrice": 699,
+        "subtotal": 699
+      },
+      {
+        "category": "单品",
+        "name": "Corsair RM1000x",
+        "brand": "—",
+        "specs": "—",
+        "unitPrice": 1199,
+        "subtotal": 1199
+      },
+      {
+        "category": "单品",
+        "name": "ASUS ROG MAXIMUS Z790",
+        "brand": "—",
+        "specs": "—",
+        "unitPrice": 3899,
+        "subtotal": 3899
+      },
+      {
+        "category": "处理器",
+        "name": "AMD Ryzen 7 7800X3D",
+        "brand": "AMD",
+        "specs": "8核16线程 / 5.0GHz / 120W 3D V-Cache",
+        "unitPrice": 2999,
+        "subtotal": 2999
+      },
+      {
+        "category": "显卡",
+        "name": "RTX 4070 Ti Super",
+        "brand": "NVIDIA",
+        "specs": "16GB GDDR6X / 285W",
+        "unitPrice": 6499,
+        "subtotal": 6499
+      },
+      {
+        "category": "主板",
+        "name": "ROG STRIX X670E-E",
+        "brand": "ASUS",
+        "specs": "AMD X670E / DDR5 / AM5",
+        "unitPrice": 4499,
+        "subtotal": 4499
+      },
+      {
+        "category": "内存",
+        "name": "Corsair Vengeance 32GB",
+        "brand": "Corsair",
+        "specs": "DDR5-6000 / 2×16GB / CL30",
+        "unitPrice": 899,
+        "subtotal": 899
+      },
+      {
+        "category": "存储",
+        "name": "Samsung 990 Pro 2TB",
+        "brand": "Samsung",
+        "specs": "NVMe PCIe 4.0 / 7450MB/s",
+        "unitPrice": 1299,
+        "subtotal": 1299
+      },
+      {
+        "category": "散热",
+        "name": "Noctua NH-D15",
+        "brand": "Noctua",
+        "specs": "双塔风冷 / 14cm×2风扇",
+        "unitPrice": 699,
+        "subtotal": 699
+      },
+      {
+        "category": "电源",
+        "name": "Corsair RM1000x",
+        "brand": "Corsair",
+        "specs": "1000W / 80+ Gold / 全模组",
+        "unitPrice": 1199,
+        "subtotal": 1199
+      },
+      {
+        "category": "机箱",
+        "name": "Lian Li O11 Dynamic EVO",
+        "brand": "Lian Li",
+        "specs": "ATX / 双仓设计 / 玻璃侧透",
+        "unitPrice": 899,
+        "subtotal": 899
+      },
+      {
+        "category": "显示器",
+        "name": "ASUS ROG Swift 360Hz",
+        "brand": "ASUS",
+        "specs": "24.5\" FHD 360Hz / G-Sync",
+        "unitPrice": 3999,
+        "subtotal": 3999
+      },
+      {
+        "category": "键盘",
+        "name": "Logitech G Pro X Superlight",
+        "brand": "Logitech",
+        "specs": "无线 / 机械轴 / 紧凑87键",
+        "unitPrice": 799,
+        "subtotal": 799
+      },
+      {
+        "category": "鼠标",
+        "name": "Logitech G Pro X Superlight 2",
+        "brand": "Logitech",
+        "specs": "无线 / 60g / HERO 2传感器",
+        "unitPrice": 899,
+        "subtotal": 899
+      },
+      {
+        "category": "耳麦",
+        "name": "Corsair Virtuoso RGB XT",
+        "brand": "Corsair",
+        "specs": "无线 / 18h续航 / 7.1环绕",
+        "unitPrice": 899,
+        "subtotal": 899
+      },
+      {
+        "category": "单品",
+        "name": "NVIDIA GeForce RTX 4090",
+        "brand": "—",
+        "specs": "—",
+        "unitPrice": 12999,
+        "subtotal": 12999
+      },
+      {
+        "category": "单品",
+        "name": "Lian Li O11 Dynamic EVO",
+        "brand": "—",
+        "specs": "—",
+        "unitPrice": 799,
+        "subtotal": 799
+      }
+    ],
+    "paymentHint": "实体店支付，以门店确认为准；在线支付未开通",
+    "contact": {
+      "tel": "16604790789",
+      "wechat": "88278867"
+    },
+    "cartSnapshot": [
+      {
+        "id": "item_1778612177394",
+        "type": "single",
+        "name": "NVIDIA GeForce RTX 4090",
+        "price": 12999,
+        "specs": "",
+        "brand": "",
+        "category": "",
+        "quantity": 1,
+        "createdAt": "2026-05-12T18:56:17.394Z"
+      },
+      {
+        "id": "item_1778612180093",
+        "type": "single",
+        "name": "G.SKILL Trident Z5 RGB",
+        "price": 1099,
+        "specs": "",
+        "brand": "",
+        "category": "",
+        "quantity": 1,
+        "createdAt": "2026-05-12T18:56:20.093Z"
+      },
+      {
+        "id": "item_1778612180827",
+        "type": "single",
+        "name": "Samsung 990 PRO",
+        "price": 1299,
+        "specs": "",
+        "brand": "",
+        "category": "",
+        "quantity": 1,
+        "createdAt": "2026-05-12T18:56:20.827Z"
+      },
+      {
+        "id": "item_1778612181768",
+        "type": "single",
+        "name": "Noctua NH-D15",
+        "price": 699,
+        "specs": "",
+        "brand": "",
+        "category": "",
+        "quantity": 1,
+        "createdAt": "2026-05-12T18:56:21.768Z"
+      },
+      {
+        "id": "item_1778612183394",
+        "type": "single",
+        "name": "Corsair RM1000x",
+        "price": 1199,
+        "specs": "",
+        "brand": "",
+        "category": "",
+        "quantity": 1,
+        "createdAt": "2026-05-12T18:56:23.394Z"
+      },
+      {
+        "id": "item_1778612184013",
+        "type": "single",
+        "name": "ASUS ROG MAXIMUS Z790",
+        "price": 3899,
+        "specs": "",
+        "brand": "",
+        "category": "",
+        "quantity": 1,
+        "createdAt": "2026-05-12T18:56:24.013Z"
+      },
+      {
+        "id": "cfg_1778614381425",
+        "type": "config",
+        "items": [
+          {
+            "name": "AMD Ryzen 7 7800X3D",
+            "price": 2999,
+            "category": "处理器",
+            "brand": "AMD",
+            "specs": "8核16线程 / 5.0GHz / 120W 3D V-Cache"
+          },
+          {
+            "name": "RTX 4070 Ti Super",
+            "price": 6499,
+            "category": "显卡",
+            "brand": "NVIDIA",
+            "specs": "16GB GDDR6X / 285W"
+          },
+          {
+            "name": "ROG STRIX X670E-E",
+            "price": 4499,
+            "category": "主板",
+            "brand": "ASUS",
+            "specs": "AMD X670E / DDR5 / AM5"
+          },
+          {
+            "name": "Corsair Vengeance 32GB",
+            "price": 899,
+            "category": "内存",
+            "brand": "Corsair",
+            "specs": "DDR5-6000 / 2×16GB / CL30"
+          },
+          {
+            "name": "Samsung 990 Pro 2TB",
+            "price": 1299,
+            "category": "存储",
+            "brand": "Samsung",
+            "specs": "NVMe PCIe 4.0 / 7450MB/s"
+          },
+          {
+            "name": "Noctua NH-D15",
+            "price": 699,
+            "category": "散热",
+            "brand": "Noctua",
+            "specs": "双塔风冷 / 14cm×2风扇"
+          },
+          {
+            "name": "Corsair RM1000x",
+            "price": 1199,
+            "category": "电源",
+            "brand": "Corsair",
+            "specs": "1000W / 80+ Gold / 全模组"
+          },
+          {
+            "name": "Lian Li O11 Dynamic EVO",
+            "price": 899,
+            "category": "机箱",
+            "brand": "Lian Li",
+            "specs": "ATX / 双仓设计 / 玻璃侧透"
+          },
+          {
+            "name": "ASUS ROG Swift 360Hz",
+            "price": 3999,
+            "category": "显示器",
+            "brand": "ASUS",
+            "specs": "24.5\" FHD 360Hz / G-Sync"
+          },
+          {
+            "name": "Logitech G Pro X Superlight",
+            "price": 799,
+            "category": "键盘",
+            "brand": "Logitech",
+            "specs": "无线 / 机械轴 / 紧凑87键"
+          },
+          {
+            "name": "Logitech G Pro X Superlight 2",
+            "price": 899,
+            "category": "鼠标",
+            "brand": "Logitech",
+            "specs": "无线 / 60g / HERO 2传感器"
+          },
+          {
+            "name": "Corsair Virtuoso RGB XT",
+            "price": 899,
+            "category": "耳麦",
+            "brand": "Corsair",
+            "specs": "无线 / 18h续航 / 7.1环绕"
+          }
+        ],
+        "totalPrice": 25887,
+        "quantity": 1,
+        "createdAt": "2026-05-12T19:33:01.425Z"
+      },
+      {
+        "id": "item_1778615748664",
+        "type": "single",
+        "name": "NVIDIA GeForce RTX 4090",
+        "price": 12999,
+        "specs": "",
+        "brand": "",
+        "category": "",
+        "quantity": 1,
+        "createdAt": "2026-05-12T19:55:48.664Z"
+      },
+      {
+        "id": "item_1778616131903",
+        "type": "single",
+        "name": "Lian Li O11 Dynamic EVO",
+        "price": 799,
+        "specs": "",
+        "brand": "",
+        "category": "",
+        "quantity": 1,
+        "createdAt": "2026-05-12T20:02:11.903Z"
+      }
+    ],
+    "wecomNotified": false,
+    "wecomError": "exception: customerTel is not defined",
+    "createdTs": 1778616142292
+  },
+  {
+    "orderId": "ORD1778616454581",
+    "createdAt": "2026/5/13 04:07:34",
+    "user": {
+      "name": "xwqlxkj",
+      "email": "xwqlxkj",
+      "nickname": "xwqlxkj",
+      "phone": "16604790789"
+    },
+    "total": 25887,
+    "rows": [
+      {
+        "category": "处理器",
+        "name": "AMD Ryzen 7 7800X3D",
+        "brand": "AMD",
+        "specs": "8核16线程 / 5.0GHz / 120W 3D V-Cache",
+        "unitPrice": 2999,
+        "subtotal": 2999
+      },
+      {
+        "category": "显卡",
+        "name": "RTX 4070 Ti Super",
+        "brand": "NVIDIA",
+        "specs": "16GB GDDR6X / 285W",
+        "unitPrice": 6499,
+        "subtotal": 6499
+      },
+      {
+        "category": "主板",
+        "name": "ROG STRIX X670E-E",
+        "brand": "ASUS",
+        "specs": "AMD X670E / DDR5 / AM5",
+        "unitPrice": 4499,
+        "subtotal": 4499
+      },
+      {
+        "category": "内存",
+        "name": "Corsair Vengeance 32GB",
+        "brand": "Corsair",
+        "specs": "DDR5-6000 / 2×16GB / CL30",
+        "unitPrice": 899,
+        "subtotal": 899
+      },
+      {
+        "category": "存储",
+        "name": "Samsung 990 Pro 2TB",
+        "brand": "Samsung",
+        "specs": "NVMe PCIe 4.0 / 7450MB/s",
+        "unitPrice": 1299,
+        "subtotal": 1299
+      },
+      {
+        "category": "散热",
+        "name": "Noctua NH-D15",
+        "brand": "Noctua",
+        "specs": "双塔风冷 / 14cm×2风扇",
+        "unitPrice": 699,
+        "subtotal": 699
+      },
+      {
+        "category": "电源",
+        "name": "Corsair RM1000x",
+        "brand": "Corsair",
+        "specs": "1000W / 80+ Gold / 全模组",
+        "unitPrice": 1199,
+        "subtotal": 1199
+      },
+      {
+        "category": "机箱",
+        "name": "Lian Li O11 Dynamic EVO",
+        "brand": "Lian Li",
+        "specs": "ATX / 双仓设计 / 玻璃侧透",
+        "unitPrice": 899,
+        "subtotal": 899
+      },
+      {
+        "category": "显示器",
+        "name": "ASUS ROG Swift 360Hz",
+        "brand": "ASUS",
+        "specs": "24.5\" FHD 360Hz / G-Sync",
+        "unitPrice": 3999,
+        "subtotal": 3999
+      },
+      {
+        "category": "键盘",
+        "name": "Logitech G Pro X Superlight",
+        "brand": "Logitech",
+        "specs": "无线 / 机械轴 / 紧凑87键",
+        "unitPrice": 799,
+        "subtotal": 799
+      },
+      {
+        "category": "鼠标",
+        "name": "Logitech G Pro X Superlight 2",
+        "brand": "Logitech",
+        "specs": "无线 / 60g / HERO 2传感器",
+        "unitPrice": 899,
+        "subtotal": 899
+      },
+      {
+        "category": "耳麦",
+        "name": "Corsair Virtuoso RGB XT",
+        "brand": "Corsair",
+        "specs": "无线 / 18h续航 / 7.1环绕",
+        "unitPrice": 899,
+        "subtotal": 899
+      }
+    ],
+    "paymentHint": "实体店支付，以门店确认为准；在线支付未开通",
+    "contact": {
+      "tel": "16604790789",
+      "wechat": "88278867"
+    },
+    "cartSnapshot": [
+      {
+        "id": "cfg_1778616443819",
+        "type": "config",
+        "items": [
+          {
+            "name": "AMD Ryzen 7 7800X3D",
+            "price": 2999,
+            "category": "处理器",
+            "brand": "AMD",
+            "specs": "8核16线程 / 5.0GHz / 120W 3D V-Cache"
+          },
+          {
+            "name": "RTX 4070 Ti Super",
+            "price": 6499,
+            "category": "显卡",
+            "brand": "NVIDIA",
+            "specs": "16GB GDDR6X / 285W"
+          },
+          {
+            "name": "ROG STRIX X670E-E",
+            "price": 4499,
+            "category": "主板",
+            "brand": "ASUS",
+            "specs": "AMD X670E / DDR5 / AM5"
+          },
+          {
+            "name": "Corsair Vengeance 32GB",
+            "price": 899,
+            "category": "内存",
+            "brand": "Corsair",
+            "specs": "DDR5-6000 / 2×16GB / CL30"
+          },
+          {
+            "name": "Samsung 990 Pro 2TB",
+            "price": 1299,
+            "category": "存储",
+            "brand": "Samsung",
+            "specs": "NVMe PCIe 4.0 / 7450MB/s"
+          },
+          {
+            "name": "Noctua NH-D15",
+            "price": 699,
+            "category": "散热",
+            "brand": "Noctua",
+            "specs": "双塔风冷 / 14cm×2风扇"
+          },
+          {
+            "name": "Corsair RM1000x",
+            "price": 1199,
+            "category": "电源",
+            "brand": "Corsair",
+            "specs": "1000W / 80+ Gold / 全模组"
+          },
+          {
+            "name": "Lian Li O11 Dynamic EVO",
+            "price": 899,
+            "category": "机箱",
+            "brand": "Lian Li",
+            "specs": "ATX / 双仓设计 / 玻璃侧透"
+          },
+          {
+            "name": "ASUS ROG Swift 360Hz",
+            "price": 3999,
+            "category": "显示器",
+            "brand": "ASUS",
+            "specs": "24.5\" FHD 360Hz / G-Sync"
+          },
+          {
+            "name": "Logitech G Pro X Superlight",
+            "price": 799,
+            "category": "键盘",
+            "brand": "Logitech",
+            "specs": "无线 / 机械轴 / 紧凑87键"
+          },
+          {
+            "name": "Logitech G Pro X Superlight 2",
+            "price": 899,
+            "category": "鼠标",
+            "brand": "Logitech",
+            "specs": "无线 / 60g / HERO 2传感器"
+          },
+          {
+            "name": "Corsair Virtuoso RGB XT",
+            "price": 899,
+            "category": "耳麦",
+            "brand": "Corsair",
+            "specs": "无线 / 18h续航 / 7.1环绕"
+          }
+        ],
+        "totalPrice": 25887,
+        "quantity": 1,
+        "createdAt": "2026-05-12T20:07:23.819Z"
+      }
+    ],
+    "wecomNotified": false,
+    "wecomError": "exception: customerTel is not defined",
+    "createdTs": 1778616454594
+  },
+  {
+    "orderId": "ORD1778616939461",
+    "createdAt": "2026/5/13 04:15:39",
+    "user": {
+      "name": "xwqlxkj",
+      "email": "xwqlxkj",
+      "nickname": "xwqlxkj",
+      "phone": "13234897890"
+    },
+    "total": 51774,
+    "rows": [
+      {
+        "category": "处理器",
+        "name": "AMD Ryzen 7 7800X3D",
+        "brand": "AMD",
+        "specs": "8核16线程 / 5.0GHz / 120W 3D V-Cache",
+        "unitPrice": 2999,
+        "subtotal": 2999
+      },
+      {
+        "category": "显卡",
+        "name": "RTX 4070 Ti Super",
+        "brand": "NVIDIA",
+        "specs": "16GB GDDR6X / 285W",
+        "unitPrice": 6499,
+        "subtotal": 6499
+      },
+      {
+        "category": "主板",
+        "name": "ROG STRIX X670E-E",
+        "brand": "ASUS",
+        "specs": "AMD X670E / DDR5 / AM5",
+        "unitPrice": 4499,
+        "subtotal": 4499
+      },
+      {
+        "category": "内存",
+        "name": "Corsair Vengeance 32GB",
+        "brand": "Corsair",
+        "specs": "DDR5-6000 / 2×16GB / CL30",
+        "unitPrice": 899,
+        "subtotal": 899
+      },
+      {
+        "category": "存储",
+        "name": "Samsung 990 Pro 2TB",
+        "brand": "Samsung",
+        "specs": "NVMe PCIe 4.0 / 7450MB/s",
+        "unitPrice": 1299,
+        "subtotal": 1299
+      },
+      {
+        "category": "散热",
+        "name": "Noctua NH-D15",
+        "brand": "Noctua",
+        "specs": "双塔风冷 / 14cm×2风扇",
+        "unitPrice": 699,
+        "subtotal": 699
+      },
+      {
+        "category": "电源",
+        "name": "Corsair RM1000x",
+        "brand": "Corsair",
+        "specs": "1000W / 80+ Gold / 全模组",
+        "unitPrice": 1199,
+        "subtotal": 1199
+      },
+      {
+        "category": "机箱",
+        "name": "Lian Li O11 Dynamic EVO",
+        "brand": "Lian Li",
+        "specs": "ATX / 双仓设计 / 玻璃侧透",
+        "unitPrice": 899,
+        "subtotal": 899
+      },
+      {
+        "category": "显示器",
+        "name": "ASUS ROG Swift 360Hz",
+        "brand": "ASUS",
+        "specs": "24.5\" FHD 360Hz / G-Sync",
+        "unitPrice": 3999,
+        "subtotal": 3999
+      },
+      {
+        "category": "键盘",
+        "name": "Logitech G Pro X Superlight",
+        "brand": "Logitech",
+        "specs": "无线 / 机械轴 / 紧凑87键",
+        "unitPrice": 799,
+        "subtotal": 799
+      },
+      {
+        "category": "鼠标",
+        "name": "Logitech G Pro X Superlight 2",
+        "brand": "Logitech",
+        "specs": "无线 / 60g / HERO 2传感器",
+        "unitPrice": 899,
+        "subtotal": 899
+      },
+      {
+        "category": "耳麦",
+        "name": "Corsair Virtuoso RGB XT",
+        "brand": "Corsair",
+        "specs": "无线 / 18h续航 / 7.1环绕",
+        "unitPrice": 899,
+        "subtotal": 899
+      },
+      {
+        "category": "处理器",
+        "name": "AMD Ryzen 7 7800X3D",
+        "brand": "AMD",
+        "specs": "8核16线程 / 5.0GHz / 120W 3D V-Cache",
+        "unitPrice": 2999,
+        "subtotal": 2999
+      },
+      {
+        "category": "显卡",
+        "name": "RTX 4070 Ti Super",
+        "brand": "NVIDIA",
+        "specs": "16GB GDDR6X / 285W",
+        "unitPrice": 6499,
+        "subtotal": 6499
+      },
+      {
+        "category": "主板",
+        "name": "ROG STRIX X670E-E",
+        "brand": "ASUS",
+        "specs": "AMD X670E / DDR5 / AM5",
+        "unitPrice": 4499,
+        "subtotal": 4499
+      },
+      {
+        "category": "内存",
+        "name": "Corsair Vengeance 32GB",
+        "brand": "Corsair",
+        "specs": "DDR5-6000 / 2×16GB / CL30",
+        "unitPrice": 899,
+        "subtotal": 899
+      },
+      {
+        "category": "存储",
+        "name": "Samsung 990 Pro 2TB",
+        "brand": "Samsung",
+        "specs": "NVMe PCIe 4.0 / 7450MB/s",
+        "unitPrice": 1299,
+        "subtotal": 1299
+      },
+      {
+        "category": "散热",
+        "name": "Noctua NH-D15",
+        "brand": "Noctua",
+        "specs": "双塔风冷 / 14cm×2风扇",
+        "unitPrice": 699,
+        "subtotal": 699
+      },
+      {
+        "category": "电源",
+        "name": "Corsair RM1000x",
+        "brand": "Corsair",
+        "specs": "1000W / 80+ Gold / 全模组",
+        "unitPrice": 1199,
+        "subtotal": 1199
+      },
+      {
+        "category": "机箱",
+        "name": "Lian Li O11 Dynamic EVO",
+        "brand": "Lian Li",
+        "specs": "ATX / 双仓设计 / 玻璃侧透",
+        "unitPrice": 899,
+        "subtotal": 899
+      },
+      {
+        "category": "显示器",
+        "name": "ASUS ROG Swift 360Hz",
+        "brand": "ASUS",
+        "specs": "24.5\" FHD 360Hz / G-Sync",
+        "unitPrice": 3999,
+        "subtotal": 3999
+      },
+      {
+        "category": "键盘",
+        "name": "Logitech G Pro X Superlight",
+        "brand": "Logitech",
+        "specs": "无线 / 机械轴 / 紧凑87键",
+        "unitPrice": 799,
+        "subtotal": 799
+      },
+      {
+        "category": "鼠标",
+        "name": "Logitech G Pro X Superlight 2",
+        "brand": "Logitech",
+        "specs": "无线 / 60g / HERO 2传感器",
+        "unitPrice": 899,
+        "subtotal": 899
+      },
+      {
+        "category": "耳麦",
+        "name": "Corsair Virtuoso RGB XT",
+        "brand": "Corsair",
+        "specs": "无线 / 18h续航 / 7.1环绕",
+        "unitPrice": 899,
+        "subtotal": 899
+      }
+    ],
+    "paymentHint": "实体店支付，以门店确认为准；在线支付未开通",
+    "contact": {
+      "tel": "15148605173",
+      "wechat": "88278867"
+    },
+    "cartSnapshot": [
+      {
+        "id": "cfg_1778615858911",
+        "type": "config",
+        "items": [
+          {
+            "name": "AMD Ryzen 7 7800X3D",
+            "price": 2999,
+            "category": "处理器",
+            "brand": "AMD",
+            "specs": "8核16线程 / 5.0GHz / 120W 3D V-Cache"
+          },
+          {
+            "name": "RTX 4070 Ti Super",
+            "price": 6499,
+            "category": "显卡",
+            "brand": "NVIDIA",
+            "specs": "16GB GDDR6X / 285W"
+          },
+          {
+            "name": "ROG STRIX X670E-E",
+            "price": 4499,
+            "category": "主板",
+            "brand": "ASUS",
+            "specs": "AMD X670E / DDR5 / AM5"
+          },
+          {
+            "name": "Corsair Vengeance 32GB",
+            "price": 899,
+            "category": "内存",
+            "brand": "Corsair",
+            "specs": "DDR5-6000 / 2×16GB / CL30"
+          },
+          {
+            "name": "Samsung 990 Pro 2TB",
+            "price": 1299,
+            "category": "存储",
+            "brand": "Samsung",
+            "specs": "NVMe PCIe 4.0 / 7450MB/s"
+          },
+          {
+            "name": "Noctua NH-D15",
+            "price": 699,
+            "category": "散热",
+            "brand": "Noctua",
+            "specs": "双塔风冷 / 14cm×2风扇"
+          },
+          {
+            "name": "Corsair RM1000x",
+            "price": 1199,
+            "category": "电源",
+            "brand": "Corsair",
+            "specs": "1000W / 80+ Gold / 全模组"
+          },
+          {
+            "name": "Lian Li O11 Dynamic EVO",
+            "price": 899,
+            "category": "机箱",
+            "brand": "Lian Li",
+            "specs": "ATX / 双仓设计 / 玻璃侧透"
+          },
+          {
+            "name": "ASUS ROG Swift 360Hz",
+            "price": 3999,
+            "category": "显示器",
+            "brand": "ASUS",
+            "specs": "24.5\" FHD 360Hz / G-Sync"
+          },
+          {
+            "name": "Logitech G Pro X Superlight",
+            "price": 799,
+            "category": "键盘",
+            "brand": "Logitech",
+            "specs": "无线 / 机械轴 / 紧凑87键"
+          },
+          {
+            "name": "Logitech G Pro X Superlight 2",
+            "price": 899,
+            "category": "鼠标",
+            "brand": "Logitech",
+            "specs": "无线 / 60g / HERO 2传感器"
+          },
+          {
+            "name": "Corsair Virtuoso RGB XT",
+            "price": 899,
+            "category": "耳麦",
+            "brand": "Corsair",
+            "specs": "无线 / 18h续航 / 7.1环绕"
+          }
+        ],
+        "totalPrice": 25887,
+        "quantity": 1,
+        "createdAt": "2026-05-12T19:57:38.911Z"
+      },
+      {
+        "id": "cfg_1778616929466",
+        "type": "config",
+        "items": [
+          {
+            "name": "AMD Ryzen 7 7800X3D",
+            "price": 2999,
+            "category": "处理器",
+            "brand": "AMD",
+            "specs": "8核16线程 / 5.0GHz / 120W 3D V-Cache"
+          },
+          {
+            "name": "RTX 4070 Ti Super",
+            "price": 6499,
+            "category": "显卡",
+            "brand": "NVIDIA",
+            "specs": "16GB GDDR6X / 285W"
+          },
+          {
+            "name": "ROG STRIX X670E-E",
+            "price": 4499,
+            "category": "主板",
+            "brand": "ASUS",
+            "specs": "AMD X670E / DDR5 / AM5"
+          },
+          {
+            "name": "Corsair Vengeance 32GB",
+            "price": 899,
+            "category": "内存",
+            "brand": "Corsair",
+            "specs": "DDR5-6000 / 2×16GB / CL30"
+          },
+          {
+            "name": "Samsung 990 Pro 2TB",
+            "price": 1299,
+            "category": "存储",
+            "brand": "Samsung",
+            "specs": "NVMe PCIe 4.0 / 7450MB/s"
+          },
+          {
+            "name": "Noctua NH-D15",
+            "price": 699,
+            "category": "散热",
+            "brand": "Noctua",
+            "specs": "双塔风冷 / 14cm×2风扇"
+          },
+          {
+            "name": "Corsair RM1000x",
+            "price": 1199,
+            "category": "电源",
+            "brand": "Corsair",
+            "specs": "1000W / 80+ Gold / 全模组"
+          },
+          {
+            "name": "Lian Li O11 Dynamic EVO",
+            "price": 899,
+            "category": "机箱",
+            "brand": "Lian Li",
+            "specs": "ATX / 双仓设计 / 玻璃侧透"
+          },
+          {
+            "name": "ASUS ROG Swift 360Hz",
+            "price": 3999,
+            "category": "显示器",
+            "brand": "ASUS",
+            "specs": "24.5\" FHD 360Hz / G-Sync"
+          },
+          {
+            "name": "Logitech G Pro X Superlight",
+            "price": 799,
+            "category": "键盘",
+            "brand": "Logitech",
+            "specs": "无线 / 机械轴 / 紧凑87键"
+          },
+          {
+            "name": "Logitech G Pro X Superlight 2",
+            "price": 899,
+            "category": "鼠标",
+            "brand": "Logitech",
+            "specs": "无线 / 60g / HERO 2传感器"
+          },
+          {
+            "name": "Corsair Virtuoso RGB XT",
+            "price": 899,
+            "category": "耳麦",
+            "brand": "Corsair",
+            "specs": "无线 / 18h续航 / 7.1环绕"
+          }
+        ],
+        "totalPrice": 25887,
+        "quantity": 1,
+        "createdAt": "2026-05-12T20:15:29.466Z"
+      }
+    ],
+    "wecomNotified": true,
+    "wecomError": null,
+    "createdTs": 1778616939475
+  },
+  {
+    "orderId": "ORD1778617633207",
+    "createdAt": "2026/5/13 04:27:13",
+    "user": {
+      "name": "xwqlxkj",
+      "email": "xwqlxkj",
+      "nickname": "xwqlxkj",
+      "phone": "13234897890"
+    },
+    "total": 38886,
+    "rows": [
+      {
+        "category": "处理器",
+        "name": "AMD Ryzen 7 7800X3D",
+        "brand": "AMD",
+        "specs": "8核16线程 / 5.0GHz / 120W 3D V-Cache",
+        "unitPrice": 2999,
+        "subtotal": 2999
+      },
+      {
+        "category": "显卡",
+        "name": "RTX 4070 Ti Super",
+        "brand": "NVIDIA",
+        "specs": "16GB GDDR6X / 285W",
+        "unitPrice": 6499,
+        "subtotal": 6499
+      },
+      {
+        "category": "主板",
+        "name": "ROG STRIX X670E-E",
+        "brand": "ASUS",
+        "specs": "AMD X670E / DDR5 / AM5",
+        "unitPrice": 4499,
+        "subtotal": 4499
+      },
+      {
+        "category": "内存",
+        "name": "Corsair Vengeance 32GB",
+        "brand": "Corsair",
+        "specs": "DDR5-6000 / 2×16GB / CL30",
+        "unitPrice": 899,
+        "subtotal": 899
+      },
+      {
+        "category": "存储",
+        "name": "Samsung 990 Pro 2TB",
+        "brand": "Samsung",
+        "specs": "NVMe PCIe 4.0 / 7450MB/s",
+        "unitPrice": 1299,
+        "subtotal": 1299
+      },
+      {
+        "category": "散热",
+        "name": "Noctua NH-D15",
+        "brand": "Noctua",
+        "specs": "双塔风冷 / 14cm×2风扇",
+        "unitPrice": 699,
+        "subtotal": 699
+      },
+      {
+        "category": "电源",
+        "name": "Corsair RM1000x",
+        "brand": "Corsair",
+        "specs": "1000W / 80+ Gold / 全模组",
+        "unitPrice": 1199,
+        "subtotal": 1199
+      },
+      {
+        "category": "机箱",
+        "name": "Lian Li O11 Dynamic EVO",
+        "brand": "Lian Li",
+        "specs": "ATX / 双仓设计 / 玻璃侧透",
+        "unitPrice": 899,
+        "subtotal": 899
+      },
+      {
+        "category": "显示器",
+        "name": "ASUS ROG Swift 360Hz",
+        "brand": "ASUS",
+        "specs": "24.5\" FHD 360Hz / G-Sync",
+        "unitPrice": 3999,
+        "subtotal": 3999
+      },
+      {
+        "category": "键盘",
+        "name": "Logitech G Pro X Superlight",
+        "brand": "Logitech",
+        "specs": "无线 / 机械轴 / 紧凑87键",
+        "unitPrice": 799,
+        "subtotal": 799
+      },
+      {
+        "category": "鼠标",
+        "name": "Logitech G Pro X Superlight 2",
+        "brand": "Logitech",
+        "specs": "无线 / 60g / HERO 2传感器",
+        "unitPrice": 899,
+        "subtotal": 899
+      },
+      {
+        "category": "耳麦",
+        "name": "Corsair Virtuoso RGB XT",
+        "brand": "Corsair",
+        "specs": "无线 / 18h续航 / 7.1环绕",
+        "unitPrice": 899,
+        "subtotal": 899
+      },
+      {
+        "category": "单品",
+        "name": "NVIDIA GeForce RTX 4090",
+        "brand": "—",
+        "specs": "—",
+        "unitPrice": 12999,
+        "subtotal": 12999
+      }
+    ],
+    "paymentHint": "实体店支付，以门店确认为准；在线支付未开通",
+    "contact": {
+      "tel": "15148605173",
+      "wechat": "88278867"
+    },
+    "cartSnapshot": [
+      {
+        "id": "cfg_1778616992427",
+        "type": "config",
+        "items": [
+          {
+            "name": "AMD Ryzen 7 7800X3D",
+            "price": 2999,
+            "category": "处理器",
+            "brand": "AMD",
+            "specs": "8核16线程 / 5.0GHz / 120W 3D V-Cache"
+          },
+          {
+            "name": "RTX 4070 Ti Super",
+            "price": 6499,
+            "category": "显卡",
+            "brand": "NVIDIA",
+            "specs": "16GB GDDR6X / 285W"
+          },
+          {
+            "name": "ROG STRIX X670E-E",
+            "price": 4499,
+            "category": "主板",
+            "brand": "ASUS",
+            "specs": "AMD X670E / DDR5 / AM5"
+          },
+          {
+            "name": "Corsair Vengeance 32GB",
+            "price": 899,
+            "category": "内存",
+            "brand": "Corsair",
+            "specs": "DDR5-6000 / 2×16GB / CL30"
+          },
+          {
+            "name": "Samsung 990 Pro 2TB",
+            "price": 1299,
+            "category": "存储",
+            "brand": "Samsung",
+            "specs": "NVMe PCIe 4.0 / 7450MB/s"
+          },
+          {
+            "name": "Noctua NH-D15",
+            "price": 699,
+            "category": "散热",
+            "brand": "Noctua",
+            "specs": "双塔风冷 / 14cm×2风扇"
+          },
+          {
+            "name": "Corsair RM1000x",
+            "price": 1199,
+            "category": "电源",
+            "brand": "Corsair",
+            "specs": "1000W / 80+ Gold / 全模组"
+          },
+          {
+            "name": "Lian Li O11 Dynamic EVO",
+            "price": 899,
+            "category": "机箱",
+            "brand": "Lian Li",
+            "specs": "ATX / 双仓设计 / 玻璃侧透"
+          },
+          {
+            "name": "ASUS ROG Swift 360Hz",
+            "price": 3999,
+            "category": "显示器",
+            "brand": "ASUS",
+            "specs": "24.5\" FHD 360Hz / G-Sync"
+          },
+          {
+            "name": "Logitech G Pro X Superlight",
+            "price": 799,
+            "category": "键盘",
+            "brand": "Logitech",
+            "specs": "无线 / 机械轴 / 紧凑87键"
+          },
+          {
+            "name": "Logitech G Pro X Superlight 2",
+            "price": 899,
+            "category": "鼠标",
+            "brand": "Logitech",
+            "specs": "无线 / 60g / HERO 2传感器"
+          },
+          {
+            "name": "Corsair Virtuoso RGB XT",
+            "price": 899,
+            "category": "耳麦",
+            "brand": "Corsair",
+            "specs": "无线 / 18h续航 / 7.1环绕"
+          }
+        ],
+        "totalPrice": 25887,
+        "quantity": 1,
+        "createdAt": "2026-05-12T20:16:32.427Z"
+      },
+      {
+        "id": "item_1778617622970",
+        "type": "single",
+        "name": "NVIDIA GeForce RTX 4090",
+        "price": 12999,
+        "specs": "",
+        "brand": "",
+        "category": "",
+        "quantity": 1,
+        "createdAt": "2026-05-12T20:27:02.970Z"
+      }
+    ],
+    "wecomNotified": true,
+    "wecomError": null,
+    "createdTs": 1778617633221
+  },
+  {
+    "orderId": "ORD1778618111047",
+    "createdAt": "2026/5/13 04:35:11",
+    "user": {
+      "name": "xwqlxkj",
+      "email": "xwqlxkj",
+      "nickname": "xwqlxkj",
+      "phone": "15148605566"
+    },
+    "total": 25887,
+    "rows": [
+      {
+        "category": "处理器",
+        "name": "AMD Ryzen 7 7800X3D",
+        "brand": "AMD",
+        "specs": "8核16线程 / 5.0GHz / 120W 3D V-Cache",
+        "unitPrice": 2999,
+        "subtotal": 2999
+      },
+      {
+        "category": "显卡",
+        "name": "RTX 4070 Ti Super",
+        "brand": "NVIDIA",
+        "specs": "16GB GDDR6X / 285W",
+        "unitPrice": 6499,
+        "subtotal": 6499
+      },
+      {
+        "category": "主板",
+        "name": "ROG STRIX X670E-E",
+        "brand": "ASUS",
+        "specs": "AMD X670E / DDR5 / AM5",
+        "unitPrice": 4499,
+        "subtotal": 4499
+      },
+      {
+        "category": "内存",
+        "name": "Corsair Vengeance 32GB",
+        "brand": "Corsair",
+        "specs": "DDR5-6000 / 2×16GB / CL30",
+        "unitPrice": 899,
+        "subtotal": 899
+      },
+      {
+        "category": "存储",
+        "name": "Samsung 990 Pro 2TB",
+        "brand": "Samsung",
+        "specs": "NVMe PCIe 4.0 / 7450MB/s",
+        "unitPrice": 1299,
+        "subtotal": 1299
+      },
+      {
+        "category": "散热",
+        "name": "Noctua NH-D15",
+        "brand": "Noctua",
+        "specs": "双塔风冷 / 14cm×2风扇",
+        "unitPrice": 699,
+        "subtotal": 699
+      },
+      {
+        "category": "电源",
+        "name": "Corsair RM1000x",
+        "brand": "Corsair",
+        "specs": "1000W / 80+ Gold / 全模组",
+        "unitPrice": 1199,
+        "subtotal": 1199
+      },
+      {
+        "category": "机箱",
+        "name": "Lian Li O11 Dynamic EVO",
+        "brand": "Lian Li",
+        "specs": "ATX / 双仓设计 / 玻璃侧透",
+        "unitPrice": 899,
+        "subtotal": 899
+      },
+      {
+        "category": "显示器",
+        "name": "ASUS ROG Swift 360Hz",
+        "brand": "ASUS",
+        "specs": "24.5\" FHD 360Hz / G-Sync",
+        "unitPrice": 3999,
+        "subtotal": 3999
+      },
+      {
+        "category": "键盘",
+        "name": "Logitech G Pro X Superlight",
+        "brand": "Logitech",
+        "specs": "无线 / 机械轴 / 紧凑87键",
+        "unitPrice": 799,
+        "subtotal": 799
+      },
+      {
+        "category": "鼠标",
+        "name": "Logitech G Pro X Superlight 2",
+        "brand": "Logitech",
+        "specs": "无线 / 60g / HERO 2传感器",
+        "unitPrice": 899,
+        "subtotal": 899
+      },
+      {
+        "category": "耳麦",
+        "name": "Corsair Virtuoso RGB XT",
+        "brand": "Corsair",
+        "specs": "无线 / 18h续航 / 7.1环绕",
+        "unitPrice": 899,
+        "subtotal": 899
+      }
+    ],
+    "paymentHint": "实体店支付，以门店确认为准；在线支付未开通",
+    "contact": {
+      "tel": "15148605173",
+      "wechat": "88278867"
+    },
+    "cartSnapshot": [
+      {
+        "id": "cfg_1778618102593",
+        "type": "config",
+        "items": [
+          {
+            "name": "AMD Ryzen 7 7800X3D",
+            "price": 2999,
+            "category": "处理器",
+            "brand": "AMD",
+            "specs": "8核16线程 / 5.0GHz / 120W 3D V-Cache"
+          },
+          {
+            "name": "RTX 4070 Ti Super",
+            "price": 6499,
+            "category": "显卡",
+            "brand": "NVIDIA",
+            "specs": "16GB GDDR6X / 285W"
+          },
+          {
+            "name": "ROG STRIX X670E-E",
+            "price": 4499,
+            "category": "主板",
+            "brand": "ASUS",
+            "specs": "AMD X670E / DDR5 / AM5"
+          },
+          {
+            "name": "Corsair Vengeance 32GB",
+            "price": 899,
+            "category": "内存",
+            "brand": "Corsair",
+            "specs": "DDR5-6000 / 2×16GB / CL30"
+          },
+          {
+            "name": "Samsung 990 Pro 2TB",
+            "price": 1299,
+            "category": "存储",
+            "brand": "Samsung",
+            "specs": "NVMe PCIe 4.0 / 7450MB/s"
+          },
+          {
+            "name": "Noctua NH-D15",
+            "price": 699,
+            "category": "散热",
+            "brand": "Noctua",
+            "specs": "双塔风冷 / 14cm×2风扇"
+          },
+          {
+            "name": "Corsair RM1000x",
+            "price": 1199,
+            "category": "电源",
+            "brand": "Corsair",
+            "specs": "1000W / 80+ Gold / 全模组"
+          },
+          {
+            "name": "Lian Li O11 Dynamic EVO",
+            "price": 899,
+            "category": "机箱",
+            "brand": "Lian Li",
+            "specs": "ATX / 双仓设计 / 玻璃侧透"
+          },
+          {
+            "name": "ASUS ROG Swift 360Hz",
+            "price": 3999,
+            "category": "显示器",
+            "brand": "ASUS",
+            "specs": "24.5\" FHD 360Hz / G-Sync"
+          },
+          {
+            "name": "Logitech G Pro X Superlight",
+            "price": 799,
+            "category": "键盘",
+            "brand": "Logitech",
+            "specs": "无线 / 机械轴 / 紧凑87键"
+          },
+          {
+            "name": "Logitech G Pro X Superlight 2",
+            "price": 899,
+            "category": "鼠标",
+            "brand": "Logitech",
+            "specs": "无线 / 60g / HERO 2传感器"
+          },
+          {
+            "name": "Corsair Virtuoso RGB XT",
+            "price": 899,
+            "category": "耳麦",
+            "brand": "Corsair",
+            "specs": "无线 / 18h续航 / 7.1环绕"
+          }
+        ],
+        "totalPrice": 25887,
+        "quantity": 1,
+        "createdAt": "2026-05-12T20:35:02.593Z"
+      }
+    ],
+    "wecomNotified": true,
+    "wecomError": null,
+    "createdTs": 1778618111047
+  },
+  {
+    "orderId": "ORD1778618593970",
+    "createdAt": "2026/5/13 04:43:13",
+    "user": {
+      "name": "xwqlxkj",
+      "email": "xwqlxkj",
+      "nickname": "xwqlxkj",
+      "phone": "13245678907"
+    },
+    "total": 25887,
+    "rows": [
+      {
+        "category": "处理器",
+        "name": "AMD Ryzen 7 7800X3D",
+        "brand": "AMD",
+        "specs": "8核16线程 / 5.0GHz / 120W 3D V-Cache",
+        "unitPrice": 2999,
+        "subtotal": 2999
+      },
+      {
+        "category": "显卡",
+        "name": "RTX 4070 Ti Super",
+        "brand": "NVIDIA",
+        "specs": "16GB GDDR6X / 285W",
+        "unitPrice": 6499,
+        "subtotal": 6499
+      },
+      {
+        "category": "主板",
+        "name": "ROG STRIX X670E-E",
+        "brand": "ASUS",
+        "specs": "AMD X670E / DDR5 / AM5",
+        "unitPrice": 4499,
+        "subtotal": 4499
+      },
+      {
+        "category": "内存",
+        "name": "Corsair Vengeance 32GB",
+        "brand": "Corsair",
+        "specs": "DDR5-6000 / 2×16GB / CL30",
+        "unitPrice": 899,
+        "subtotal": 899
+      },
+      {
+        "category": "存储",
+        "name": "Samsung 990 Pro 2TB",
+        "brand": "Samsung",
+        "specs": "NVMe PCIe 4.0 / 7450MB/s",
+        "unitPrice": 1299,
+        "subtotal": 1299
+      },
+      {
+        "category": "散热",
+        "name": "Noctua NH-D15",
+        "brand": "Noctua",
+        "specs": "双塔风冷 / 14cm×2风扇",
+        "unitPrice": 699,
+        "subtotal": 699
+      },
+      {
+        "category": "电源",
+        "name": "Corsair RM1000x",
+        "brand": "Corsair",
+        "specs": "1000W / 80+ Gold / 全模组",
+        "unitPrice": 1199,
+        "subtotal": 1199
+      },
+      {
+        "category": "机箱",
+        "name": "Lian Li O11 Dynamic EVO",
+        "brand": "Lian Li",
+        "specs": "ATX / 双仓设计 / 玻璃侧透",
+        "unitPrice": 899,
+        "subtotal": 899
+      },
+      {
+        "category": "显示器",
+        "name": "ASUS ROG Swift 360Hz",
+        "brand": "ASUS",
+        "specs": "24.5\" FHD 360Hz / G-Sync",
+        "unitPrice": 3999,
+        "subtotal": 3999
+      },
+      {
+        "category": "键盘",
+        "name": "Logitech G Pro X Superlight",
+        "brand": "Logitech",
+        "specs": "无线 / 机械轴 / 紧凑87键",
+        "unitPrice": 799,
+        "subtotal": 799
+      },
+      {
+        "category": "鼠标",
+        "name": "Logitech G Pro X Superlight 2",
+        "brand": "Logitech",
+        "specs": "无线 / 60g / HERO 2传感器",
+        "unitPrice": 899,
+        "subtotal": 899
+      },
+      {
+        "category": "耳麦",
+        "name": "Corsair Virtuoso RGB XT",
+        "brand": "Corsair",
+        "specs": "无线 / 18h续航 / 7.1环绕",
+        "unitPrice": 899,
+        "subtotal": 899
+      }
+    ],
+    "paymentHint": "实体店支付，以门店确认为准；在线支付未开通",
+    "contact": {
+      "tel": "15148605173",
+      "wechat": "88278867"
+    },
+    "cartSnapshot": [
+      {
+        "id": "cfg_1778618582060",
+        "type": "config",
+        "items": [
+          {
+            "name": "AMD Ryzen 7 7800X3D",
+            "price": 2999,
+            "category": "处理器",
+            "brand": "AMD",
+            "specs": "8核16线程 / 5.0GHz / 120W 3D V-Cache"
+          },
+          {
+            "name": "RTX 4070 Ti Super",
+            "price": 6499,
+            "category": "显卡",
+            "brand": "NVIDIA",
+            "specs": "16GB GDDR6X / 285W"
+          },
+          {
+            "name": "ROG STRIX X670E-E",
+            "price": 4499,
+            "category": "主板",
+            "brand": "ASUS",
+            "specs": "AMD X670E / DDR5 / AM5"
+          },
+          {
+            "name": "Corsair Vengeance 32GB",
+            "price": 899,
+            "category": "内存",
+            "brand": "Corsair",
+            "specs": "DDR5-6000 / 2×16GB / CL30"
+          },
+          {
+            "name": "Samsung 990 Pro 2TB",
+            "price": 1299,
+            "category": "存储",
+            "brand": "Samsung",
+            "specs": "NVMe PCIe 4.0 / 7450MB/s"
+          },
+          {
+            "name": "Noctua NH-D15",
+            "price": 699,
+            "category": "散热",
+            "brand": "Noctua",
+            "specs": "双塔风冷 / 14cm×2风扇"
+          },
+          {
+            "name": "Corsair RM1000x",
+            "price": 1199,
+            "category": "电源",
+            "brand": "Corsair",
+            "specs": "1000W / 80+ Gold / 全模组"
+          },
+          {
+            "name": "Lian Li O11 Dynamic EVO",
+            "price": 899,
+            "category": "机箱",
+            "brand": "Lian Li",
+            "specs": "ATX / 双仓设计 / 玻璃侧透"
+          },
+          {
+            "name": "ASUS ROG Swift 360Hz",
+            "price": 3999,
+            "category": "显示器",
+            "brand": "ASUS",
+            "specs": "24.5\" FHD 360Hz / G-Sync"
+          },
+          {
+            "name": "Logitech G Pro X Superlight",
+            "price": 799,
+            "category": "键盘",
+            "brand": "Logitech",
+            "specs": "无线 / 机械轴 / 紧凑87键"
+          },
+          {
+            "name": "Logitech G Pro X Superlight 2",
+            "price": 899,
+            "category": "鼠标",
+            "brand": "Logitech",
+            "specs": "无线 / 60g / HERO 2传感器"
+          },
+          {
+            "name": "Corsair Virtuoso RGB XT",
+            "price": 899,
+            "category": "耳麦",
+            "brand": "Corsair",
+            "specs": "无线 / 18h续航 / 7.1环绕"
+          }
+        ],
+        "totalPrice": 25887,
+        "quantity": 1,
+        "createdAt": "2026-05-12T20:43:02.060Z"
+      }
+    ],
+    "wecomNotified": true,
+    "wecomError": null,
+    "createdTs": 1778618593983
+  },
+  {
+    "orderId": "ORD1778619442403",
+    "createdAt": "2026/5/13 04:57:22",
+    "user": {
+      "name": "xwqlxkj",
+      "email": "xwqlxkj",
+      "nickname": "xwqlxkj",
+      "phone": "15204790789"
+    },
+    "total": 3298,
+    "rows": [
+      {
+        "category": "处理器",
+        "name": "Intel Core i7-14700K",
+        "brand": "intel",
+        "specs": "20核28线程 3.4-5.6GHz",
+        "unitPrice": 2999,
+        "subtotal": 2999
+      }
+    ],
+    "paymentHint": "实体店支付，以门店确认为准；在线支付未开通",
+    "contact": {
+      "tel": "15204790789",
+      "wechat": "88278867"
+    },
+    "cartSnapshot": [
+      {
+        "id": "cfg_1778619426324",
+        "type": "config",
+        "items": [
+          {
+            "name": "Intel Core i7-14700K",
+            "price": 2999,
+            "category": "处理器",
+            "brand": "intel",
+            "specs": "20核28线程 3.4-5.6GHz"
+          }
+        ],
+        "totalPrice": 3298,
+        "quantity": 1,
+        "createdAt": "2026-05-12T20:57:06.324Z"
+      }
+    ],
+    "wecomNotified": true,
+    "wecomError": null,
+    "createdTs": 1778619442417,
+    "customerTel": "15204790789"
+  },
+  {
+    "orderId": "ORD1778620797907",
+    "createdAt": "2026/5/13 05:19:57",
+    "user": {
+      "name": "xwqlxkj",
+      "email": "xwqlxkj",
+      "nickname": "xwqlxkj",
+      "phone": "15145678907"
+    },
+    "total": 88974,
+    "rows": [
+      {
+        "category": "处理器",
+        "name": "Intel Core i9-14900K",
+        "brand": "Intel",
+        "specs": "24核(8P+16E) / 5.6GHz / 125W",
+        "unitPrice": 4199,
+        "subtotal": 4199
+      },
+      {
+        "category": "显卡",
+        "name": "NVIDIA RTX 4090",
+        "brand": "NVIDIA",
+        "specs": "24GB GDDR6X / 450W",
+        "unitPrice": 15999,
+        "subtotal": 15999
+      },
+      {
+        "category": "主板",
+        "name": "ROG MAXIMUS Z790 HERO",
+        "brand": "ASUS",
+        "specs": "Intel Z790 / DDR5 / LGA1700",
+        "unitPrice": 4999,
+        "subtotal": 4999
+      },
+      {
+        "category": "内存",
+        "name": "G.Skill Trident Z5 64GB",
+        "brand": "G.Skill",
+        "specs": "DDR5-6400 / 2×32GB / CL32",
+        "unitPrice": 1899,
+        "subtotal": 1899
+      },
+      {
+        "category": "存储",
+        "name": "Crucial T700 2TB",
+        "brand": "Crucial",
+        "specs": "NVMe PCIe 5.0 / 12400MB/s",
+        "unitPrice": 2499,
+        "subtotal": 2499
+      },
+      {
+        "category": "散热",
+        "name": "NZXT Kraken Z73 RGB",
+        "brand": "NZXT",
+        "specs": "360mm AIO / LCD显示屏",
+        "unitPrice": 1899,
+        "subtotal": 1899
+      },
+      {
+        "category": "电源",
+        "name": "Seasonic PRIME TX-1000",
+        "brand": "Seasonic",
+        "specs": "1000W / 80+ Titanium / 全模组",
+        "unitPrice": 1899,
+        "subtotal": 1899
+      },
+      {
+        "category": "机箱",
+        "name": "Fractal Design Torrent",
+        "brand": "Fractal",
+        "specs": "ATX / 高气流优化 / 玻璃侧透",
+        "unitPrice": 1299,
+        "subtotal": 1299
+      },
+      {
+        "category": "显示器",
+        "name": "LG UltraGear 27GP950",
+        "brand": "LG",
+        "specs": "27\" 4K 144Hz / NanoIPS / HDMI 2.1",
+        "unitPrice": 5999,
+        "subtotal": 5999
+      },
+      {
+        "category": "键盘",
+        "name": "Corsair K100 RGB",
+        "brand": "Corsair",
+        "specs": "OPX机械轴 / 全键RGB / 8ms回报率",
+        "unitPrice": 1499,
+        "subtotal": 1499
+      },
+      {
+        "category": "鼠标",
+        "name": "Razer DeathAdder V3 Pro",
+        "brand": "Razer",
+        "specs": "无线 / Focus Pro 30K / 63g",
+        "unitPrice": 699,
+        "subtotal": 699
+      },
+      {
+        "category": "耳麦",
+        "name": "Logitech G Pro X 2",
+        "brand": "Logitech",
+        "specs": "无线 / 50mm / Blue VO!CE麦克风",
+        "unitPrice": 1299,
+        "subtotal": 1299
+      },
+      {
+        "category": "处理器",
+        "name": "Intel Core i9-14900K",
+        "brand": "Intel",
+        "specs": "24核(8P+16E) / 5.6GHz / 125W",
+        "unitPrice": 4199,
+        "subtotal": 4199
+      },
+      {
+        "category": "显卡",
+        "name": "NVIDIA RTX 4090",
+        "brand": "NVIDIA",
+        "specs": "24GB GDDR6X / 450W",
+        "unitPrice": 15999,
+        "subtotal": 15999
+      },
+      {
+        "category": "主板",
+        "name": "ROG MAXIMUS Z790 HERO",
+        "brand": "ASUS",
+        "specs": "Intel Z790 / DDR5 / LGA1700",
+        "unitPrice": 4999,
+        "subtotal": 4999
+      },
+      {
+        "category": "内存",
+        "name": "G.Skill Trident Z5 64GB",
+        "brand": "G.Skill",
+        "specs": "DDR5-6400 / 2×32GB / CL32",
+        "unitPrice": 1899,
+        "subtotal": 1899
+      },
+      {
+        "category": "存储",
+        "name": "Crucial T700 2TB",
+        "brand": "Crucial",
+        "specs": "NVMe PCIe 5.0 / 12400MB/s",
+        "unitPrice": 2499,
+        "subtotal": 2499
+      },
+      {
+        "category": "散热",
+        "name": "NZXT Kraken Z73 RGB",
+        "brand": "NZXT",
+        "specs": "360mm AIO / LCD显示屏",
+        "unitPrice": 1899,
+        "subtotal": 1899
+      },
+      {
+        "category": "电源",
+        "name": "Seasonic PRIME TX-1000",
+        "brand": "Seasonic",
+        "specs": "1000W / 80+ Titanium / 全模组",
+        "unitPrice": 1899,
+        "subtotal": 1899
+      },
+      {
+        "category": "机箱",
+        "name": "Fractal Design Torrent",
+        "brand": "Fractal",
+        "specs": "ATX / 高气流优化 / 玻璃侧透",
+        "unitPrice": 1299,
+        "subtotal": 1299
+      },
+      {
+        "category": "显示器",
+        "name": "LG UltraGear 27GP950",
+        "brand": "LG",
+        "specs": "27\" 4K 144Hz / NanoIPS / HDMI 2.1",
+        "unitPrice": 5999,
+        "subtotal": 5999
+      },
+      {
+        "category": "键盘",
+        "name": "Corsair K100 RGB",
+        "brand": "Corsair",
+        "specs": "OPX机械轴 / 全键RGB / 8ms回报率",
+        "unitPrice": 1499,
+        "subtotal": 1499
+      },
+      {
+        "category": "鼠标",
+        "name": "Razer DeathAdder V3 Pro",
+        "brand": "Razer",
+        "specs": "无线 / Focus Pro 30K / 63g",
+        "unitPrice": 699,
+        "subtotal": 699
+      },
+      {
+        "category": "耳麦",
+        "name": "Logitech G Pro X 2",
+        "brand": "Logitech",
+        "specs": "无线 / 50mm / Blue VO!CE麦克风",
+        "unitPrice": 1299,
+        "subtotal": 1299
+      }
+    ],
+    "paymentHint": "实体店支付，以门店确认为准；在线支付未开通",
+    "contact": {
+      "tel": "15145678907",
+      "wechat": "88278867"
+    },
+    "cartSnapshot": [
+      {
+        "id": "cfg_1778620299555",
+        "type": "config",
+        "items": [
+          {
+            "name": "Intel Core i9-14900K",
+            "price": 4199,
+            "category": "处理器",
+            "brand": "Intel",
+            "specs": "24核(8P+16E) / 5.6GHz / 125W"
+          },
+          {
+            "name": "NVIDIA RTX 4090",
+            "price": 15999,
+            "category": "显卡",
+            "brand": "NVIDIA",
+            "specs": "24GB GDDR6X / 450W"
+          },
+          {
+            "name": "ROG MAXIMUS Z790 HERO",
+            "price": 4999,
+            "category": "主板",
+            "brand": "ASUS",
+            "specs": "Intel Z790 / DDR5 / LGA1700"
+          },
+          {
+            "name": "G.Skill Trident Z5 64GB",
+            "price": 1899,
+            "category": "内存",
+            "brand": "G.Skill",
+            "specs": "DDR5-6400 / 2×32GB / CL32"
+          },
+          {
+            "name": "Crucial T700 2TB",
+            "price": 2499,
+            "category": "存储",
+            "brand": "Crucial",
+            "specs": "NVMe PCIe 5.0 / 12400MB/s"
+          },
+          {
+            "name": "NZXT Kraken Z73 RGB",
+            "price": 1899,
+            "category": "散热",
+            "brand": "NZXT",
+            "specs": "360mm AIO / LCD显示屏"
+          },
+          {
+            "name": "Seasonic PRIME TX-1000",
+            "price": 1899,
+            "category": "电源",
+            "brand": "Seasonic",
+            "specs": "1000W / 80+ Titanium / 全模组"
+          },
+          {
+            "name": "Fractal Design Torrent",
+            "price": 1299,
+            "category": "机箱",
+            "brand": "Fractal",
+            "specs": "ATX / 高气流优化 / 玻璃侧透"
+          },
+          {
+            "name": "LG UltraGear 27GP950",
+            "price": 5999,
+            "category": "显示器",
+            "brand": "LG",
+            "specs": "27\" 4K 144Hz / NanoIPS / HDMI 2.1"
+          },
+          {
+            "name": "Corsair K100 RGB",
+            "price": 1499,
+            "category": "键盘",
+            "brand": "Corsair",
+            "specs": "OPX机械轴 / 全键RGB / 8ms回报率"
+          },
+          {
+            "name": "Razer DeathAdder V3 Pro",
+            "price": 699,
+            "category": "鼠标",
+            "brand": "Razer",
+            "specs": "无线 / Focus Pro 30K / 63g"
+          },
+          {
+            "name": "Logitech G Pro X 2",
+            "price": 1299,
+            "category": "耳麦",
+            "brand": "Logitech",
+            "specs": "无线 / 50mm / Blue VO!CE麦克风"
+          }
+        ],
+        "totalPrice": 44487,
+        "quantity": 1,
+        "createdAt": "2026-05-12T21:11:39.555Z"
+      },
+      {
+        "id": "cfg_1778620787670",
+        "type": "config",
+        "items": [
+          {
+            "name": "Intel Core i9-14900K",
+            "price": 4199,
+            "category": "处理器",
+            "brand": "Intel",
+            "specs": "24核(8P+16E) / 5.6GHz / 125W"
+          },
+          {
+            "name": "NVIDIA RTX 4090",
+            "price": 15999,
+            "category": "显卡",
+            "brand": "NVIDIA",
+            "specs": "24GB GDDR6X / 450W"
+          },
+          {
+            "name": "ROG MAXIMUS Z790 HERO",
+            "price": 4999,
+            "category": "主板",
+            "brand": "ASUS",
+            "specs": "Intel Z790 / DDR5 / LGA1700"
+          },
+          {
+            "name": "G.Skill Trident Z5 64GB",
+            "price": 1899,
+            "category": "内存",
+            "brand": "G.Skill",
+            "specs": "DDR5-6400 / 2×32GB / CL32"
+          },
+          {
+            "name": "Crucial T700 2TB",
+            "price": 2499,
+            "category": "存储",
+            "brand": "Crucial",
+            "specs": "NVMe PCIe 5.0 / 12400MB/s"
+          },
+          {
+            "name": "NZXT Kraken Z73 RGB",
+            "price": 1899,
+            "category": "散热",
+            "brand": "NZXT",
+            "specs": "360mm AIO / LCD显示屏"
+          },
+          {
+            "name": "Seasonic PRIME TX-1000",
+            "price": 1899,
+            "category": "电源",
+            "brand": "Seasonic",
+            "specs": "1000W / 80+ Titanium / 全模组"
+          },
+          {
+            "name": "Fractal Design Torrent",
+            "price": 1299,
+            "category": "机箱",
+            "brand": "Fractal",
+            "specs": "ATX / 高气流优化 / 玻璃侧透"
+          },
+          {
+            "name": "LG UltraGear 27GP950",
+            "price": 5999,
+            "category": "显示器",
+            "brand": "LG",
+            "specs": "27\" 4K 144Hz / NanoIPS / HDMI 2.1"
+          },
+          {
+            "name": "Corsair K100 RGB",
+            "price": 1499,
+            "category": "键盘",
+            "brand": "Corsair",
+            "specs": "OPX机械轴 / 全键RGB / 8ms回报率"
+          },
+          {
+            "name": "Razer DeathAdder V3 Pro",
+            "price": 699,
+            "category": "鼠标",
+            "brand": "Razer",
+            "specs": "无线 / Focus Pro 30K / 63g"
+          },
+          {
+            "name": "Logitech G Pro X 2",
+            "price": 1299,
+            "category": "耳麦",
+            "brand": "Logitech",
+            "specs": "无线 / 50mm / Blue VO!CE麦克风"
+          }
+        ],
+        "totalPrice": 44487,
+        "quantity": 1,
+        "createdAt": "2026-05-12T21:19:47.670Z"
+      }
+    ],
+    "wecomNotified": true,
+    "wecomError": null,
+    "createdTs": 1778620797921,
+    "customerTel": "15145678907"
+  },
+  {
+    "orderId": "ORD1778620957771",
+    "createdAt": "2026/5/13 05:22:37",
+    "user": {
+      "name": "xwqlxkj",
+      "email": "xwqlxkj",
+      "nickname": "xwqlxkj",
+      "phone": "15145678907"
+    },
+    "total": 44487,
+    "rows": [
+      {
+        "category": "处理器",
+        "name": "Intel Core i9-14900K",
+        "brand": "Intel",
+        "specs": "24核(8P+16E) / 5.6GHz / 125W",
+        "unitPrice": 4199,
+        "subtotal": 4199
+      },
+      {
+        "category": "显卡",
+        "name": "NVIDIA RTX 4090",
+        "brand": "NVIDIA",
+        "specs": "24GB GDDR6X / 450W",
+        "unitPrice": 15999,
+        "subtotal": 15999
+      },
+      {
+        "category": "主板",
+        "name": "ROG MAXIMUS Z790 HERO",
+        "brand": "ASUS",
+        "specs": "Intel Z790 / DDR5 / LGA1700",
+        "unitPrice": 4999,
+        "subtotal": 4999
+      },
+      {
+        "category": "内存",
+        "name": "G.Skill Trident Z5 64GB",
+        "brand": "G.Skill",
+        "specs": "DDR5-6400 / 2×32GB / CL32",
+        "unitPrice": 1899,
+        "subtotal": 1899
+      },
+      {
+        "category": "存储",
+        "name": "Crucial T700 2TB",
+        "brand": "Crucial",
+        "specs": "NVMe PCIe 5.0 / 12400MB/s",
+        "unitPrice": 2499,
+        "subtotal": 2499
+      },
+      {
+        "category": "散热",
+        "name": "NZXT Kraken Z73 RGB",
+        "brand": "NZXT",
+        "specs": "360mm AIO / LCD显示屏",
+        "unitPrice": 1899,
+        "subtotal": 1899
+      },
+      {
+        "category": "电源",
+        "name": "Seasonic PRIME TX-1000",
+        "brand": "Seasonic",
+        "specs": "1000W / 80+ Titanium / 全模组",
+        "unitPrice": 1899,
+        "subtotal": 1899
+      },
+      {
+        "category": "机箱",
+        "name": "Fractal Design Torrent",
+        "brand": "Fractal",
+        "specs": "ATX / 高气流优化 / 玻璃侧透",
+        "unitPrice": 1299,
+        "subtotal": 1299
+      },
+      {
+        "category": "显示器",
+        "name": "LG UltraGear 27GP950",
+        "brand": "LG",
+        "specs": "27\" 4K 144Hz / NanoIPS / HDMI 2.1",
+        "unitPrice": 5999,
+        "subtotal": 5999
+      },
+      {
+        "category": "键盘",
+        "name": "Corsair K100 RGB",
+        "brand": "Corsair",
+        "specs": "OPX机械轴 / 全键RGB / 8ms回报率",
+        "unitPrice": 1499,
+        "subtotal": 1499
+      },
+      {
+        "category": "鼠标",
+        "name": "Razer DeathAdder V3 Pro",
+        "brand": "Razer",
+        "specs": "无线 / Focus Pro 30K / 63g",
+        "unitPrice": 699,
+        "subtotal": 699
+      },
+      {
+        "category": "耳麦",
+        "name": "Logitech G Pro X 2",
+        "brand": "Logitech",
+        "specs": "无线 / 50mm / Blue VO!CE麦克风",
+        "unitPrice": 1299,
+        "subtotal": 1299
+      }
+    ],
+    "paymentHint": "实体店支付，以门店确认为准；在线支付未开通",
+    "contact": {
+      "tel": "15145678907",
+      "wechat": "88278867"
+    },
+    "cartSnapshot": [
+      {
+        "id": "cfg_1778620813866",
+        "type": "config",
+        "items": [
+          {
+            "name": "Intel Core i9-14900K",
+            "price": 4199,
+            "category": "处理器",
+            "brand": "Intel",
+            "specs": "24核(8P+16E) / 5.6GHz / 125W"
+          },
+          {
+            "name": "NVIDIA RTX 4090",
+            "price": 15999,
+            "category": "显卡",
+            "brand": "NVIDIA",
+            "specs": "24GB GDDR6X / 450W"
+          },
+          {
+            "name": "ROG MAXIMUS Z790 HERO",
+            "price": 4999,
+            "category": "主板",
+            "brand": "ASUS",
+            "specs": "Intel Z790 / DDR5 / LGA1700"
+          },
+          {
+            "name": "G.Skill Trident Z5 64GB",
+            "price": 1899,
+            "category": "内存",
+            "brand": "G.Skill",
+            "specs": "DDR5-6400 / 2×32GB / CL32"
+          },
+          {
+            "name": "Crucial T700 2TB",
+            "price": 2499,
+            "category": "存储",
+            "brand": "Crucial",
+            "specs": "NVMe PCIe 5.0 / 12400MB/s"
+          },
+          {
+            "name": "NZXT Kraken Z73 RGB",
+            "price": 1899,
+            "category": "散热",
+            "brand": "NZXT",
+            "specs": "360mm AIO / LCD显示屏"
+          },
+          {
+            "name": "Seasonic PRIME TX-1000",
+            "price": 1899,
+            "category": "电源",
+            "brand": "Seasonic",
+            "specs": "1000W / 80+ Titanium / 全模组"
+          },
+          {
+            "name": "Fractal Design Torrent",
+            "price": 1299,
+            "category": "机箱",
+            "brand": "Fractal",
+            "specs": "ATX / 高气流优化 / 玻璃侧透"
+          },
+          {
+            "name": "LG UltraGear 27GP950",
+            "price": 5999,
+            "category": "显示器",
+            "brand": "LG",
+            "specs": "27\" 4K 144Hz / NanoIPS / HDMI 2.1"
+          },
+          {
+            "name": "Corsair K100 RGB",
+            "price": 1499,
+            "category": "键盘",
+            "brand": "Corsair",
+            "specs": "OPX机械轴 / 全键RGB / 8ms回报率"
+          },
+          {
+            "name": "Razer DeathAdder V3 Pro",
+            "price": 699,
+            "category": "鼠标",
+            "brand": "Razer",
+            "specs": "无线 / Focus Pro 30K / 63g"
+          },
+          {
+            "name": "Logitech G Pro X 2",
+            "price": 1299,
+            "category": "耳麦",
+            "brand": "Logitech",
+            "specs": "无线 / 50mm / Blue VO!CE麦克风"
+          }
+        ],
+        "totalPrice": 44487,
+        "quantity": 1,
+        "createdAt": "2026-05-12T21:20:13.866Z"
+      }
+    ],
+    "wecomNotified": true,
+    "wecomError": null,
+    "createdTs": 1778620957771,
+    "customerTel": "15145678907"
+  },
+  {
+    "orderId": "ORD1778691039971",
+    "createdAt": "2026/5/14 00:50:39",
+    "user": null,
+    "total": 12999,
+    "rows": [
+      {
+        "category": "GPU",
+        "name": "RTX 4090",
+        "brand": "nvidia",
+        "specs": "—",
+        "unitPrice": 12999,
+        "subtotal": 12999
+      }
+    ],
+    "paymentHint": "实体店支付，以门店确认为准；在线支付未开通",
+    "contact": {
+      "tel": "15148605173",
+      "wechat": "88278867"
+    },
+    "cartSnapshot": [
+      {
+        "category": "GPU",
+        "name": "RTX 4090",
+        "brand": "nvidia",
+        "price": 12999,
+        "quantity": 1
+      }
+    ],
+    "wecomNotified": false,
+    "wecomError": "FEISHU_ORDER_WEBHOOK not set",
+    "createdTs": 1778691039997,
+    "customerTel": null
+  },
+  {
+    "orderId": "ORD1778691051335",
+    "createdAt": "2026/5/14 00:50:51",
+    "user": null,
+    "total": 4299,
+    "rows": [
+      {
+        "category": "CPU",
+        "name": "i9-14900K",
+        "brand": "intel",
+        "specs": "—",
+        "unitPrice": 4299,
+        "subtotal": 4299
+      }
+    ],
+    "paymentHint": "实体店支付，以门店确认为准；在线支付未开通",
+    "contact": {
+      "tel": "15148605173",
+      "wechat": "88278867"
+    },
+    "cartSnapshot": [
+      {
+        "category": "CPU",
+        "name": "i9-14900K",
+        "brand": "intel",
+        "price": 4299,
+        "quantity": 1
+      }
+    ],
+    "wecomNotified": false,
+    "wecomError": "FEISHU_ORDER_WEBHOOK not set",
+    "createdTs": 1778691051335,
+    "customerTel": null
+  },
+  {
+    "orderId": "ORD1778691479555",
+    "createdAt": "2026/5/14 00:57:59",
+    "user": {
+      "name": "xwqlxkj",
+      "email": "xwqlxkj",
+      "nickname": "xwqlxkj",
+      "phone": "18904790789"
+    },
+    "total": 44487,
+    "rows": [
+      {
+        "category": "处理器",
+        "name": "Intel Core i9-14900K",
+        "brand": "Intel",
+        "specs": "24核(8P+16E) / 5.6GHz / 125W",
+        "unitPrice": 4199,
+        "subtotal": 4199
+      },
+      {
+        "category": "显卡",
+        "name": "NVIDIA RTX 4090",
+        "brand": "NVIDIA",
+        "specs": "24GB GDDR6X / 450W",
+        "unitPrice": 15999,
+        "subtotal": 15999
+      },
+      {
+        "category": "主板",
+        "name": "ROG MAXIMUS Z790 HERO",
+        "brand": "ASUS",
+        "specs": "Intel Z790 / DDR5 / LGA1700",
+        "unitPrice": 4999,
+        "subtotal": 4999
+      },
+      {
+        "category": "内存",
+        "name": "G.Skill Trident Z5 64GB",
+        "brand": "G.Skill",
+        "specs": "DDR5-6400 / 2×32GB / CL32",
+        "unitPrice": 1899,
+        "subtotal": 1899
+      },
+      {
+        "category": "存储",
+        "name": "Crucial T700 2TB",
+        "brand": "Crucial",
+        "specs": "NVMe PCIe 5.0 / 12400MB/s",
+        "unitPrice": 2499,
+        "subtotal": 2499
+      },
+      {
+        "category": "散热",
+        "name": "NZXT Kraken Z73 RGB",
+        "brand": "NZXT",
+        "specs": "360mm AIO / LCD显示屏",
+        "unitPrice": 1899,
+        "subtotal": 1899
+      },
+      {
+        "category": "电源",
+        "name": "Seasonic PRIME TX-1000",
+        "brand": "Seasonic",
+        "specs": "1000W / 80+ Titanium / 全模组",
+        "unitPrice": 1899,
+        "subtotal": 1899
+      },
+      {
+        "category": "机箱",
+        "name": "Fractal Design Torrent",
+        "brand": "Fractal",
+        "specs": "ATX / 高气流优化 / 玻璃侧透",
+        "unitPrice": 1299,
+        "subtotal": 1299
+      },
+      {
+        "category": "显示器",
+        "name": "LG UltraGear 27GP950",
+        "brand": "LG",
+        "specs": "27\" 4K 144Hz / NanoIPS / HDMI 2.1",
+        "unitPrice": 5999,
+        "subtotal": 5999
+      },
+      {
+        "category": "键盘",
+        "name": "Corsair K100 RGB",
+        "brand": "Corsair",
+        "specs": "OPX机械轴 / 全键RGB / 8ms回报率",
+        "unitPrice": 1499,
+        "subtotal": 1499
+      },
+      {
+        "category": "鼠标",
+        "name": "Razer DeathAdder V3 Pro",
+        "brand": "Razer",
+        "specs": "无线 / Focus Pro 30K / 63g",
+        "unitPrice": 699,
+        "subtotal": 699
+      },
+      {
+        "category": "耳麦",
+        "name": "Logitech G Pro X 2",
+        "brand": "Logitech",
+        "specs": "无线 / 50mm / Blue VO!CE麦克风",
+        "unitPrice": 1299,
+        "subtotal": 1299
+      }
+    ],
+    "paymentHint": "实体店支付，以门店确认为准；在线支付未开通",
+    "contact": {
+      "tel": "18904790789",
+      "wechat": "88278867"
+    },
+    "cartSnapshot": [
+      {
+        "id": "cfg_1778691469464",
+        "type": "config",
+        "items": [
+          {
+            "name": "Intel Core i9-14900K",
+            "price": 4199,
+            "category": "处理器",
+            "brand": "Intel",
+            "specs": "24核(8P+16E) / 5.6GHz / 125W"
+          },
+          {
+            "name": "NVIDIA RTX 4090",
+            "price": 15999,
+            "category": "显卡",
+            "brand": "NVIDIA",
+            "specs": "24GB GDDR6X / 450W"
+          },
+          {
+            "name": "ROG MAXIMUS Z790 HERO",
+            "price": 4999,
+            "category": "主板",
+            "brand": "ASUS",
+            "specs": "Intel Z790 / DDR5 / LGA1700"
+          },
+          {
+            "name": "G.Skill Trident Z5 64GB",
+            "price": 1899,
+            "category": "内存",
+            "brand": "G.Skill",
+            "specs": "DDR5-6400 / 2×32GB / CL32"
+          },
+          {
+            "name": "Crucial T700 2TB",
+            "price": 2499,
+            "category": "存储",
+            "brand": "Crucial",
+            "specs": "NVMe PCIe 5.0 / 12400MB/s"
+          },
+          {
+            "name": "NZXT Kraken Z73 RGB",
+            "price": 1899,
+            "category": "散热",
+            "brand": "NZXT",
+            "specs": "360mm AIO / LCD显示屏"
+          },
+          {
+            "name": "Seasonic PRIME TX-1000",
+            "price": 1899,
+            "category": "电源",
+            "brand": "Seasonic",
+            "specs": "1000W / 80+ Titanium / 全模组"
+          },
+          {
+            "name": "Fractal Design Torrent",
+            "price": 1299,
+            "category": "机箱",
+            "brand": "Fractal",
+            "specs": "ATX / 高气流优化 / 玻璃侧透"
+          },
+          {
+            "name": "LG UltraGear 27GP950",
+            "price": 5999,
+            "category": "显示器",
+            "brand": "LG",
+            "specs": "27\" 4K 144Hz / NanoIPS / HDMI 2.1"
+          },
+          {
+            "name": "Corsair K100 RGB",
+            "price": 1499,
+            "category": "键盘",
+            "brand": "Corsair",
+            "specs": "OPX机械轴 / 全键RGB / 8ms回报率"
+          },
+          {
+            "name": "Razer DeathAdder V3 Pro",
+            "price": 699,
+            "category": "鼠标",
+            "brand": "Razer",
+            "specs": "无线 / Focus Pro 30K / 63g"
+          },
+          {
+            "name": "Logitech G Pro X 2",
+            "price": 1299,
+            "category": "耳麦",
+            "brand": "Logitech",
+            "specs": "无线 / 50mm / Blue VO!CE麦克风"
+          }
+        ],
+        "totalPrice": 44487,
+        "quantity": 1,
+        "createdAt": "2026-05-13T16:57:49.464Z"
+      }
+    ],
+    "wecomNotified": false,
+    "wecomError": "FEISHU_ORDER_WEBHOOK not set",
+    "createdTs": 1778691479555,
+    "customerTel": "18904790789"
+  },
+  {
+    "orderId": "ORD1778691728298",
+    "createdAt": "2026/5/14 01:02:08",
+    "user": {
+      "name": "xwqlxkj",
+      "email": "xwqlxkj",
+      "nickname": "xwqlxkj",
+      "phone": "18904790789"
+    },
+    "total": 44487,
+    "rows": [
+      {
+        "category": "处理器",
+        "name": "Intel Core i9-14900K",
+        "brand": "Intel",
+        "specs": "24核(8P+16E) / 5.6GHz / 125W",
+        "unitPrice": 4199,
+        "subtotal": 4199
+      },
+      {
+        "category": "显卡",
+        "name": "NVIDIA RTX 4090",
+        "brand": "NVIDIA",
+        "specs": "24GB GDDR6X / 450W",
+        "unitPrice": 15999,
+        "subtotal": 15999
+      },
+      {
+        "category": "主板",
+        "name": "ROG MAXIMUS Z790 HERO",
+        "brand": "ASUS",
+        "specs": "Intel Z790 / DDR5 / LGA1700",
+        "unitPrice": 4999,
+        "subtotal": 4999
+      },
+      {
+        "category": "内存",
+        "name": "G.Skill Trident Z5 64GB",
+        "brand": "G.Skill",
+        "specs": "DDR5-6400 / 2×32GB / CL32",
+        "unitPrice": 1899,
+        "subtotal": 1899
+      },
+      {
+        "category": "存储",
+        "name": "Crucial T700 2TB",
+        "brand": "Crucial",
+        "specs": "NVMe PCIe 5.0 / 12400MB/s",
+        "unitPrice": 2499,
+        "subtotal": 2499
+      },
+      {
+        "category": "散热",
+        "name": "NZXT Kraken Z73 RGB",
+        "brand": "NZXT",
+        "specs": "360mm AIO / LCD显示屏",
+        "unitPrice": 1899,
+        "subtotal": 1899
+      },
+      {
+        "category": "电源",
+        "name": "Seasonic PRIME TX-1000",
+        "brand": "Seasonic",
+        "specs": "1000W / 80+ Titanium / 全模组",
+        "unitPrice": 1899,
+        "subtotal": 1899
+      },
+      {
+        "category": "机箱",
+        "name": "Fractal Design Torrent",
+        "brand": "Fractal",
+        "specs": "ATX / 高气流优化 / 玻璃侧透",
+        "unitPrice": 1299,
+        "subtotal": 1299
+      },
+      {
+        "category": "显示器",
+        "name": "LG UltraGear 27GP950",
+        "brand": "LG",
+        "specs": "27\" 4K 144Hz / NanoIPS / HDMI 2.1",
+        "unitPrice": 5999,
+        "subtotal": 5999
+      },
+      {
+        "category": "键盘",
+        "name": "Corsair K100 RGB",
+        "brand": "Corsair",
+        "specs": "OPX机械轴 / 全键RGB / 8ms回报率",
+        "unitPrice": 1499,
+        "subtotal": 1499
+      },
+      {
+        "category": "鼠标",
+        "name": "Razer DeathAdder V3 Pro",
+        "brand": "Razer",
+        "specs": "无线 / Focus Pro 30K / 63g",
+        "unitPrice": 699,
+        "subtotal": 699
+      },
+      {
+        "category": "耳麦",
+        "name": "Logitech G Pro X 2",
+        "brand": "Logitech",
+        "specs": "无线 / 50mm / Blue VO!CE麦克风",
+        "unitPrice": 1299,
+        "subtotal": 1299
+      }
+    ],
+    "paymentHint": "实体店支付，以门店确认为准；在线支付未开通",
+    "contact": {
+      "tel": "18904790789",
+      "wechat": "88278867"
+    },
+    "cartSnapshot": [
+      {
+        "id": "cfg_1778691723310",
+        "type": "config",
+        "items": [
+          {
+            "name": "Intel Core i9-14900K",
+            "price": 4199,
+            "category": "处理器",
+            "brand": "Intel",
+            "specs": "24核(8P+16E) / 5.6GHz / 125W"
+          },
+          {
+            "name": "NVIDIA RTX 4090",
+            "price": 15999,
+            "category": "显卡",
+            "brand": "NVIDIA",
+            "specs": "24GB GDDR6X / 450W"
+          },
+          {
+            "name": "ROG MAXIMUS Z790 HERO",
+            "price": 4999,
+            "category": "主板",
+            "brand": "ASUS",
+            "specs": "Intel Z790 / DDR5 / LGA1700"
+          },
+          {
+            "name": "G.Skill Trident Z5 64GB",
+            "price": 1899,
+            "category": "内存",
+            "brand": "G.Skill",
+            "specs": "DDR5-6400 / 2×32GB / CL32"
+          },
+          {
+            "name": "Crucial T700 2TB",
+            "price": 2499,
+            "category": "存储",
+            "brand": "Crucial",
+            "specs": "NVMe PCIe 5.0 / 12400MB/s"
+          },
+          {
+            "name": "NZXT Kraken Z73 RGB",
+            "price": 1899,
+            "category": "散热",
+            "brand": "NZXT",
+            "specs": "360mm AIO / LCD显示屏"
+          },
+          {
+            "name": "Seasonic PRIME TX-1000",
+            "price": 1899,
+            "category": "电源",
+            "brand": "Seasonic",
+            "specs": "1000W / 80+ Titanium / 全模组"
+          },
+          {
+            "name": "Fractal Design Torrent",
+            "price": 1299,
+            "category": "机箱",
+            "brand": "Fractal",
+            "specs": "ATX / 高气流优化 / 玻璃侧透"
+          },
+          {
+            "name": "LG UltraGear 27GP950",
+            "price": 5999,
+            "category": "显示器",
+            "brand": "LG",
+            "specs": "27\" 4K 144Hz / NanoIPS / HDMI 2.1"
+          },
+          {
+            "name": "Corsair K100 RGB",
+            "price": 1499,
+            "category": "键盘",
+            "brand": "Corsair",
+            "specs": "OPX机械轴 / 全键RGB / 8ms回报率"
+          },
+          {
+            "name": "Razer DeathAdder V3 Pro",
+            "price": 699,
+            "category": "鼠标",
+            "brand": "Razer",
+            "specs": "无线 / Focus Pro 30K / 63g"
+          },
+          {
+            "name": "Logitech G Pro X 2",
+            "price": 1299,
+            "category": "耳麦",
+            "brand": "Logitech",
+            "specs": "无线 / 50mm / Blue VO!CE麦克风"
+          }
+        ],
+        "totalPrice": 44487,
+        "quantity": 1,
+        "createdAt": "2026-05-13T17:02:03.310Z"
+      }
+    ],
+    "wecomNotified": true,
+    "wecomError": null,
+    "createdTs": 1778691728326,
+    "customerTel": "18904790789"
+  },
+  {
+    "orderId": "ORD1778691823093",
+    "createdAt": "2026/5/14 01:03:43",
+    "user": {
+      "name": "xwqlxkj",
+      "email": "xwqlxkj",
+      "nickname": "xwqlxkj",
+      "phone": "13245678970"
+    },
+    "total": 2998,
+    "rows": [
+      {
+        "category": "处理器",
+        "name": "AMD Ryzen 7 7800X3D",
+        "brand": "amd",
+        "specs": "8核16线程 4.2-5.0GHz 游戏神U",
+        "unitPrice": 2699,
+        "subtotal": 2699
+      }
+    ],
+    "paymentHint": "实体店支付，以门店确认为准；在线支付未开通",
+    "contact": {
+      "tel": "13245678970",
+      "wechat": "88278867"
+    },
+    "cartSnapshot": [
+      {
+        "id": "cfg_1778691812938",
+        "type": "config",
+        "items": [
+          {
+            "name": "AMD Ryzen 7 7800X3D",
+            "price": 2699,
+            "category": "处理器",
+            "brand": "amd",
+            "specs": "8核16线程 4.2-5.0GHz 游戏神U"
+          }
+        ],
+        "totalPrice": 2998,
+        "quantity": 1,
+        "createdAt": "2026-05-13T17:03:32.938Z"
+      }
+    ],
+    "wecomNotified": true,
+    "wecomError": null,
+    "createdTs": 1778691823093,
+    "customerTel": "13245678970"
+  },
+  {
+    "orderId": "ORD1778692620275",
+    "createdAt": "2026/5/14 01:17:00",
+    "user": {
+      "phone": "13900001111",
+      "nickname": "测试"
+    },
+    "total": 5499,
+    "rows": [
+      {
+        "category": "单品",
+        "name": "AMD Ryzen 9 9950X3D",
+        "brand": "—",
+        "specs": "—",
+        "unitPrice": 5499,
+        "subtotal": 5499
+      }
+    ],
+    "paymentHint": "实体店支付，以门店确认为准；在线支付未开通",
+    "contact": {
+      "tel": "13900001111",
+      "wechat": "88278867"
+    },
+    "cartSnapshot": [
+      {
+        "id": "cpu-001",
+        "name": "AMD Ryzen 9 9950X3D",
+        "price": 5499,
+        "qty": 1
+      }
+    ],
+    "wecomNotified": true,
+    "wecomError": null,
+    "createdTs": 1778692620301,
+    "customerTel": "13900001111"
+  },
+  {
+    "orderId": "ORD1778692680095",
+    "createdAt": "2026/5/14 01:18:00",
+    "user": {
+      "phone": "13800002222",
+      "nickname": "测试"
+    },
+    "total": 5499,
+    "rows": [
+      {
+        "category": "单品",
+        "name": "AMD Ryzen 9 9950X3D",
+        "brand": "—",
+        "specs": "—",
+        "unitPrice": 5499,
+        "subtotal": 5499
+      }
+    ],
+    "paymentHint": "实体店支付，以门店确认为准；在线支付未开通",
+    "contact": {
+      "tel": "13800002222",
+      "wechat": "88278867"
+    },
+    "cartSnapshot": [
+      {
+        "id": "cpu-001",
+        "name": "AMD Ryzen 9 9950X3D",
+        "price": 5499,
+        "qty": 1
+      }
+    ],
+    "wecomNotified": true,
+    "wecomError": null,
+    "createdTs": 1778692680120,
+    "customerTel": "13800002222"
+  }
+]

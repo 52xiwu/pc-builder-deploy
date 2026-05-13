@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>检查记忆功能开关</title>
+    <style>
+        body { font-family: Arial, sans-serif; padding: 20px; }
+        .result { 
+            padding: 15px; 
+            margin: 10px 0; 
+            border-radius: 8px;
+            border: 1px solid #ddd;
+        }
+        .success { background: #d1fae5; }
+        .error { background: #fee2e2; }
+        .info { background: #dbeafe; }
+        code { background: #f5f5f5; padding: 2px 5px; border-radius: 3px; }
+    </style>
+</head>
+<body>
+    <h1>记忆功能开关检查</h1>
+    
+    <div class="result info">
+        <h3>1. 页面加载状态</h3>
+        <div id="page-status">检查中...</div>
+    </div>
+    
+    <div class="result info">
+        <h3>2. 记忆功能开关数量</h3>
+        <div id="toggle-count">检查中...</div>
+    </div>
+    
+    <div class="result info">
+        <h3>3. 开关详细信息</h3>
+        <div id="toggle-details">检查中...</div>
+    </div>
+    
+    <div class="result info">
+        <h3>4. 配置摘要区域内容</h3>
+        <div id="config-summary-content">检查中...</div>
+    </div>
+    
+    <div class="result info">
+        <h3>5. 建议操作</h3>
+        <div id="suggestions">检查中...</div>
+    </div>
+    
+    <script>
+        // 检查页面加载状态
+        document.getElementById('page-status').innerHTML = 
+            `<span style="color: green">✅ 页面已加载</span><br>
+             DOM状态: ${document.readyState}`;
+        
+        // 检查记忆功能开关数量
+        function checkToggleCount() {
+            const allElements = document.querySelectorAll('*');
+            let memoryElements = [];
+            let checkboxCount = 0;
+            
+            allElements.forEach(element => {
+                const text = element.textContent || '';
+                if (text.includes('记忆功能') && !text.includes('脚本') && !text.includes('注释')) {
+                    memoryElements.push({
+                        element: element,
+                        text: text.trim().substring(0, 50),
+                        hasCheckbox: !!element.querySelector('input[type="checkbox"]'),
+                        html: element.outerHTML.substring(0, 200)
+                    });
+                }
+                
+                if (element.querySelector('input[type="checkbox"]')) {
+                    checkboxCount++;
+                }
+            });
+            
+            // 过滤掉脚本注释
+            const realMemoryElements = memoryElements.filter(item => 
+                !item.text.includes('-->') && 
+                !item.text.includes('script') &&
+                item.text.length > 3
+            );
+            
+            document.getElementById('toggle-count').innerHTML = `
+                <strong>总checkbox数量:</strong> ${checkboxCount}<br>
+                <strong>包含"记忆功能"的真实元素:</strong> ${realMemoryElements.length}<br>
+                <strong>包含checkbox的记忆功能元素:</strong> ${realMemoryElements.filter(item => item.hasCheckbox).length}
+            `;
+            
+            return realMemoryElements;
+        }
+        
+        // 显示开关详细信息
+        function showToggleDetails(elements) {
+            let html = '';
+            
+            if (elements.length === 0) {
+                html = '<span style="color: orange">⚠️ 未找到记忆功能开关</span>';
+            } else {
+                elements.forEach((item, index) => {
+                    const status = item.hasCheckbox ? '✅ 有开关' : '📝 只有文本';
+                    html += `
+                        <div style="margin: 10px 0; padding: 10px; background: #f8f9fa; border-radius: 5px;">
+                            <strong>开关 ${index + 1}:</strong> ${status}<br>
+                            <strong>文本:</strong> "${item.text}"<br>
+                            <strong>HTML预览:</strong> <code>${item.html}</code>
+                        </div>
+                    `;
+                });
+            }
+            
+            document.getElementById('toggle-details').innerHTML = html;
+        }
+        
+        // 检查配置摘要区域
+        function checkConfigSummary() {
+            const configSummary = document.querySelector('.config-summary');
+            if (!configSummary) {
+                document.getElementById('config-summary-content').innerHTML = 
+                    '<span style="color: red">❌ 未找到配置摘要区域</span>';
+                return;
+            }
+            
+            const html = configSummary.innerHTML;
+            const memoryInSummary = (html.match(/记忆功能/g) || []).length;
+            
+            document.getElementById('config-summary-content').innerHTML = `
+                <strong>配置摘要区域找到:</strong><br>
+                - "记忆功能"出现次数: ${memoryInSummary}<br>
+                - Checkbox数量: ${configSummary.querySelectorAll('input[type="checkbox"]').length}<br>
+                <button onclick="showSummaryHTML()" style="margin-top: 10px; padding: 5px 10px;">
+                    查看详细HTML
+                </button>
+                <div id="summary-html" style="display: none; margin-top: 10px; padding: 10px; background: #f5f5f5; border-radius: 5px; font-family: monospace; font-size: 12px; max-height: 300px; overflow: auto;"></div>
+            `;
+        }
+        
+        function showSummaryHTML() {
+            const configSummary = document.querySelector('.config-summary');
+            if (configSummary) {
+                document.getElementById('summary-html').style.display = 'block';
+                document.getElementById('summary-html').textContent = configSummary.innerHTML;
+            }
+        }
+        
+        // 提供建议
+        function provideSuggestions(elements) {
+            let suggestions = '';
+            
+            if (elements.length === 0) {
+                suggestions = '✅ 没有找到记忆功能开关，问题可能已解决';
+            } else if (elements.length === 1) {
+                suggestions = '✅ 只有一个记忆功能开关，符合要求';
+            } else if (elements.length === 2) {
+                suggestions = '⚠️ 有两个记忆功能开关，需要删除第二个';
+            } else {
+                suggestions = '❌ 有多个记忆功能开关，需要清理';
+            }
+            
+            // 添加操作建议
+            suggestions += '<br><br><strong>操作建议:</strong><br>';
+            suggestions += '1. 按F12打开开发者工具<br>';
+            suggestions += '2. 查看Console标签页的日志<br>';
+            suggestions += '3. 检查是否有JavaScript错误<br>';
+            suggestions += '4. 检查脚本是否成功加载<br>';
+            
+            document.getElementById('suggestions').innerHTML = suggestions;
+        }
+        
+        // 延迟执行检查，确保页面完全加载
+        setTimeout(() => {
+            const elements = checkToggleCount();
+            showToggleDetails(elements);
+            checkConfigSummary();
+            provideSuggestions(elements.filter(item => item.hasCheckbox));
+        }, 1000);
+    </script>
+</body>
+</html>

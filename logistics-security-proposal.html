@@ -1,0 +1,2416 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover, maximum-scale=5.0, user-scalable=yes">
+<meta name="format-detection" content="telephone=no">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="theme-color" content="#0A1628">
+<title>物流站安防自动化解决方案</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@300;400;500;700;900&display=swap');
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html {
+    height: 100%;
+    -webkit-text-size-adjust: 100%;
+    overscroll-behavior: none;
+    overscroll-behavior-y: none;
+  }
+  
+  :root {
+    --primary: #0A1628;
+    --accent: #00D4FF;
+    --accent2: #FF6B35;
+    --text: #E8ECF1;
+    --muted: #8899AA;
+    --card: #0F2744;
+    --border: rgba(0,212,255,0.15);
+  }
+  
+  body {
+    font-family: 'Noto Sans SC', -apple-system, sans-serif;
+    background: var(--primary);
+    color: var(--text);
+    overflow: hidden;
+    width: 100%;
+    max-width: 100vw;
+    min-height: 100vh;
+    min-height: 100dvh;
+    min-height: -webkit-fill-available;
+    height: auto;
+    overscroll-behavior: none;
+    overscroll-behavior-y: none;
+    touch-action: manipulation;
+  }
+  
+  /* 双击放大时允许整页滚动查看放大后的区域 */
+  html.presentation-zoomed {
+    overflow: auto;
+    height: 100%;
+  }
+  html.presentation-zoomed body {
+    overflow: auto !important;
+    -webkit-overflow-scrolling: touch;
+  }
+  html.presentation-zoomed #presentation {
+    transform: scale(1.35);
+    transform-origin: top center;
+    padding-bottom: 40vh;
+    will-change: transform;
+  }
+  
+  #presentation {
+    width: 100%;
+    max-width: 100vw;
+    min-height: 100vh;
+    min-height: 100dvh;
+    min-height: -webkit-fill-available;
+    min-height: calc(var(--vh, 1vh) * 100);
+    position: relative;
+    overflow: hidden;
+    transition: transform 0.2s ease;
+  }
+  
+  .slide {
+    display: none;
+    width: 100%;
+    max-width: 100vw;
+    min-height: 100vh;
+    min-height: 100dvh;
+    min-height: -webkit-fill-available;
+    min-height: calc(var(--vh, 1vh) * 100);
+    padding: 60px 80px;
+    position: relative;
+    overflow: hidden;
+    box-sizing: border-box;
+  }
+  
+  .slide.active { display: flex; flex-direction: column; }
+  
+  .slide::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0; bottom: 0;
+    background:
+      radial-gradient(ellipse at 20% 50%, rgba(0,212,255,0.05) 0%, transparent 60%),
+      radial-gradient(ellipse at 80% 20%, rgba(255,107,53,0.04) 0%, transparent 50%);
+    pointer-events: none;
+  }
+  
+  .slide-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 40px;
+    padding-bottom: 20px;
+    border-bottom: 1px solid var(--border);
+    flex-shrink: 0;
+  }
+  
+  .slide-header h2 {
+    font-size: 28px;
+    font-weight: 700;
+    color: var(--accent);
+    letter-spacing: 1px;
+  }
+  
+  .slide-header .tag {
+    font-size: 12px;
+    color: var(--muted);
+    background: rgba(0,212,255,0.08);
+    padding: 4px 14px;
+    border-radius: 20px;
+    border: 1px solid var(--border);
+  }
+  
+  .slide-content {
+    flex: 1;
+    overflow: hidden;
+  }
+  
+  /* 封面 */
+  .cover {
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    background:
+      radial-gradient(ellipse at 50% 60%, rgba(0,212,255,0.08) 0%, transparent 60%);
+  }
+  
+  .cover-badge {
+    display: inline-block;
+    background: rgba(0,212,255,0.1);
+    border: 1px solid var(--accent);
+    color: var(--accent);
+    font-size: 13px;
+    padding: 6px 20px;
+    border-radius: 30px;
+    margin-bottom: 30px;
+    letter-spacing: 2px;
+  }
+  
+  .cover h1 {
+    font-size: 52px;
+    font-weight: 900;
+    line-height: 1.3;
+    margin-bottom: 20px;
+    background: linear-gradient(135deg, #fff 40%, var(--accent));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+  
+  .cover h1 span {
+    display: block;
+    font-size: 28px;
+    font-weight: 400;
+    color: var(--muted);
+    -webkit-text-fill-color: var(--muted);
+    margin-top: 10px;
+  }
+  
+  .cover .subtitle {
+    font-size: 18px;
+    color: var(--muted);
+    margin-top: 20px;
+    letter-spacing: 1px;
+  }
+  
+  .cover .meta {
+    margin-top: 60px;
+    display: flex;
+    gap: 40px;
+    justify-content: center;
+  }
+  
+  .cover .meta-item {
+    text-align: center;
+    padding: 16px 30px;
+    background: rgba(255,255,255,0.03);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+  }
+  
+  .cover .meta-item .num {
+    font-size: 32px;
+    font-weight: 900;
+    color: var(--accent);
+  }
+  
+  .cover .meta-item .label {
+    font-size: 12px;
+    color: var(--muted);
+    margin-top: 4px;
+  }
+  
+  /* 通用网格布局 */
+  .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; height: 100%; }
+  .grid-3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 20px; }
+  .grid-4 { display: grid; grid-template-columns: 1fr 1fr 1fr 1fr; gap: 16px; }
+  
+  /* 卡片 */
+  .card {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    padding: 28px;
+    position: relative;
+    overflow: hidden;
+  }
+  
+  .card::after {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 3px;
+    background: linear-gradient(90deg, var(--accent), transparent);
+  }
+  
+  .card.accent-orange::after {
+    background: linear-gradient(90deg, var(--accent2), transparent);
+  }
+  
+  .card h3 {
+    font-size: 17px;
+    font-weight: 700;
+    margin-bottom: 12px;
+    color: #fff;
+  }
+  
+  .card p, .card li {
+    font-size: 14px;
+    color: var(--muted);
+    line-height: 1.7;
+  }
+  
+  .card .icon {
+    font-size: 32px;
+    margin-bottom: 14px;
+  }
+  
+  .card .tag {
+    display: inline-block;
+    font-size: 11px;
+    padding: 3px 10px;
+    border-radius: 20px;
+    margin-top: 10px;
+    font-weight: 500;
+  }
+  
+  .tag-blue { background: rgba(0,212,255,0.12); color: var(--accent); }
+  .tag-orange { background: rgba(255,107,53,0.12); color: var(--accent2); }
+  .tag-green { background: rgba(0,200,100,0.12); color: #00C864; }
+  .tag-purple { background: rgba(150,100,255,0.12); color: #B580FF; }
+  
+  /* 列表 */
+  ul.feature-list {
+    list-style: none;
+    margin-top: 10px;
+  }
+  
+  ul.feature-list li {
+    padding: 6px 0;
+    font-size: 14px;
+    color: var(--muted);
+    display: flex;
+    align-items: flex-start;
+    gap: 8px;
+  }
+  
+  ul.feature-list li::before {
+    content: '▸';
+    color: var(--accent);
+    flex-shrink: 0;
+    margin-top: 1px;
+  }
+  
+  /* 数字高亮 */
+  .highlight-num {
+    font-size: 36px;
+    font-weight: 900;
+    color: var(--accent);
+  }
+  
+  /* 表格 */
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 13.5px;
+  }
+  
+  th {
+    background: rgba(0,212,255,0.08);
+    color: var(--accent);
+    padding: 12px 16px;
+    text-align: left;
+    font-weight: 600;
+    border-bottom: 1px solid var(--border);
+  }
+  
+  td {
+    padding: 11px 16px;
+    border-bottom: 1px solid rgba(255,255,255,0.04);
+    color: var(--muted);
+  }
+  
+  tr:hover td { background: rgba(0,212,255,0.03); }
+  
+  td.num { color: var(--accent); font-weight: 600; text-align: right; }
+  td.total { color: #fff; font-weight: 700; text-align: right; }
+  
+  /* 时间线 */
+  .timeline {
+    display: flex;
+    gap: 0;
+    margin-top: 20px;
+    position: relative;
+  }
+  
+  .timeline::before {
+    content: '';
+    position: absolute;
+    top: 24px;
+    left: 0; right: 0;
+    height: 2px;
+    background: linear-gradient(90deg, var(--accent), var(--accent2));
+  }
+  
+  .timeline-item {
+    flex: 1;
+    text-align: center;
+    position: relative;
+    padding-top: 50px;
+  }
+  
+  .timeline-item::before {
+    content: '';
+    position: absolute;
+    top: 17px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 14px;
+    height: 14px;
+    border-radius: 50%;
+    background: var(--accent);
+    border: 3px solid var(--primary);
+  }
+  
+  .timeline-item .week {
+    font-size: 11px;
+    color: var(--accent);
+    font-weight: 700;
+    margin-bottom: 6px;
+  }
+  
+  .timeline-item .title {
+    font-size: 14px;
+    font-weight: 600;
+    color: #fff;
+    margin-bottom: 6px;
+  }
+  
+  .timeline-item .desc {
+    font-size: 12px;
+    color: var(--muted);
+    line-height: 1.5;
+  }
+  
+  /* 导航 */
+  .nav {
+    position: fixed;
+    bottom: 30px;
+    right: 40px;
+    display: flex;
+    gap: 10px;
+    z-index: 100;
+  }
+  
+  .nav button {
+    position: relative;
+    z-index: 101;
+    width: 44px;
+    height: 44px;
+    border-radius: 12px;
+    border: 1px solid var(--border);
+    background: rgba(15,39,68,0.9);
+    color: var(--accent);
+    font-size: 18px;
+    cursor: pointer;
+    backdrop-filter: blur(10px);
+    transition: all 0.2s;
+    touch-action: manipulation;
+    -webkit-tap-highlight-color: rgba(0,212,255,0.2);
+  }
+  
+  .nav button:hover {
+    background: rgba(0,212,255,0.15);
+    border-color: var(--accent);
+  }
+  
+  .page-num {
+    position: fixed;
+    bottom: 36px;
+    left: 40px;
+    font-size: 13px;
+    color: var(--muted);
+    z-index: 100;
+  }
+  
+  .page-num span { color: var(--accent); font-weight: 700; }
+  
+  /* 进度条 */
+  .progress-bar {
+    position: fixed;
+    top: 0; left: 0;
+    height: 3px;
+    background: linear-gradient(90deg, var(--accent), var(--accent2));
+    transition: width 0.3s;
+    z-index: 100;
+  }
+  
+  /* 架构图 */
+  .arch-diagram {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 20px;
+    height: 100%;
+    padding: 20px 0;
+  }
+  
+  .arch-layer {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    align-items: center;
+  }
+  
+  .arch-label {
+    font-size: 11px;
+    color: var(--accent);
+    font-weight: 600;
+    letter-spacing: 1px;
+    margin-bottom: 6px;
+  }
+  
+  .arch-box {
+    padding: 16px 24px;
+    border-radius: 12px;
+    font-size: 13px;
+    font-weight: 500;
+    text-align: center;
+    min-width: 130px;
+    border: 1px solid var(--border);
+  }
+  
+  .arch-box.io {
+    background: rgba(0,212,255,0.1);
+    border-color: rgba(0,212,255,0.3);
+    color: var(--accent);
+  }
+  
+  .arch-box.proc {
+    background: rgba(255,107,53,0.08);
+    border-color: rgba(255,107,53,0.3);
+    color: var(--accent2);
+  }
+  
+  .arch-box.data {
+    background: rgba(0,180,100,0.08);
+    border-color: rgba(0,180,100,0.3);
+    color: #00C864;
+  }
+  
+  .arch-box.ui {
+    background: rgba(150,100,255,0.08);
+    border-color: rgba(150,100,255,0.3);
+    color: #B580FF;
+  }
+  
+  .arch-arrow {
+    font-size: 24px;
+    color: var(--muted);
+    flex-shrink: 0;
+  }
+  
+  .arch-multi {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
+  
+  /* 告警流 */
+  .flow-row {
+    display: flex;
+    align-items: center;
+    gap: 0;
+    margin: 10px 0;
+  }
+  
+  .flow-step {
+    display: flex;
+    align-items: center;
+    gap: 0;
+  }
+  
+  .flow-box {
+    padding: 12px 18px;
+    border-radius: 10px;
+    font-size: 13px;
+    font-weight: 500;
+    border: 1px solid var(--border);
+    text-align: center;
+    min-width: 120px;
+  }
+  
+  .flow-arrow {
+    padding: 0 10px;
+    font-size: 20px;
+    color: var(--muted);
+  }
+  
+  /* 统计数字 */
+  .stat-row {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 20px;
+    margin-bottom: 30px;
+  }
+  
+  .stat-card {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    padding: 24px;
+    text-align: center;
+  }
+  
+  .stat-card .value {
+    font-size: 38px;
+    font-weight: 900;
+    color: var(--accent);
+    line-height: 1;
+  }
+  
+  .stat-card .unit {
+    font-size: 14px;
+    color: var(--accent);
+    opacity: 0.6;
+  }
+  
+  .stat-card .label {
+    font-size: 13px;
+    color: var(--muted);
+    margin-top: 6px;
+  }
+  
+  /* 网络拓扑 */
+  .topo-row {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 16px;
+    margin: 16px 0;
+  }
+  
+  .topo-box {
+    padding: 14px 22px;
+    border-radius: 12px;
+    font-size: 13px;
+    font-weight: 500;
+    border: 1px solid var(--border);
+    text-align: center;
+  }
+  
+  /* 预算总计 */
+  .budget-total {
+    background: linear-gradient(135deg, rgba(0,212,255,0.12), rgba(255,107,53,0.08));
+    border: 1px solid rgba(0,212,255,0.3);
+    border-radius: 16px;
+    padding: 28px;
+    text-align: center;
+    margin-top: 20px;
+  }
+  
+  .budget-total .amount {
+    font-size: 56px;
+    font-weight: 900;
+    color: var(--accent);
+  }
+  
+  .budget-total .amount span {
+    font-size: 28px;
+    color: var(--muted);
+  }
+  
+  .budget-total .note {
+    font-size: 13px;
+    color: var(--muted);
+    margin-top: 8px;
+  }
+  
+  /* 兼容性徽章 */
+  .compat-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 14px;
+  }
+  
+  .compat-item {
+    background: rgba(0,180,100,0.06);
+    border: 1px solid rgba(0,180,100,0.2);
+    border-radius: 10px;
+    padding: 16px;
+    text-align: center;
+  }
+  
+  .compat-item .icon { font-size: 24px; margin-bottom: 6px; }
+  .compat-item .name { font-size: 13px; font-weight: 600; color: #fff; }
+  .compat-item .brand { font-size: 11px; color: #00C864; margin-top: 2px; }
+  
+  /* 全宽 */
+  .full-width { width: 100%; }
+  
+  /* 两栏不等分 */
+  .col-1-3 { display: grid; grid-template-columns: 1fr 3fr; gap: 24px; height: 100%; }
+  .col-2-3 { display: grid; grid-template-columns: 2fr 3fr; gap: 24px; height: 100%; }
+  
+  .left-panel {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    padding: 28px;
+  }
+  
+  .left-panel h3 {
+    font-size: 16px;
+    font-weight: 700;
+    color: var(--accent);
+    margin-bottom: 16px;
+  }
+  
+  .left-panel ul {
+    list-style: none;
+  }
+  
+  .left-panel li {
+    padding: 8px 0;
+    font-size: 13.5px;
+    color: var(--muted);
+    border-bottom: 1px solid rgba(255,255,255,0.04);
+    display: flex;
+    gap: 8px;
+  }
+  
+  .left-panel li::before {
+    content: '✓';
+    color: #00C864;
+    flex-shrink: 0;
+  }
+  
+  .left-panel .price {
+    font-size: 22px;
+    font-weight: 900;
+    color: var(--accent);
+    margin-top: 20px;
+  }
+  
+  .left-panel .price span {
+    font-size: 12px;
+    color: var(--muted);
+    font-weight: 400;
+  }
+  
+  .contact-logo-link {
+    display: inline-block;
+    line-height: 0;
+    margin: 0 auto 10px;
+    text-decoration: none;
+    outline: none;
+  }
+  .contact-logo-link:focus-visible {
+    border-radius: 8px;
+    box-shadow: 0 0 0 2px rgba(0,212,255,0.5);
+  }
+  .contact-logo {
+    display: block;
+    max-height: 48px;
+    width: auto;
+    object-fit: contain;
+  }
+  
+  /* 第4页：设备选型 — 标题与表格更易读 */
+  #slide-4 .slide-header {
+    margin-bottom: 26px;
+    padding-bottom: 16px;
+    border-bottom-width: 2px;
+    border-bottom-color: rgba(0,212,255,0.35);
+  }
+  #slide-4 .slide-header h2 {
+    font-size: 55px;
+    font-weight: 800;
+    letter-spacing: 0.5px;
+    line-height: 1.28;
+    color: #E8F4FF;
+    text-shadow: 0 0 48px rgba(0,212,255,0.2);
+    -webkit-font-smoothing: antialiased;
+  }
+  #slide-4 .slide-header .tag {
+    font-size: 13px;
+    padding: 6px 16px;
+    font-weight: 600;
+    color: var(--accent);
+    border-color: rgba(0,212,255,0.35);
+    background: rgba(0,212,255,0.1);
+  }
+  #slide-4 .equipment-intro {
+    font-size: 14px !important;
+    line-height: 1.65 !important;
+    color: #A8B8C8 !important;
+  }
+  #slide-4 .equipment-intro strong {
+    color: #fff !important;
+  }
+  #slide-4 .equipment-table-wrap {
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    max-width: 100%;
+    margin: 0 0 4px 0;
+  }
+  #slide-4 .equipment-table-wrap .equipment-detail {
+    min-width: 960px;
+  }
+  #slide-4 table.equipment-detail {
+    font-size: 13px;
+    width: 100%;
+    border-collapse: collapse;
+    table-layout: auto;
+  }
+  #slide-4 table.equipment-detail thead th {
+    padding: 10px 8px;
+    font-size: 14px;
+    font-weight: 700;
+    color: #F2F7FC;
+    background: rgba(0,212,255,0.15);
+    border-bottom: 1px solid rgba(0,212,255,0.38);
+    white-space: nowrap;
+    vertical-align: middle;
+  }
+  #slide-4 table.equipment-detail thead th:nth-child(1) {
+    width: 3.2em;
+    text-align: center;
+  }
+  #slide-4 table.equipment-detail thead th:nth-child(4),
+  #slide-4 table.equipment-detail thead th:nth-child(5),
+  #slide-4 table.equipment-detail thead th:nth-child(6) {
+    text-align: right;
+  }
+  #slide-4 table.equipment-detail tbody td {
+    padding: 8px 8px;
+    border-bottom: 1px solid rgba(255,255,255,0.08);
+    vertical-align: top;
+    line-height: 1.55;
+  }
+  #slide-4 table.equipment-detail tbody td:nth-child(1) {
+    text-align: center;
+    font-variant-numeric: tabular-nums;
+  }
+  #slide-4 table.equipment-detail tbody td:nth-child(4),
+  #slide-4 table.equipment-detail tbody td:nth-child(5),
+  #slide-4 table.equipment-detail tbody td:nth-child(6) {
+    text-align: right;
+  }
+  #slide-4 table.equipment-detail tbody tr:hover td {
+    background: rgba(0,212,255,0.05);
+  }
+  #slide-4 table.equipment-detail td.num {
+    font-size: 13px;
+    font-variant-numeric: tabular-nums;
+  }
+  #slide-4 table.equipment-detail tbody tr:last-child td.num.total {
+    text-align: right;
+  }
+
+  #slide-4 .price-query-banner {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 8px 14px;
+    width: 100%;
+    box-sizing: border-box;
+    margin: 0 0 12px 0;
+    padding: 10px 14px;
+    font-size: 13px;
+    line-height: 1.55;
+    color: #B8C8D8;
+    background: rgba(255, 107, 53, 0.12);
+    border: 1px solid rgba(255, 107, 53, 0.35);
+    border-radius: 10px;
+  }
+  #slide-4 .price-query-banner__label {
+    font-weight: 700;
+    color: #FF9A6B;
+    white-space: nowrap;
+  }
+  #slide-4 .equipment-price-unlock-btn {
+    flex-shrink: 0;
+    margin-left: auto;
+    padding: 8px 16px;
+    font-size: 13px;
+    font-weight: 600;
+    font-family: inherit;
+    color: #0A1628;
+    background: linear-gradient(135deg, #00D4FF, #00a8cc);
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    box-shadow: 0 2px 12px rgba(0, 212, 255, 0.25);
+  }
+  #slide-4 .equipment-price-unlock-btn:hover {
+    filter: brightness(1.08);
+  }
+  #slide-4 .equipment-price-unlock-btn:disabled {
+    opacity: 0.55;
+    cursor: default;
+    filter: none;
+  }
+  .price-unlock-overlay {
+    position: fixed;
+    inset: 0;
+    z-index: 9998;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 24px;
+    background: rgba(10, 22, 40, 0.72);
+    backdrop-filter: blur(4px);
+  }
+  .price-unlock-overlay[hidden] {
+    display: none !important;
+  }
+  .price-unlock-dialog {
+    width: 100%;
+    max-width: 360px;
+    padding: 24px 22px;
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    box-shadow: 0 16px 48px rgba(0, 0, 0, 0.45);
+  }
+  .price-unlock-dialog__title {
+    font-size: 16px;
+    font-weight: 700;
+    color: var(--accent);
+    margin-bottom: 8px;
+  }
+  .price-unlock-dialog__hint {
+    font-size: 13px;
+    color: var(--muted);
+    margin-bottom: 12px;
+  }
+  .price-unlock-dialog__input {
+    width: 100%;
+    padding: 10px 12px;
+    font-size: 15px;
+    font-family: ui-monospace, monospace;
+    letter-spacing: 0.08em;
+    color: #fff;
+    background: rgba(0, 0, 0, 0.25);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    margin-bottom: 8px;
+    box-sizing: border-box;
+  }
+  .price-unlock-dialog__input:focus {
+    outline: none;
+    border-color: rgba(0, 212, 255, 0.55);
+  }
+  .price-unlock-dialog__error {
+    font-size: 12px;
+    color: #FF6B6B;
+    margin-bottom: 8px;
+  }
+  .price-unlock-dialog__actions {
+    display: flex;
+    gap: 10px;
+    justify-content: flex-end;
+    margin-top: 14px;
+  }
+  .price-unlock-dialog__btn {
+    padding: 8px 18px;
+    font-size: 13px;
+    font-weight: 600;
+    font-family: inherit;
+    border-radius: 8px;
+    cursor: pointer;
+    border: 1px solid transparent;
+  }
+  .price-unlock-dialog__btn--ghost {
+    color: var(--muted);
+    background: transparent;
+    border-color: var(--border);
+  }
+  .price-unlock-dialog__btn--primary {
+    color: #0A1628;
+    background: var(--accent);
+    border-color: var(--accent);
+  }
+  #slide-4 table.equipment-detail td.price-mask {
+    color: var(--muted);
+    font-style: italic;
+  }
+
+  /* 手机 / 微信内置浏览器：全屏区域 + 安全区 + 窄屏排版（900px 含大屏手机横持、小窗） */
+  @media (max-width: 900px) {
+    /* 锁定整页高度，避免「显示不全」：内容在 .slide-content 内纵向滚动 */
+    #presentation {
+      height: calc(var(--vh, 1vh) * 100);
+      max-height: calc(var(--vh, 1vh) * 100);
+    }
+    .slide.active {
+      height: 100%;
+      max-height: 100%;
+      min-height: 0 !important;
+    }
+    .slide {
+      padding: max(12px, env(safe-area-inset-top, 0px)) max(14px, env(safe-area-inset-right, 0px)) max(12px, env(safe-area-inset-bottom, 0px)) max(14px, env(safe-area-inset-left, 0px));
+      padding-bottom: max(12px, env(safe-area-inset-bottom, 0px));
+    }
+    .slide-header {
+      margin-bottom: 16px !important;
+      padding-bottom: 12px !important;
+    }
+    .slide-header h2 {
+      font-size: clamp(18px, 4.5vw, 22px) !important;
+      line-height: 1.25 !important;
+    }
+    .slide-header .tag {
+      font-size: 11px !important;
+      padding: 3px 10px !important;
+    }
+    .slide-content {
+      flex: 1 1 0 !important;
+      overflow-x: hidden !important;
+      overflow-y: auto !important;
+      -webkit-overflow-scrolling: touch;
+      min-height: 0 !important;
+      padding-bottom: 72px;
+      box-sizing: border-box;
+      touch-action: pan-y;
+      overscroll-behavior-y: contain;
+    }
+    .cover h1 {
+      font-size: clamp(22px, 7vw, 34px) !important;
+    }
+    .cover h1 span {
+      font-size: clamp(14px, 3.8vw, 18px) !important;
+    }
+    .cover .meta {
+      flex-wrap: wrap;
+      gap: 12px;
+      margin-top: 28px;
+    }
+    .stat-row {
+      grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+      gap: 10px !important;
+      margin-bottom: 16px !important;
+    }
+    .stat-card {
+      padding: 14px 10px !important;
+    }
+    .stat-card .value {
+      font-size: clamp(22px, 7vw, 32px) !important;
+    }
+    .stat-card .label {
+      font-size: 12px !important;
+      line-height: 1.35 !important;
+    }
+    .grid-2 {
+      grid-template-columns: 1fr !important;
+      gap: 14px !important;
+      height: auto !important;
+    }
+    .grid-3 {
+      grid-template-columns: minmax(0, 1fr) !important;
+      gap: 12px !important;
+    }
+    #slide-2 .grid-3 .card h3 {
+      font-size: 16px !important;
+    }
+    #slide-2 .grid-3 ul.feature-list li {
+      font-size: 13px !important;
+      line-height: 1.45 !important;
+    }
+    /* 第 3 页架构图：每行独立横向滚动，避免左右裁切（slide-content 原 overflow-x:hidden + pan-y 会挡横向滑动） */
+    #slide-3.slide {
+      overflow-x: auto !important;
+      -webkit-overflow-scrolling: touch;
+    }
+    #slide-3 .slide-content {
+      overflow-x: visible !important;
+      touch-action: pan-x pan-y !important;
+    }
+    #slide-3 .arch-diagram {
+      max-width: 100%;
+      overflow-x: visible !important;
+    }
+    #slide-3 .arch-layer-row {
+      display: flex !important;
+      flex-wrap: nowrap !important;
+      justify-content: flex-start !important;
+      align-items: stretch !important;
+      gap: 8px !important;
+      width: 100%;
+      max-width: 100%;
+      box-sizing: border-box;
+      overflow-x: auto !important;
+      overflow-y: visible !important;
+      -webkit-overflow-scrolling: touch;
+      touch-action: pan-x pan-y !important;
+      padding-bottom: 6px;
+    }
+    #slide-3 .arch-diagram .arch-box {
+      flex: 0 0 auto !important;
+      min-width: 112px !important;
+      max-width: min(240px, 78vw) !important;
+      box-sizing: border-box !important;
+      padding: 10px 8px !important;
+      font-size: 11px !important;
+    }
+    #slide-3 .arch-diagram .arch-box small {
+      font-size: 10px !important;
+    }
+    /* 第 10 页网络拓扑：双栏改单列 + 禁止竖排单字，避免文字「一条竖线」 */
+    #slide-10 .topo-row {
+      flex-wrap: wrap !important;
+      justify-content: center !important;
+      gap: 8px !important;
+      max-width: 100%;
+    }
+    #slide-10 .topo-box {
+      word-break: keep-all;
+      white-space: normal;
+    }
+    #slide-10 .topo-notes-grid {
+      grid-template-columns: 1fr !important;
+      min-width: 0;
+    }
+    #slide-10 .topo-notes-grid > .card {
+      min-width: 0;
+    }
+    #slide-10 .topo-notes-grid .feature-list li {
+      word-break: keep-all;
+      white-space: normal;
+      line-height: 1.5;
+      min-width: 0;
+    }
+    .grid-4 {
+      grid-template-columns: 1fr 1fr !important;
+      gap: 10px !important;
+    }
+    .card {
+      padding: 18px !important;
+    }
+    #slide-4 .slide-header h2 {
+      font-size: clamp(16px, 4.5vw, 22px) !important;
+      line-height: 1.22 !important;
+    }
+    /* 第 4 页：允许横向滑动看全表；grid 子项 min-width:0 否则宽表会撑破/裁切 */
+    #slide-4.slide {
+      overflow-x: auto !important;
+      -webkit-overflow-scrolling: touch;
+    }
+    #slide-4 .slide-content {
+      overflow-x: visible !important;
+      touch-action: pan-x pan-y !important;
+    }
+    #slide-4 .slide-content .grid-2 {
+      min-width: 0;
+    }
+    #slide-4 .slide-content .grid-2 > div {
+      min-width: 0;
+    }
+    #slide-4 .equipment-table-wrap {
+      touch-action: pan-x pan-y !important;
+    }
+    #slide-4 .equipment-table-wrap .equipment-detail {
+      min-width: 960px !important;
+    }
+    /* 第 4 页：覆盖内联 max-height:50vh，避免左栏单独裁切、手机「显示不全」 */
+    #slide-4 .slide-content .grid-2 > div:first-child {
+      max-height: none !important;
+      overflow: visible !important;
+    }
+    #slide-4 table.equipment-detail {
+      font-size: 11px;
+    }
+    #slide-4 table.equipment-detail thead th {
+      font-size: 11px;
+      padding: 6px 4px;
+    }
+    #slide-4 table.equipment-detail td.num {
+      font-size: 11px;
+    }
+    .nav {
+      bottom: max(18px, env(safe-area-inset-bottom, 0px));
+      right: max(14px, env(safe-area-inset-right, 0px));
+    }
+    .page-num {
+      bottom: max(18px, env(safe-area-inset-bottom, 0px));
+      left: max(14px, env(safe-area-inset-left, 0px));
+      font-size: 12px;
+    }
+    .price-unlock-overlay {
+      padding: max(16px, env(safe-area-inset-top)) max(16px, env(safe-area-inset-right)) max(16px, env(safe-area-inset-bottom)) max(16px, env(safe-area-inset-left));
+    }
+  }
+
+  /* 打印优化 */
+  @media print {
+    .nav, .page-num, .progress-bar { display: none; }
+    .slide { display: flex !important; page-break-after: always; }
+  }
+</style>
+</head>
+<body>
+
+<div class="progress-bar" id="progress"></div>
+
+<div id="presentation">
+
+<!-- Slide 1: 封面 -->
+<div class="slide cover active" id="slide-1">
+  <h1>
+    物流站安防自动化<br>与车辆智能追踪方案
+    <span>海康威视 · 车牌识别 · 实时轨迹 · 智能告警</span>
+  </h1>
+  <div class="subtitle">基于 AI 边缘计算的智慧物流安防系统 · 首期交付范围以合同附件为准</div>
+  <div class="meta">
+    <div class="meta-item">
+      <div class="num">40</div>
+      <div class="label">监控点位</div>
+    </div>
+    <div class="meta-item">
+      <div class="num">≈8.5万</div>
+      <div class="label">设备+施工（参考）</div>
+    </div>
+    <div class="meta-item">
+      <div class="num">4周</div>
+      <div class="label">交付周期</div>
+    </div>
+    <div class="meta-item">
+      <div class="num">24/7</div>
+      <div class="label">全天候监控</div>
+    </div>
+  </div>
+</div>
+
+<!-- Slide 2: 项目背景 -->
+<div class="slide" id="slide-2">
+  <div class="slide-header">
+    <h2>📋 项目背景与需求分析</h2>
+    <span class="tag">02 / 14</span>
+  </div>
+  <div class="slide-content">
+    <div class="stat-row">
+      <div class="stat-card">
+        <div class="value">40<span class="unit">台</span></div>
+        <div class="label">监控点位</div>
+      </div>
+      <div class="stat-card">
+        <div class="value">物流<span class="unit">站</span></div>
+        <div class="label">应用场景</div>
+      </div>
+      <div class="stat-card">
+        <div class="value">0<span class="unit">→</span>1</div>
+        <div class="label">系统建设</div>
+      </div>
+      <div class="stat-card">
+        <div class="value">≈8.5<span class="unit">万</span></div>
+        <div class="label">设备+施工（参考）</div>
+      </div>
+    </div>
+    
+    <div class="grid-3">
+      <div class="card">
+        <div class="icon">🎯</div>
+        <h3>核心需求</h3>
+        <ul class="feature-list">
+          <li>出入口车辆车牌自动识别</li>
+          <li>陌生车辆实时告警推送</li>
+          <li>车辆在场轨迹追踪</li>
+          <li>黑白名单自动化管理</li>
+          <li>装卸区超时滞留预警</li>
+        </ul>
+        <span class="tag tag-blue">PRIORITY HIGH</span>
+      </div>
+      <div class="card accent-orange">
+        <div class="icon">🏭</div>
+        <h3>物流站特点</h3>
+        <ul class="feature-list">
+          <li>车流量大、车型混杂</li>
+          <li>出入口管理最关键</li>
+          <li>装卸区需重点监控</li>
+          <li>夜间无人值守时段长</li>
+          <li>外来临时车辆频繁</li>
+        </ul>
+        <span class="tag tag-orange">NEED INTELLIGENCE</span>
+      </div>
+      <div class="card">
+        <div class="icon">⚡</div>
+        <h3>痛点分析</h3>
+        <ul class="feature-list">
+          <li>人工记录车牌效率低、易出错</li>
+          <li>车辆在场状态无法实时掌握</li>
+          <li>异常车辆无法及时发现</li>
+          <li>事后查录像费时费力</li>
+          <li>安保成本高、效果有限</li>
+        </ul>
+        <span class="tag tag-purple">PROBLEM</span>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Slide 3: 系统架构 -->
+<div class="slide" id="slide-3">
+  <div class="slide-header">
+    <h2>🏗️ 系统架构总览</h2>
+    <span class="tag">03 / 14</span>
+  </div>
+  <div class="slide-content" style="min-height:0; display:flex; flex-direction:column;">
+    <div class="arch-diagram" style="flex-direction: column; gap: 16px; flex:1; min-height:0; overflow:auto;">
+      <!-- 顶层 -->
+      <div class="arch-layer-row" style="display:flex; align-items:center; gap:16px; width:100%; justify-content:center;">
+        <div class="arch-box ui">📱 微信告警推送</div>
+        <div class="arch-box ui">💻 Web管理后台</div>
+        <div class="arch-box ui">📊 数据大屏</div>
+        <div class="arch-box ui">🖥️ 客户端软件</div>
+      </div>
+      
+      <div style="color: var(--muted); font-size:22px;">▲</div>
+      
+      <!-- 数据层 -->
+      <div class="arch-layer-row" style="display:flex; align-items:center; gap:16px; width:100%; justify-content:center;">
+        <div class="arch-box data">📦 车辆数据库<br><small style="color:var(--muted);font-size:11px;">PostgreSQL + TimescaleDB</small></div>
+        <div class="arch-box data">📸 抓拍图片库<br><small style="color:var(--muted);font-size:11px;">本地文件系统</small></div>
+        <div class="arch-box data">⚙️ 规则引擎<br><small style="color:var(--muted);font-size:11px;">告警逻辑处理</small></div>
+      </div>
+      
+      <div style="color: var(--muted); font-size:22px;">▲</div>
+      
+      <!-- 处理层 -->
+      <div class="arch-layer-row" style="display:flex; align-items:center; gap:16px; width:100%; justify-content:center;">
+        <div class="arch-box proc">🧠 AI识别服务器<br><small style="color:var(--muted);font-size:11px;">YOLOv8 + LPR · 重点路+抽帧</small></div>
+        <div class="arch-box proc">🔄 流媒体转发服务<br><small style="color:var(--muted);font-size:11px;">RTSP拉流 · 可分期扩路</small></div>
+        <div class="arch-box proc">📡 API接口服务<br><small style="color:var(--muted);font-size:11px;">REST API · WebSocket推送</small></div>
+      </div>
+      
+      <div style="color: var(--muted); font-size:22px;">▲</div>
+      
+      <!-- 接入层 -->
+      <div class="arch-layer-row" style="display:flex; align-items:center; gap:16px; width:100%; justify-content:center;">
+        <div class="arch-box io">📹 多类型海康前端<br><small style="color:var(--muted);font-size:11px;">枪机/半球/全景/球机 · 卡口</small></div>
+        <div class="arch-box io">🖥️ NVR + 大容量盘阵<br><small style="color:var(--muted);font-size:11px;">DS-8864 级 · 留存按实测</small></div>
+        <div class="arch-box io">🔌 锐捷组网 + 光链路<br><small style="color:var(--muted);font-size:11px;">PoE/核心 · 分光远距</small></div>
+      </div>
+    </div>
+    <div class="card" style="margin-top:16px; flex-shrink:0;">
+      <h3 style="font-size:15px; color:var(--accent); margin-bottom:8px;">📌 交付策略（与商务一致）</h3>
+      <p style="font-size:13px; color:var(--muted); line-height:1.65;">
+        <strong style="color:#fff;">录像与智能解耦：</strong>NVR 负责全路或按配置录像；AI 侧采用<strong>出入口/关键道闸优先</strong>，其余通道<strong>轮询或抽帧</strong>（如 1～2 帧/秒），避免单机「40 路全帧全实时」的不实承诺。算力不足时可<strong>增配 GPU 工作站</strong>或<strong>二期扩容</strong>，费用另议。
+      </p>
+    </div>
+  </div>
+</div>
+
+<!-- Slide 4: 设备选型 -->
+<div class="slide" id="slide-4">
+  <div class="slide-header">
+    <h2>🔧 设备选型清单（对齐附件一 · 海康 + 锐捷）</h2>
+    <span class="tag">04 / 14</span>
+  </div>
+  <div class="slide-content">
+    <div class="grid-2">
+      <div style="max-height:50vh; overflow-y:auto; padding-right:8px;">
+        <p class="equipment-intro" style="margin:0 0 10px 0;">附件一《设备明细》共 <strong>48 行</strong>；<strong>数量、单价、小计</strong>为商务保密字段，点击「显示数量 / 单价 / 小计」并输入查询码后可查看；<strong>合计（含税）</strong>行始终可见。</p>
+        <div class="price-query-banner" role="note">
+          <span class="price-query-banner__label">数量 / 单价 / 小计</span>
+          <span class="price-query-banner__text">为商务保密字段，明细不向公开展示。点击下方按钮输入查询码后可查看。</span>
+          <button type="button" class="equipment-price-unlock-btn" id="equipment-price-unlock-btn" aria-haspopup="dialog">显示数量 / 单价 / 小计</button>
+        </div>
+        <div class="equipment-table-wrap">
+        <table class="equipment-detail">
+          <thead>
+            <tr>
+              <th>#</th>
+              <th>设备名称</th>
+              <th>品牌·型号</th>
+              <th>数量</th>
+              <th>单价</th>
+              <th>小计</th>
+              <th>备注</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr><td>1</td><td>POE 半球网络摄像机</td><td style="color:#fff;font-weight:600;">海康 DS-2CD1345V2-L&amp; (POE)</td><td class="num price-mask" title="向作者索取">—</td><td class="num price-mask" title="向作者索取">—</td><td class="num price-mask" title="向作者索取">—</td><td>室内/半室外，PoE 供电</td></tr>
+            <tr><td>2</td><td>枪型网络摄像机</td><td style="color:#fff;font-weight:600;">海康 DS-2CD1245-LA</td><td class="num price-mask" title="向作者索取">—</td><td class="num price-mask" title="向作者索取">—</td><td class="num price-mask" title="向作者索取">—</td><td>周界/道路主力布点，4MP</td></tr>
+            <tr><td>3</td><td>双目全景网络摄像机</td><td style="color:#fff;font-weight:600;">海康 DS-2CD3T47VDP2V2-L</td><td class="num price-mask" title="向作者索取">—</td><td class="num price-mask" title="向作者索取">—</td><td class="num price-mask" title="向作者索取">—</td><td>煤场 180° 广角场景覆盖</td></tr>
+            <tr><td>4</td><td>枪机壁装支架</td><td style="color:#fff;font-weight:600;">海康 DS-2205ZJ</td><td class="num price-mask" title="向作者索取">—</td><td class="num price-mask" title="向作者索取">—</td><td class="num price-mask" title="向作者索取">—</td><td>与枪机配套安装</td></tr>
+            <tr><td>5</td><td>高速智能球型摄像机</td><td style="color:#fff;font-weight:600;">海康 DS-2DC4425DW-D</td><td class="num price-mask" title="向作者索取">—</td><td class="num price-mask" title="向作者索取">—</td><td class="num price-mask" title="向作者索取">—</td><td>重点区域巡防与变倍</td></tr>
+            <tr><td>6</td><td>车载 4G 枪型网络摄像机</td><td style="color:#fff;font-weight:600;">海康 DS-2CD3T46FDWD-L8GLE</td><td class="num price-mask" title="向作者索取">—</td><td class="num price-mask" title="向作者索取">—</td><td class="num price-mask" title="向作者索取">—</td><td>铲车等移动作业单元车载监控</td></tr>
+            <tr><td>7</td><td>安防专用 Micro SD 卡 128GB</td><td style="color:#fff;font-weight:600;">海康 DS-UTF128G-L1</td><td class="num price-mask" title="向作者索取">—</td><td class="num price-mask" title="向作者索取">—</td><td class="num price-mask" title="向作者索取">—</td><td>车载端本地录像缓存</td></tr>
+            <tr><td>8</td><td>DC-DC 降压电源模块</td><td style="color:#fff;font-weight:600;">海康 DS-2FA1205-DC</td><td class="num price-mask" title="向作者索取">—</td><td class="num price-mask" title="向作者索取">—</td><td class="num price-mask" title="向作者索取">—</td><td>DC24V→DC12V，车载取电适配</td></tr>
+            <tr><td>9</td><td>球机壁装支架</td><td style="color:#fff;font-weight:600;">海康 DS-1602ZJ</td><td class="num price-mask" title="向作者索取">—</td><td class="num price-mask" title="向作者索取">—</td><td class="num price-mask" title="向作者索取">—</td><td>与高速球机配套</td></tr>
+            <tr style="background:rgba(0,212,255,0.06);"><td>10</td><td>出入口车辆识别一体机</td><td style="color:#fff;font-weight:600;">海康 DS-TMC200-E1</td><td class="num price-mask" title="向作者索取">—</td><td class="num price-mask" title="向作者索取">—</td><td class="num price-mask" title="向作者索取">—</td><td>车道抓拍、号牌识别输出</td></tr>
+            <tr style="background:rgba(0,212,255,0.06);"><td>11</td><td>车道雷达触发单元</td><td style="color:#fff;font-weight:600;">海康 DS-TMG03A-E</td><td class="num price-mask" title="向作者索取">—</td><td class="num price-mask" title="向作者索取">—</td><td class="num price-mask" title="向作者索取">—</td><td>与视频/道闸联动，防砸/触发</td></tr>
+            <tr><td>12</td><td>5 口千兆 PoE 交换机</td><td style="color:#fff;font-weight:600;">锐捷 RG-YS108G-P</td><td class="num price-mask" title="向作者索取">—</td><td class="num price-mask" title="向作者索取">—</td><td class="num price-mask" title="向作者索取">—</td><td>边缘点位 PoE 接入</td></tr>
+            <tr><td>13</td><td>16 口千兆 PoE 交换机</td><td style="color:#fff;font-weight:600;">锐捷 RG-ES116GS-P-E</td><td class="num price-mask" title="向作者索取">—</td><td class="num price-mask" title="向作者索取">—</td><td class="num price-mask" title="向作者索取">—</td><td>区域 PoE 汇聚</td></tr>
+            <tr><td>14</td><td>24 口千兆核心交换机</td><td style="color:#fff;font-weight:600;">锐捷 RG-NBS3000-24GT2SFP</td><td class="num price-mask" title="向作者索取">—</td><td class="num price-mask" title="向作者索取">—</td><td class="num price-mask" title="向作者索取">—</td><td>核心交换，含光口上联</td></tr>
+            <tr><td>15</td><td>单模千兆光模块（SFP）</td><td style="color:#fff;font-weight:600;">锐捷 SFP-SM1310</td><td class="num price-mask" title="向作者索取">—</td><td class="num price-mask" title="向作者索取">—</td><td class="num price-mask" title="向作者索取">—</td><td>1310nm，与光链路/收发器配套</td></tr>
+            <tr><td>16</td><td>千兆光纤收发器（成对）</td><td style="color:#fff;font-weight:600;">锐捷 RG-FC11G-3A/3B</td><td class="num price-mask" title="向作者索取">—</td><td class="num price-mask" title="向作者索取">—</td><td class="num price-mask" title="向作者索取">—</td><td>A/B 端成对使用</td></tr>
+            <tr><td>17</td><td>壁挂式网络机柜（12U）</td><td style="color:#fff;font-weight:600;">华腾 600×550×400 12U</td><td class="num price-mask" title="向作者索取">—</td><td class="num price-mask" title="向作者索取">—</td><td class="num price-mask" title="向作者索取">—</td><td>安装深度约 400mm</td></tr>
+            <tr><td>18</td><td>落地式服务器机柜</td><td style="color:#fff;font-weight:600;">华腾 1600×600×1000</td><td class="num price-mask" title="向作者索取">—</td><td class="num price-mask" title="向作者索取">—</td><td class="num price-mask" title="向作者索取">—</td><td>主机房核心设备上架</td></tr>
+            <tr><td>19</td><td>机柜 PDU 配电单元</td><td style="color:#fff;font-weight:600;">富利联讯 FLLX-10A-8</td><td class="num price-mask" title="向作者索取">—</td><td class="num price-mask" title="向作者索取">—</td><td class="num price-mask" title="向作者索取">—</td><td>分路供电，带开关/防雷档</td></tr>
+            <tr><td>20</td><td>室外防水配电箱</td><td style="color:#fff;font-weight:600;">远景 400×500×300</td><td class="num price-mask" title="向作者索取">—</td><td class="num price-mask" title="向作者索取">—</td><td class="num price-mask" title="向作者索取">—</td><td>前端取电分配与防护</td></tr>
+            <tr><td>21</td><td>监控镀锌立杆</td><td style="color:#fff;font-weight:600;">远景 4m</td><td class="num price-mask" title="向作者索取">—</td><td class="num price-mask" title="向作者索取">—</td><td class="num price-mask" title="向作者索取">—</td><td>杆体高度 4m，按点位安装</td></tr>
+            <tr><td>22</td><td>单模尾纤（SC-SC，3m）</td><td style="color:#fff;font-weight:600;">富利联讯 SM-FLLX-SC-SC-3M</td><td class="num price-mask" title="向作者索取">—</td><td class="num price-mask" title="向作者索取">—</td><td class="num price-mask" title="向作者索取">—</td><td>成端跳接，接口 SC/UPC</td></tr>
+            <tr><td>23</td><td>单模尾纤（LC-SC，3m）</td><td style="color:#fff;font-weight:600;">富利联讯 SM-FLLX-LC-SC-3M</td><td class="num price-mask" title="向作者索取">—</td><td class="num price-mask" title="向作者索取">—</td><td class="num price-mask" title="向作者索取">—</td><td>设备侧 LC，配线架侧 SC</td></tr>
+            <tr><td>24</td><td>单模尾纤（SC-SC，3m）</td><td style="color:#fff;font-weight:600;">富利联讯 SM-FLLX-SC-SC-3M</td><td class="num price-mask" title="向作者索取">—</td><td class="num price-mask" title="向作者索取">—</td><td class="num price-mask" title="向作者索取">—</td><td>余量/补充配置</td></tr>
+            <tr><td>25</td><td>光纤终端盒（4 芯）</td><td style="color:#fff;font-weight:600;">富利联讯 FLLX-GQH-MP-4SC</td><td class="num price-mask" title="向作者索取">—</td><td class="num price-mask" title="向作者索取">—</td><td class="num price-mask" title="向作者索取">—</td><td>熔接成端，壁挂/弱电井安装</td></tr>
+            <tr><td>26</td><td>光纤 ODF 配线架（24 芯）</td><td style="color:#fff;font-weight:600;">富利联讯 FLLX-ODF-24SC</td><td class="num price-mask" title="向作者索取">—</td><td class="num price-mask" title="向作者索取">—</td><td class="num price-mask" title="向作者索取">—</td><td>机房侧配线，SC 法兰</td></tr>
+            <tr><td>27</td><td>机柜理线架（1U）</td><td style="color:#fff;font-weight:600;">富利联讯 FLLX-LXJ2024</td><td class="num price-mask" title="向作者索取">—</td><td class="num price-mask" title="向作者索取">—</td><td class="num price-mask" title="向作者索取">—</td><td>缆线整理与绑扎</td></tr>
+            <tr><td>28</td><td>网络硬盘录像机（NVR）</td><td style="color:#fff;font-weight:600;">海康 DS-8864N-R8(C)</td><td class="num price-mask" title="向作者索取">—</td><td class="num price-mask" title="向作者索取">—</td><td class="num price-mask" title="向作者索取">—</td><td>64 路接入，录像策略按合同</td></tr>
+            <tr><td>29</td><td>监控专用硬盘 8TB</td><td style="color:#fff;font-weight:600;">海康 ST8000HKVS002 8TB</td><td class="num price-mask" title="向作者索取">—</td><td class="num price-mask" title="向作者索取">—</td><td class="num price-mask" title="向作者索取">—</td><td>7×24 小时写入，留存周期按码率核算</td></tr>
+            <tr><td>30</td><td>液晶监视器（值班显示）</td><td style="color:#fff;font-weight:600;">海康 DS-D5055U3-1V0</td><td class="num price-mask" title="向作者索取">—</td><td class="num price-mask" title="向作者索取">—</td><td class="num price-mask" title="向作者索取">—</td><td>55″，与 NVR 联动上墙</td></tr>
+            <tr><td>31</td><td>室外铠装单模光缆</td><td style="color:#fff;font-weight:600;">富利联讯 GYTS-24B1.3</td><td class="num price-mask" title="向作者索取">—</td><td class="num price-mask" title="向作者索取">—</td><td class="num price-mask" title="向作者索取">—</td><td>主干敷设，按路由计量</td></tr>
+            <tr><td>32</td><td>皮线光缆（入户分支）</td><td style="color:#fff;font-weight:600;">富利联讯</td><td class="num price-mask" title="向作者索取">—</td><td class="num price-mask" title="向作者索取">—</td><td class="num price-mask" title="向作者索取">—</td><td>末端/皮线入户段</td></tr>
+            <tr><td>33</td><td>RVV 电源线（2×1.0）</td><td style="color:#fff;font-weight:600;">海康 DS-1RVV2C100/E</td><td class="num price-mask" title="向作者索取">—</td><td class="num price-mask" title="向作者索取">—</td><td class="num price-mask" title="向作者索取">—</td><td>设备取电，按敷设长度</td></tr>
+            <tr><td>34</td><td>RVV 动力电缆（3×2.5）</td><td style="color:#fff;font-weight:600;">联迅 ZR-RVV3×2.5</td><td class="num price-mask" title="向作者索取">—</td><td class="num price-mask" title="向作者索取">—</td><td class="num price-mask" title="向作者索取">—</td><td>配电取电，阻燃型</td></tr>
+            <tr><td>35</td><td>漏电保护断路器（C32）</td><td style="color:#fff;font-weight:600;">公牛 C32</td><td class="num price-mask" title="向作者索取">—</td><td class="num price-mask" title="向作者索取">—</td><td class="num price-mask" title="向作者索取">—</td><td>分路漏电保护</td></tr>
+            <tr><td>36</td><td>工业用延长插排（三位五孔）</td><td style="color:#fff;font-weight:600;">富利联讯 FLLX-WX-3-15</td><td class="num price-mask" title="向作者索取">—</td><td class="num price-mask" title="向作者索取">—</td><td class="num price-mask" title="向作者索取">—</td><td>检修/临时取电</td></tr>
+            <tr><td>37</td><td>HDMI 高清视频线（15m）</td><td style="color:#fff;font-weight:600;">毕亚兹 GD17 15m</td><td class="num price-mask" title="向作者索取">—</td><td class="num price-mask" title="向作者索取">—</td><td class="num price-mask" title="向作者索取">—</td><td>NVR 至监视器信号链路</td></tr>
+            <tr><td>38</td><td>六类非屏蔽网线（Cat.6 UTP）</td><td style="color:#fff;font-weight:600;">海康 UTP6-HSYV4×2×0.55</td><td class="num price-mask" title="向作者索取">—</td><td class="num price-mask" title="向作者索取">—</td><td class="num price-mask" title="向作者索取">—</td><td>水平布线，千兆链路</td></tr>
+            <tr><td>39</td><td>金属穿线管（JDG）</td><td style="color:#fff;font-weight:600;">—</td><td class="num price-mask" title="向作者索取">—</td><td class="num price-mask" title="向作者索取">—</td><td class="num price-mask" title="向作者索取">—</td><td>线缆机械防护与敷设</td></tr>
+            <tr><td>40</td><td>PVC 阻燃线槽（明敷）</td><td style="color:#fff;font-weight:600;">—</td><td class="num price-mask" title="向作者索取">—</td><td class="num price-mask" title="向作者索取">—</td><td class="num price-mask" title="向作者索取">—</td><td>槽宽约 5cm，按路由</td></tr>
+            <tr><td>41</td><td>光缆熔接（按芯）</td><td style="color:#fff;font-weight:600;">—</td><td class="num price-mask" title="向作者索取">—</td><td class="num price-mask" title="向作者索取">—</td><td class="num price-mask" title="向作者索取">—</td><td>含热缩与熔接损耗</td></tr>
+            <tr><td>42</td><td>线缆敷设施工（按米）</td><td style="color:#fff;font-weight:600;">—</td><td class="num price-mask" title="向作者索取">—</td><td class="num price-mask" title="向作者索取">—</td><td class="num price-mask" title="向作者索取">—</td><td>含桥架/线槽内布放</td></tr>
+            <tr><td>43</td><td>穿管布线施工（按米）</td><td style="color:#fff;font-weight:600;">—</td><td class="num price-mask" title="向作者索取">—</td><td class="num price-mask" title="向作者索取">—</td><td class="num price-mask" title="向作者索取">—</td><td>含牵引、弯管与封堵</td></tr>
+            <tr><td>44</td><td>前端设备安装与调试</td><td style="color:#fff;font-weight:600;">—</td><td class="num price-mask" title="向作者索取">—</td><td class="num price-mask" title="向作者索取">—</td><td class="num price-mask" title="向作者索取">—</td><td>摄像机安装、角度与参数初调</td></tr>
+            <tr><td>45</td><td>配电箱接线与调试</td><td style="color:#fff;font-weight:600;">600×400×1000</td><td class="num price-mask" title="向作者索取">—</td><td class="num price-mask" title="向作者索取">—</td><td class="num price-mask" title="向作者索取">—</td><td>规格见选型，含接线与绝缘测试</td></tr>
+            <tr><td>46</td><td>机房机柜安装与上架调试</td><td style="color:#fff;font-weight:600;">—</td><td class="num price-mask" title="向作者索取">—</td><td class="num price-mask" title="向作者索取">—</td><td class="num price-mask" title="向作者索取">—</td><td>机柜定位、接地与上架理线</td></tr>
+            <tr><td>47</td><td>监视电视墙迁移</td><td style="color:#fff;font-weight:600;">—</td><td class="num price-mask" title="向作者索取">—</td><td class="num price-mask" title="向作者索取">—</td><td class="num price-mask" title="向作者索取">—</td><td>单点移位，含拆装与复测</td></tr>
+            <tr><td>48</td><td>安装紧固件及耗材</td><td style="color:#fff;font-weight:600;">螺丝扎带胶丝等</td><td class="num price-mask" title="向作者索取">—</td><td class="num price-mask" title="向作者索取">—</td><td class="num price-mask" title="向作者索取">—</td><td>膨胀螺栓、扎带、胶丝等配套</td></tr>
+            <tr style="background: rgba(0,212,255,0.1);">
+              <td colspan="5" style="text-align:right; color:var(--accent); font-weight:700; padding:10px 8px;">合计（行1–48 · 含税，含行48）</td>
+              <td class="num total" style="font-size:16px; color:#fff;">85,090</td>
+              <td style="color:var(--muted); font-size:12px;">其中行1–47 小计 84,090</td>
+            </tr>
+          </tbody>
+        </table>
+        </div>
+      </div>
+      
+      <div>
+        <div class="card" style="margin-bottom: 16px;">
+          <h3 style="color: var(--accent);">📹 枪机 DS-2CD1245-LA（节选）</h3>
+          <table style="margin-top: 10px; font-size:13px;">
+            <tr><td>分辨率</td><td style="color:#fff;font-weight:600;">2560×1440 (4MP)</td></tr>
+            <tr><td>编码</td><td style="color:#fff;font-weight:600;">H.265+</td></tr>
+            <tr><td>接口</td><td style="color:#fff;font-weight:600;">RJ45 · PoE</td></tr>
+            <tr><td>协议</td><td style="color:#fff;font-weight:600;">ISAPI / RTSP / ONVIF</td></tr>
+          </table>
+          <p style="font-size:13px; color:var(--muted); margin-top:10px; line-height:1.55;">出入口车牌以 <strong style="color:#fff;">DS-TMC200-E1</strong> 为主，<strong style="color:#fff;">DS-TMG03A-E</strong> 雷达辅助联动；后场轨迹与告警可叠加后端 AI（见交付策略）。</p>
+        </div>
+        <div class="card" style="background: rgba(0,200,100,0.05); border-color: rgba(0,200,100,0.2);">
+          <h3 style="color: #00C864;">✅ 选型与报价说明</h3>
+          <ul class="feature-list">
+            <li>附件一含税合计与行1–47 小计为商务保密字段，完整版可向作者索取。</li>
+            <li>所有设备均为 ONVIF / RTSP 通用协议</li>
+            <li>表中型号为<strong>同等档参考</strong>，签约时可替换为停产替代或客户指定型号（价差另议）</li>
+            <li>单价与供货以<strong>签约时渠道/合同</strong>为准，本页为方案估算</li>
+            <li>不含土建、取电、弱电井改造及运营商专线（若需另列）</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Slide 5: 预算明细 -->
+<div class="slide" id="slide-5">
+  <div class="slide-header">
+    <h2>💰 项目预算明细（对齐附件一）</h2>
+    <span class="tag">05 / 14</span>
+  </div>
+  <div class="slide-content">
+    <table style="margin-bottom: 20px; font-size:12.5px;">
+      <thead>
+        <tr>
+          <th>序号</th>
+          <th>大类</th>
+          <th>包含内容</th>
+          <th>小计 (元)</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>1</td>
+          <td>监控前端</td>
+          <td>半球/枪机/180°双目/高速球/车载4G、支架、内存卡、24V 转 12V 等（行1–9）</td>
+          <td class="num">19,280</td>
+        </tr>
+        <tr>
+          <td>2</td>
+          <td>出入口识别</td>
+          <td>海康 DS-TMC200-E1 ×2（¥3,950/台）、雷达 DS-TMG03A-E ×2（¥200/台）</td>
+          <td class="num">8,300</td>
+        </tr>
+        <tr>
+          <td>3</td>
+          <td>网络传输</td>
+          <td>锐捷 PoE/核心交换机、光模块、光纤收发器（行12–16）</td>
+          <td class="num">6,880</td>
+        </tr>
+        <tr>
+          <td>4</td>
+          <td>录像与显示</td>
+          <td>DS-8864N-R8(C)、ST8000HKVS002×2、55″ 监视器（行28–30）</td>
+          <td class="num">11,250</td>
+        </tr>
+        <tr>
+          <td>5</td>
+          <td>机柜/外线材与管材</td>
+          <td>机柜、PDU、室外箱、立杆、尾纤/ODF、光缆、电源与网线、线槽管材等（行17–27、31–40）</td>
+          <td class="num">18,580</td>
+        </tr>
+        <tr>
+          <td>6</td>
+          <td>施工与安装</td>
+          <td>熔接、放线、穿管、摄像机/配电箱/机柜/电视墙等（行41–47）</td>
+          <td class="num">19,800</td>
+        </tr>
+        <tr>
+          <td>7</td>
+          <td>附件杂件</td>
+          <td>螺丝扎带胶丝等（行48）</td>
+          <td class="num">1,000</td>
+        </tr>
+      </tbody>
+      <tfoot>
+        <tr style="background: rgba(0,212,255,0.06);">
+          <td colspan="3" style="text-align:right; color:var(--accent); font-weight:700; font-size:15px; padding:14px 16px;">附件一 合计（行1–48 · 含税）</td>
+          <td class="total" style="font-size:22px;">85,090</td>
+        </tr>
+        <tr>
+          <td colspan="3" style="text-align:right; color:#00C864; font-weight:700; padding:14px 16px;">智能软件 / AI 边缘平台（首期）</td>
+          <td class="total" style="font-size:18px; color:#00C864;">另议</td>
+        </tr>
+      </tfoot>
+    </table>
+    <p style="font-size:12px; color:var(--muted); margin-top:12px; line-height:1.6;">
+      ※ 附件一行1–48 含税合计 <strong style="color:#fff;">¥85,090</strong>（含行48）；行1–47 小计 <strong style="color:#fff;">¥84,090</strong>。上表七大类为<strong>归类汇总</strong>便于阅读，与 Excel 行级金额若有差异以附件一为准。※ 轨迹、告警、Web 后台等<strong>软件与服务器</strong>单独报价，与 NVR 录像解耦。※ 报价<strong>30 日内</strong>有效，以合同及盖章附件为准。
+    </p>
+    
+    <div class="grid-4">
+      <div class="card" style="padding:16px; text-align:center;">
+        <div style="font-size:28px; margin-bottom:6px;">💡</div>
+        <div style="font-size:12px; color:var(--muted);">软件部分可分阶段交付<br>降低初期投入</div>
+      </div>
+      <div class="card" style="padding:16px; text-align:center;">
+        <div style="font-size:28px; margin-bottom:6px;">🔧</div>
+        <div style="font-size:12px; color:var(--muted);">设备享有原厂质保<br>硬件故障无忧</div>
+      </div>
+      <div class="card" style="padding:16px; text-align:center;">
+        <div style="font-size:28px; margin-bottom:6px;">📈</div>
+        <div style="font-size:12px; color:var(--muted);">后期扩容仅需增加<br>摄像头和授权</div>
+      </div>
+      <div class="card" style="padding:16px; text-align:center;">
+        <div style="font-size:28px; margin-bottom:6px;">💳</div>
+        <div style="font-size:12px; color:var(--muted);">支持对公转账<br>可开增值税发票</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Slide 6: 车牌识别技术 -->
+<div class="slide" id="slide-6">
+  <div class="slide-header">
+    <h2>🧠 车牌识别技术方案</h2>
+    <span class="tag">06 / 14</span>
+  </div>
+  <div class="slide-content">
+    <div class="grid-2">
+      <div>
+        <div class="card" style="margin-bottom: 16px;">
+          <h3>识别流程</h3>
+          <div style="margin-top: 16px;">
+            <div class="flow-row"><div class="flow-box io" style="flex:1;">📹 RTSP视频流拉取</div></div>
+            <div style="text-align:center; color:var(--muted); font-size:18px; padding:4px 0;">▼</div>
+            <div class="flow-row"><div class="flow-box proc" style="flex:1;">🎯 YOLOv8 车辆检测 + 目标跟踪</div></div>
+            <div style="text-align:center; color:var(--muted); font-size:18px; padding:4px 0;">▼</div>
+            <div class="flow-row"><div class="flow-box proc" style="flex:1;">🔤 LPRNet 车牌字符识别</div></div>
+            <div style="text-align:center; color:var(--muted); font-size:18px; padding:4px 0;">▼</div>
+            <div class="flow-row"><div class="flow-box data" style="flex:1;">✅ 置信度过滤 + 数据入库</div></div>
+          </div>
+        </div>
+        
+        <div class="card" style="background: rgba(255,107,53,0.05); border-color: rgba(255,107,53,0.2);">
+          <h3 style="color: var(--accent2);">⚙️ 前端与后端如何分工？</h3>
+          <ul class="feature-list">
+            <li><strong style="color:#fff;">出入口</strong>以海康 <strong>DS-TMC200-E1</strong>（车辆识别仪）与 <strong>DS-TMG03A-E</strong>（雷达）为主，稳定输出车牌与过车信息</li>
+            <li><strong style="color:#fff;">后场枪机</strong>以录像与轨迹为主；需二次识别时由后端 AI（YOLO+LPR）按<strong>抽帧策略</strong>补充</li>
+            <li>后端方案可扩展模型、黑白名单、多类型车牌</li>
+            <li>模型可随项目数据持续迭代（另议）</li>
+          </ul>
+        </div>
+      </div>
+      
+      <div>
+        <div class="card" style="margin-bottom: 16px;">
+          <h3>技术指标与验收前提</h3>
+          <table style="margin-top: 10px;">
+            <tr><td>白天识别率（目标）</td><td style="color:#00C864;font-weight:700;">≥ 95%（良好光照·约定车速·安装角达标）</td></tr>
+            <tr><td>夜间识别率（目标）</td><td style="color:#00C864;font-weight:700;">≥ 85%（有补光/可控车速前提下）</td></tr>
+            <tr><td>单路推理延迟</td><td style="color:#fff;font-weight:600;">典型 &lt; 200ms/帧（视抽帧策略）</td></tr>
+            <tr><td>分析策略</td><td style="color:#fff;font-weight:600;">重点路连续；其余轮询/抽帧（非 40 路全帧）</td></tr>
+            <tr><td>支持车牌类型</td><td style="color:#fff;font-weight:600;">蓝/黄/绿/新能源等（港澳等另测）</td></tr>
+            <tr><td>识别触发</td><td style="color:#fff;font-weight:600;">区域划线 + 越线检测</td></tr>
+            <tr><td>部署方式</td><td style="color:#fff;font-weight:600;">本地边缘；可升级 GPU</td></tr>
+            <tr><td>验收方式</td><td style="color:#fff;font-weight:600;">现场抽样时段 + 双方签字确认表</td></tr>
+          </table>
+        </div>
+        
+        <div class="card">
+          <h3>识别效果示意</h3>
+          <div style="background:rgba(0,0,0,0.3); border-radius:10px; padding:20px; margin-top:12px; text-align:center; font-size:13px; color:var(--muted);">
+            <div style="font-size:32px; margin-bottom:10px;">🚗</div>
+            <div style="color:#fff; font-size:18px; font-weight:700; letter-spacing:4px; margin-bottom:4px;">
+              川A · 8K5M2
+            </div>
+            <div style="font-size:12px; color:var(--accent);">置信度 98.2% · DS-2CD1245-LA @ 入口</div>
+            <div style="font-size:12px; color:var(--muted); margin-top:4px;">2026-03-26 09:41:23</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Slide 7: 车辆轨迹追踪 -->
+<div class="slide" id="slide-7">
+  <div class="slide-header">
+    <h2>🚛 车辆轨迹追踪系统</h2>
+    <span class="tag">07 / 14</span>
+  </div>
+  <div class="slide-content">
+    <div class="grid-2">
+      <div>
+        <div class="card" style="margin-bottom: 16px;">
+          <h3>轨迹追踪逻辑</h3>
+          <ul class="feature-list" style="margin-top: 14px;">
+            <li><strong style="color:#fff;">入场识别</strong> — 车辆首次出现在任意摄像头即记录入场时间</li>
+            <li><strong style="color:#fff;">在场追踪</strong> — 记录该车经过的每个摄像头点位 + 时间</li>
+            <li><strong style="color:#fff;">轨迹生成</strong> — 按时间顺序串联各点位，形成完整在场轨迹</li>
+            <li><strong style="color:#fff;">出场记录</strong> — 车辆离开全场后记录出场时间，计算停留时长</li>
+            <li><strong style="color:#fff;">滞留告警</strong> — 装卸区停留超设定时间自动推送告警</li>
+          </ul>
+        </div>
+        
+        <div class="card">
+          <h3>物流站场景特色</h3>
+          <ul class="feature-list" style="margin-top: 14px;">
+            <li>入口→装卸区→出口 全流程追踪</li>
+            <li>区分内部车 / 外来车 / 长期滞留车</li>
+            <li>装卸区车辆排队叫号提醒（扩展功能）</li>
+            <li>夜间异常驻留车辆自动标记</li>
+          </ul>
+        </div>
+      </div>
+      
+      <div>
+        <div class="card" style="margin-bottom: 16px;">
+          <h3>轨迹数据示例</h3>
+          <table style="margin-top: 10px; font-size: 12.5px;">
+            <thead>
+              <tr>
+                <th>车牌</th>
+                <th>时间</th>
+                <th>位置</th>
+                <th>类型</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td style="color:#fff;font-weight:600;">川A·8K5M2</td>
+                <td>08:12:34</td>
+                <td>入口大门</td>
+                <td><span class="tag tag-blue">入场</span></td>
+              </tr>
+              <tr>
+                <td style="color:#fff;font-weight:600;">川A·8K5M2</td>
+                <td>08:13:02</td>
+                <td>装卸区A区</td>
+                <td><span class="tag tag-purple">经过</span></td>
+              </tr>
+              <tr>
+                <td style="color:#fff;font-weight:600;">川A·8K5M2</td>
+                <td>09:47:18</td>
+                <td>装卸区A区</td>
+                <td><span class="tag tag-orange">滞留</span></td>
+              </tr>
+              <tr>
+                <td style="color:#fff;font-weight:600;">川A·8K5M2</td>
+                <td>10:22:05</td>
+                <td>出口大门</td>
+                <td><span class="tag tag-green">出场</span></td>
+              </tr>
+            </tbody>
+          </table>
+          <div style="margin-top: 12px; padding: 10px; background: rgba(0,212,255,0.05); border-radius: 8px; font-size: 12px; color: var(--muted);">
+            ⏱ 总停留时长：<strong style="color:#fff;">2小时09分31秒</strong>
+          </div>
+        </div>
+        
+        <div class="card" style="background: rgba(0,180,100,0.05); border-color: rgba(0,180,100,0.2);">
+          <h3 style="color:#00C864;">📐 轨迹展示界面</h3>
+          <ul class="feature-list" style="margin-top: 10px;">
+            <li>地图热力图：显示车辆密集区域</li>
+            <li>时间轴：拖动查看任意时刻车辆位置</li>
+            <li>列表查询：按车牌/时间/位置多维筛选</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Slide 8: 安防告警 -->
+<div class="slide" id="slide-8">
+  <div class="slide-header">
+    <h2>🚨 安防告警自动化</h2>
+    <span class="tag">08 / 14</span>
+  </div>
+  <div class="slide-content">
+    <div class="grid-3">
+      <div class="card">
+        <h3>触发规则配置</h3>
+        <ul class="feature-list">
+          <li><strong style="color:#fff;">陌生车辆入场</strong><br>不在白名单的外来车辆进入园区</li>
+          <li><strong style="color:#fff;">黑名单车辆</strong><br>盗抢车、逃费车、被举报车辆</li>
+          <li><strong style="color:#fff;">滞留超时</strong><br>装卸区停留超过设定时间</li>
+          <li><strong style="color:#fff;">夜间闯入</strong><br>非工作时间有人车异常活动</li>
+          <li><strong style="color:#fff;">设备离线</strong><br>摄像头断线超过N分钟告警</li>
+        </ul>
+        <span class="tag tag-blue">规则引擎</span>
+      </div>
+      
+      <div class="card">
+        <h3>推送方式</h3>
+        <ul class="feature-list">
+          <li><strong style="color:#fff;">企业微信机器人</strong><br>Webhook 实时推送，秒级到达</li>
+          <li><strong style="color:#fff;">钉钉群机器人</strong><br>支持 @ 人员，附截图</li>
+          <li><strong style="color:#fff;">短信通知</strong><br>关键告警二次确认</li>
+          <li><strong style="color:#fff;">本地声光告警</strong><br>可联动现场音箱/警灯</li>
+          <li><strong style="color:#fff;">Web后台记录</strong><br>所有告警完整日志</li>
+        </ul>
+        <span class="tag tag-orange">多通道推送</span>
+      </div>
+      
+      <div class="card">
+        <h3>告警内容</h3>
+        <ul class="feature-list">
+          <li>📸 自动抓拍现场图片</li>
+          <li>🔤 车牌号码 + 车辆类型</li>
+          <li>📍 触发位置 + 摄像头名称</li>
+          <li>🕐 精确到秒的触发时间</li>
+          <li>⚡ 告警等级（普通/紧急/严重）</li>
+        </ul>
+        <span class="tag tag-purple">完整信息</span>
+      </div>
+    </div>
+    
+    <div class="card" style="margin-top: 20px;">
+      <h3>微信告警效果示意</h3>
+      <div style="display:flex; gap:20px; margin-top:14px; align-items:flex-start;">
+        <div style="background:rgba(0,0,0,0.4); border:1px solid rgba(255,255,255,0.1); border-radius:12px; padding:16px; flex:1; max-width:340px;">
+          <div style="font-size:12px; color:#8899AA; margin-bottom:8px;">企业微信群机器人推送</div>
+          <div style="font-weight:700; color:#fff; font-size:14px; margin-bottom:8px;">🚨 陌生车辆入场告警</div>
+          <div style="font-size:13px; color:#ccc; line-height:1.8;">
+            <strong style="color:#fff;">车牌：</strong>川A·8K5M2<br>
+            <strong style="color:#fff;">类型：</strong>蓝色 · 小型货车<br>
+            <strong style="color:#fff;">位置：</strong>入口大门<br>
+            <strong style="color:#fff;">时间：</strong>2026-03-26 09:12:34<br>
+            <strong style="color:#fff;">置信度：</strong>98.2%
+          </div>
+          <div style="margin-top:10px; background:rgba(255,107,53,0.15); border-radius:6px; padding:8px; text-align:center;">
+            <span style="color:#FF6B35; font-size:12px;">👆 点击查看抓拍图片</span>
+          </div>
+        </div>
+        
+        <div style="flex:1;">
+          <div class="grid-2" style="gap:12px;">
+            <div style="background:rgba(0,200,100,0.06); border:1px solid rgba(0,200,100,0.2); border-radius:10px; padding:14px; text-align:center;">
+              <div style="font-size:28px;">✅</div>
+              <div style="font-size:13px; color:#00C864; font-weight:600; margin-top:6px;">告警秒级推送</div>
+              <div style="font-size:11px; color:var(--muted);">从识别到推送 &lt; 3秒</div>
+            </div>
+            <div style="background:rgba(0,212,255,0.06); border:1px solid rgba(0,212,255,0.2); border-radius:10px; padding:14px; text-align:center;">
+              <div style="font-size:28px;">📸</div>
+              <div style="font-size:13px; color:var(--accent); font-weight:600; margin-top:6px;">附现场图片</div>
+              <div style="font-size:11px; color:var(--muted);">自动抓拍高清截图</div>
+            </div>
+            <div style="background:rgba(255,107,53,0.06); border:1px solid rgba(255,107,53,0.2); border-radius:10px; padding:14px; text-align:center;">
+              <div style="font-size:28px;">🗂</div>
+              <div style="font-size:13px; color:var(--accent2); font-weight:600; margin-top:6px;">完整日志</div>
+              <div style="font-size:11px; color:var(--muted);">所有告警永久可查</div>
+            </div>
+            <div style="background:rgba(150,100,255,0.06); border:1px solid rgba(150,100,255,0.2); border-radius:10px; padding:14px; text-align:center;">
+              <div style="font-size:28px;">⚙️</div>
+              <div style="font-size:13px; color:#B580FF; font-weight:600; margin-top:6px;">规则可配置</div>
+              <div style="font-size:11px; color:var(--muted);">随时调整告警策略</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Slide 9: 数据后台 -->
+<div class="slide" id="slide-9">
+  <div class="slide-header">
+    <h2>📊 数据后台与管理功能</h2>
+    <span class="tag">09 / 14</span>
+  </div>
+  <div class="slide-content">
+    <div class="grid-4">
+      <div class="card">
+        <div class="icon">🚗</div>
+        <h3>车辆管理</h3>
+        <ul class="feature-list">
+          <li>白名单添加/删除/导入</li>
+          <li>黑名单管理</li>
+          <li>车辆信息备注</li>
+          <li>Excel批量导入导出</li>
+        </ul>
+      </div>
+      <div class="card">
+        <div class="icon">📋</div>
+        <h3>进出记录</h3>
+        <ul class="feature-list">
+          <li>按车牌/时间/位置查询</li>
+          <li>抓拍图片查看</li>
+          <li>记录导出Excel/PDF</li>
+          <li>停留时长统计</li>
+        </ul>
+      </div>
+      <div class="card">
+        <div class="icon">🚨</div>
+        <h3>告警中心</h3>
+        <ul class="feature-list">
+          <li>实时告警列表</li>
+          <li>历史告警查询</li>
+          <li>告警处理状态跟进</li>
+          <li>告警趋势图表</li>
+        </ul>
+      </div>
+      <div class="card">
+        <div class="icon">📈</div>
+        <h3>数据统计</h3>
+        <ul class="feature-list">
+          <li>日/周/月进出量报表</li>
+          <li>高峰时段分析</li>
+          <li>滞留车辆统计</li>
+          <li>设备在线率监控</li>
+        </ul>
+      </div>
+    </div>
+    
+    <div class="grid-3" style="margin-top: 20px;">
+      <div class="card" style="padding:20px;">
+        <h3 style="margin-bottom: 16px;">📅 日均进出量趋势（示例）</h3>
+        <div style="display:flex; align-items:flex-end; gap:8px; height:100px;">
+          <div style="flex:1; background:rgba(0,212,255,0.2); border-radius:4px 4px 0 0; height:45%;"></div>
+          <div style="flex:1; background:rgba(0,212,255,0.3); border-radius:4px 4px 0 0; height:55%;"></div>
+          <div style="flex:1; background:rgba(0,212,255,0.4); border-radius:4px 4px 0 0; height:70%;"></div>
+          <div style="flex:1; background:rgba(0,212,255,0.5); border-radius:4px 4px 0 0; height:85%;"></div>
+          <div style="flex:1; background:rgba(0,212,255,0.6); border-radius:4px 4px 0 0; height:60%;"></div>
+          <div style="flex:1; background:rgba(0,212,255,0.7); border-radius:4px 4px 0 0; height:90%;"></div>
+          <div style="flex:1; background:rgba(0,212,255,0.5); border-radius:4px 4px 0 0; height:50%;"></div>
+        </div>
+        <div style="display:flex; gap:8px; margin-top:6px; font-size:10px; color:var(--muted);">
+          <div style="flex:1; text-align:center;">周一</div>
+          <div style="flex:1; text-align:center;">周二</div>
+          <div style="flex:1; text-align:center;">周三</div>
+          <div style="flex:1; text-align:center;">周四</div>
+          <div style="flex:1; text-align:center;">周五</div>
+          <div style="flex:1; text-align:center;">周六</div>
+          <div style="flex:1; text-align:center;">周日</div>
+        </div>
+      </div>
+      
+      <div class="card" style="padding:20px;">
+        <h3 style="margin-bottom: 16px;">🏆 TOP 5 来访车辆</h3>
+        <div style="display:flex; flex-direction:column; gap:10px;">
+          <div style="display:flex; justify-content:space-between; align-items:center;">
+            <span style="color:#fff; font-size:13px;">川A·8K5M2</span>
+            <span style="color:var(--muted); font-size:12px;">42次/本周</span>
+            <div style="width:80px; height:6px; background:rgba(0,212,255,0.1); border-radius:3px;"><div style="width:100%; height:100%; background:var(--accent); border-radius:3px;"></div></div>
+          </div>
+          <div style="display:flex; justify-content:space-between; align-items:center;">
+            <span style="color:#fff; font-size:13px;">渝B·3N7K9</span>
+            <span style="color:var(--muted); font-size:12px;">38次/本周</span>
+            <div style="width:80px; height:6px; background:rgba(0,212,255,0.1); border-radius:3px;"><div style="width:90%; height:100%; background:var(--accent); border-radius:3px;"></div></div>
+          </div>
+          <div style="display:flex; justify-content:space-between; align-items:center;">
+            <span style="color:#fff; font-size:13px;">鄂A·2P8L3</span>
+            <span style="color:var(--muted); font-size:12px;">31次/本周</span>
+            <div style="width:80px; height:6px; background:rgba(0,212,255,0.1); border-radius:3px;"><div style="width:74%; height:100%; background:var(--accent); border-radius:3px;"></div></div>
+          </div>
+          <div style="display:flex; justify-content:space-between; align-items:center;">
+            <span style="color:#fff; font-size:13px;">粤B·7Q2M6</span>
+            <span style="color:var(--muted); font-size:12px;">28次/本周</span>
+            <div style="width:80px; height:6px; background:rgba(0,212,255,0.1); border-radius:3px;"><div style="width:67%; height:100%; background:var(--accent); border-radius:3px;"></div></div>
+          </div>
+          <div style="display:flex; justify-content:space-between; align-items:center;">
+            <span style="color:#fff; font-size:13px;">浙A·5W1J8</span>
+            <span style="color:var(--muted); font-size:12px;">25次/本周</span>
+            <div style="width:80px; height:6px; background:rgba(0,212,255,0.1); border-radius:3px;"><div style="width:60%; height:100%; background:var(--accent); border-radius:3px;"></div></div>
+          </div>
+        </div>
+      </div>
+      
+      <div class="card" style="padding:20px;">
+        <h3 style="margin-bottom: 16px;">📍 实时在场车辆</h3>
+        <div style="text-align:center; padding: 10px 0;">
+          <div style="font-size:48px; font-weight:900; color:var(--accent);">23</div>
+          <div style="font-size:13px; color:var(--muted);">辆车辆当前在场</div>
+        </div>
+        <div style="border-top:1px solid var(--border); padding-top:12px; margin-top:10px;">
+          <div style="display:flex; justify-content:space-between; font-size:12px; color:var(--muted); margin:4px 0;">
+            <span>内部车辆</span><span style="color:#00C864;">18辆</span>
+          </div>
+          <div style="display:flex; justify-content:space-between; font-size:12px; color:var(--muted); margin:4px 0;">
+            <span>外来车辆</span><span style="color:var(--accent2);">5辆</span>
+          </div>
+          <div style="display:flex; justify-content:space-between; font-size:12px; color:var(--muted); margin:4px 0;">
+            <span>超时滞留</span><span style="color:#FF6B35;">2辆</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Slide 10: 网络拓扑 -->
+<div class="slide" id="slide-10">
+  <div class="slide-header">
+    <h2>🌐 网络拓扑设计</h2>
+    <span class="tag">10 / 14</span>
+  </div>
+  <div class="slide-content">
+    <div style="display:flex; flex-direction:column; align-items:center; justify-content:center; height:100%; gap:20px;">
+      <div class="topo-row">
+        <div class="topo-box" style="background:rgba(0,212,255,0.08); border-color:rgba(0,212,255,0.3); color:var(--accent); font-weight:600;">
+          📶 互联网入口
+        </div>
+        <div class="arch-arrow">→</div>
+        <div class="topo-box" style="background:rgba(0,212,255,0.08); border-color:rgba(0,212,255,0.3); color:var(--accent); font-weight:600;">
+          路由器 / 光猫
+        </div>
+        <div class="arch-arrow">→</div>
+        <div class="topo-box" style="background:rgba(255,107,53,0.08); border-color:rgba(255,107,53,0.3); color:var(--accent2); font-weight:600;">
+          核心交换机<br><span style="font-size:11px; font-weight:400; color:var(--muted);">锐捷 NBS3000-24GT2SFP</span>
+        </div>
+      </div>
+      
+      <div style="text-align:center; color:var(--muted); font-size:20px;">▼</div>
+      
+      <div class="topo-row">
+        <div class="topo-box" style="background:rgba(255,107,53,0.08); border-color:rgba(255,107,53,0.3); color:var(--accent2);">
+          5口 PoE ×10<br><span style="font-size:11px; font-weight:400; color:var(--muted);">锐捷 RG-YS108G-P</span>
+        </div>
+        <div style="font-size:22px; color:var(--muted);">⇄</div>
+        <div class="topo-box" style="background:rgba(255,107,53,0.08); border-color:rgba(255,107,53,0.3); color:var(--accent2);">
+          16口 PoE ×1<br><span style="font-size:11px; font-weight:400; color:var(--muted);">锐捷 RG-ES116GS-P-E</span>
+        </div>
+      </div>
+      
+      <div style="text-align:center; color:var(--muted); font-size:20px;">▼ &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ▼</div>
+      
+      <div class="topo-row" style="gap: 12px; flex-wrap: wrap; justify-content: center;">
+        <div class="topo-box" style="font-size:12px; padding:10px 14px;">📹 摄像头 1~20<br><span style="font-size:10px; color:var(--muted);">DS-2CD1245-LA</span></div>
+        <div class="topo-box" style="font-size:12px; padding:10px 14px;">📹 摄像头 21~40<br><span style="font-size:10px; color:var(--muted);">DS-2CD1245-LA</span></div>
+        <div class="topo-box" style="font-size:12px; padding:10px 14px;">🖥️ NVR 录像机<br><span style="font-size:10px; color:var(--muted);">DS-8864N-R8 · 2×8TB</span></div>
+        <div class="topo-box" style="font-size:12px; padding:10px 14px;">🧠 AI识别服务器<br><span style="font-size:10px; color:var(--muted);">本地推理 · 策略见架构页</span></div>
+        <div class="topo-box" style="font-size:12px; padding:10px 14px;">💻 管理电脑<br><span style="font-size:10px; color:var(--muted);">Web后台 / 本地查看</span></div>
+      </div>
+      
+      <div class="topo-notes-grid" style="display:grid; grid-template-columns: 1fr 1fr; gap:20px; width:100%; max-width:700px; margin-top:10px;">
+        <div class="card" style="padding:16px; background:rgba(0,180,100,0.05); border-color:rgba(0,180,100,0.2);">
+          <h3 style="font-size:13px; color:#00C864; margin-bottom:8px;">✅ 网络与 PoE</h3>
+          <ul class="feature-list" style="font-size:12px;">
+            <li>统一局域网 192.168.1.x 网段；核心/上联<strong>千兆</strong>，按峰值码率留余量</li>
+            <li>PoE 交换机总功率需覆盖所接摄像头功耗，<strong>避免满载</strong></li>
+            <li>AI 与 NVR 同网段分流：录像走 NVR，分析流按需拉取</li>
+          </ul>
+        </div>
+        <div class="card" style="padding:16px; background:rgba(0,212,255,0.05); border-color:rgba(0,212,255,0.2);">
+          <h3 style="font-size:13px; color:var(--accent); margin-bottom:8px;">💾 存储估算（说明）</h3>
+          <ul class="feature-list" style="font-size:12px;">
+            <li>30 天容量 ≈ 路数 × 码率 × 时间；40 路 4MP 时<strong>务必现场实测主码流码率</strong></li>
+            <li>当前 2×8TB 为<strong>方案档估算</strong>；不足时加盘或调录像策略（降帧/减路）</li>
+            <li>NVR、摄像头与<strong>数据合规</strong>策略在验收单中确认留存周期</li>
+          </ul>
+        </div>
+      </div>
+      <div class="card" style="padding:16px; margin-top:12px; max-width:700px; width:100%; background:rgba(150,100,255,0.06); border-color:rgba(150,100,255,0.2);">
+        <h3 style="font-size:13px; color:#B580FF; margin-bottom:8px;">🔐 安全与合规（原则）</h3>
+        <ul class="feature-list" style="font-size:12px;">
+          <li>车牌、轨迹属敏感信息：<strong>账号分级、最小权限、操作日志、导出审批</strong>由客户制度+系统配合</li>
+          <li>设备默认口令必改；管理面尽量仅内网；AI 服务器不直连公网</li>
+          <li>具体留存期限与对接公安等要求，以<strong>当地规定与客户法务</strong>为准，可写进合同附件</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Slide 11: 实施计划 -->
+<div class="slide" id="slide-11">
+  <div class="slide-header">
+    <h2>📅 项目实施计划</h2>
+    <span class="tag">11 / 14</span>
+  </div>
+  <div class="slide-content">
+    <div class="timeline">
+      <div class="timeline-item">
+        <div class="week">第 1 周</div>
+        <div class="title">现场勘查 & 设备到货部署</div>
+        <div class="desc">勘查确认点位与取电<br>设备到货验货<br>网线敷设 & 交换机上架<br>摄像头安装 & NVR 存储配置</div>
+      </div>
+      <div class="timeline-item">
+        <div class="week">第 2 周</div>
+        <div class="title">识别引擎开发（我方）</div>
+        <div class="desc">YOLOv8 + LPR 部署与抽帧策略<br>RTSP 按需拉流（重点路优先）<br>识别阈值与规则调优<br>数据库设计与初始化</div>
+      </div>
+      <div class="timeline-item">
+        <div class="week">第 3 周</div>
+        <div class="title">系统联调 & 功能交付</div>
+        <div class="desc">黑白名单管理功能<br>告警推送配置（微信/钉钉）<br>Web后台交付<br>轨迹系统功能上线</div>
+      </div>
+      <div class="timeline-item">
+        <div class="week">第 4 周</div>
+        <div class="title">培训 & 验收 & 优化</div>
+        <div class="desc">使用培训（1小时）<br>数据统计报表验收<br>参数调优<br>文档交付 & 项目验收</div>
+      </div>
+    </div>
+    
+    <div class="grid-3" style="margin-top: 30px;">
+      <div class="card" style="text-align:center;">
+        <div style="font-size:36px; margin-bottom:10px;">🗓️</div>
+        <h3>交付节点</h3>
+        <p style="margin-top:8px;">按周验收，客户确认后再推进下阶段，降低返工风险</p>
+      </div>
+      <div class="card" style="text-align:center;">
+        <div style="font-size:36px; margin-bottom:10px;">👨‍💻</div>
+        <h3>远程支持</h3>
+        <p style="margin-top:8px;">实施期间全程远程技术支持，问题当日响应解决</p>
+      </div>
+      <div class="card" style="text-align:center;">
+        <div style="font-size:36px; margin-bottom:10px;">📖</div>
+        <h3>完整文档</h3>
+        <p style="margin-top:8px;">交付使用手册 + 维护指南 + 接口文档，无后顾之忧</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Slide 12: 售后服务 -->
+<div class="slide" id="slide-12">
+  <div class="slide-header">
+    <h2>🤝 售后服务与培训</h2>
+    <span class="tag">12 / 14</span>
+  </div>
+  <div class="slide-content">
+    <div class="grid-2">
+      <div>
+        <div class="card" style="margin-bottom: 16px;">
+          <h3>硬件质保</h3>
+          <ul class="feature-list">
+            <li>海康威视设备：原厂3年质保</li>
+            <li>希捷监控硬盘：原厂3年质保</li>
+            <li>AI服务器：1年硬件质保</li>
+            <li>质保期内硬件故障免费更换</li>
+          </ul>
+        </div>
+        
+        <div class="card" style="margin-bottom: 16px;">
+          <h3>软件服务</h3>
+          <ul class="feature-list">
+            <li>交付后 3 个月内免费 Bug 修复</li>
+            <li>告警规则调整（免费 3 次）</li>
+            <li>白名单批量更新（免费协助）</li>
+            <li>后续功能升级：按需报价</li>
+          </ul>
+        </div>
+        
+        <div class="card">
+          <h3>响应承诺</h3>
+          <ul class="feature-list">
+            <li>工作日：2小时内响应</li>
+            <li>紧急故障：4小时内到场支持</li>
+            <li>非紧急问题：24小时内解决</li>
+            <li>远程无法解决时：48小时内到场</li>
+          </ul>
+        </div>
+        
+        <div class="card" style="background: rgba(255,107,53,0.06); border-color: rgba(255,107,53,0.25);">
+          <h3 style="color: var(--accent2);">⚖️ 合同与变更边界</h3>
+          <ul class="feature-list" style="font-size:13px;">
+            <li>范围以<strong>合同+附件</strong>（设备清单、软件功能列表、验收标准）为准</li>
+            <li>现场条件与勘查不一致导致的<strong>增量</strong>（布线、取电、增盘、加 GPU）走<strong>变更签证</strong></li>
+            <li>UPS 约 10 分钟为<strong>有序关机缓冲</strong>；长时断录需客户自备发电机或扩容电池</li>
+          </ul>
+        </div>
+      </div>
+      
+      <div>
+        <div class="card" style="margin-bottom: 16px;">
+          <h3>培训内容</h3>
+          <ul class="feature-list">
+            <li><strong style="color:#fff;">基础操作</strong> — 黑白名单管理、记录查询</li>
+            <li><strong style="color:#fff;">告警配置</strong> — 规则添加/修改/删除</li>
+            <li><strong style="color:#fff;">数据报表</strong> — 进出统计、导出操作</li>
+            <li><strong style="color:#fff;">日常维护</strong> — 设备状态检查、简单故障排查</li>
+            <li><strong style="color:#fff;">应急处理</strong> — 设备离线、识别异常的处理流程</li>
+          </ul>
+        </div>
+        
+        <div class="card" style="background: linear-gradient(135deg, rgba(0,212,255,0.06), rgba(255,107,53,0.04)); border-color: rgba(0,212,255,0.2);">
+          <h3 style="color: var(--accent);">📦 交付清单</h3>
+          <ul class="feature-list">
+            <li>📄 设备清单 & 接线图</li>
+            <li>📄 系统使用手册（电子版）</li>
+            <li>📄 维护指南 & 常见问题</li>
+            <li>📄 软件接口文档（REST API）</li>
+            <li>📄 项目验收报告</li>
+            <li>📄 设备保修卡 & 发票</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Slide 13: 成本汇总 -->
+<div class="slide" id="slide-13">
+  <div class="slide-header">
+    <h2>💵 成本汇总</h2>
+    <span class="tag">13 / 14</span>
+  </div>
+  <div class="slide-content">
+    <div class="grid-2" style="height: 100%;">
+      <div>
+        <table>
+          <thead>
+            <tr>
+              <th>费用类别</th>
+              <th>金额 (元)</th>
+              <th>占比</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>设备与辅材（行1–40）</td>
+              <td class="num">64,290</td>
+              <td style="color:var(--muted);">75.6%</td>
+            </tr>
+            <tr>
+              <td>施工安装（行41–47）</td>
+              <td class="num">19,800</td>
+              <td style="color:var(--muted);">23.3%</td>
+            </tr>
+            <tr>
+              <td>附件杂件（行48）</td>
+              <td class="num">1,000</td>
+              <td style="color:var(--muted);">1.2%</td>
+            </tr>
+            <tr>
+              <td>智能软件 / AI 平台（首期）</td>
+              <td class="num">—</td>
+              <td style="color:var(--muted);">另议</td>
+            </tr>
+          </tbody>
+          <tfoot>
+            <tr style="background: rgba(0,212,255,0.06);">
+              <td style="font-weight:700; color:var(--accent);">附件一参考合计（行1–48 · 含税）</td>
+              <td class="total">85,090</td>
+              <td style="color:var(--muted);">100%</td>
+            </tr>
+          </tfoot>
+        </table>
+        
+        <div style="margin-top: 20px; display: grid; grid-template-columns: 1fr 1fr; gap: 12px;">
+          <div class="card" style="padding:16px; text-align:center; background:rgba(0,180,100,0.05); border-color:rgba(0,180,100,0.2);">
+            <div style="font-size:24px; margin-bottom:6px;">📎</div>
+            <div style="font-size:12px; color:var(--muted);">设备+施工（参考）</div>
+            <div style="font-size:22px; font-weight:900; color:#00C864; margin-top:4px;">≈8.5万</div>
+            <div style="font-size:11px; color:var(--muted); margin-top:6px;">含税明细 ¥85,090</div>
+          </div>
+          <div class="card" style="padding:16px; text-align:center; background:rgba(0,212,255,0.05); border-color:rgba(0,212,255,0.2);">
+            <div style="font-size:24px; margin-bottom:6px;">🧠</div>
+            <div style="font-size:12px; color:var(--muted);">软件与服务器</div>
+            <div style="font-size:22px; font-weight:900; color:var(--accent); margin-top:4px;">单独报价</div>
+          </div>
+        </div>
+      </div>
+      
+      <div>
+        <div class="budget-total">
+          <div style="font-size:13px; color:var(--muted); margin-bottom:8px;">附件一参考总价（行1–48 · 含税）</div>
+          <div class="amount">¥ 85,090<span>元</span></div>
+          <div class="note">大写：捌万伍仟零玖拾元整 · 含税方式以合同为准</div>
+        </div>
+        
+        <div class="card" style="margin-top: 20px;">
+          <h3>💡 优化提示</h3>
+          <ul class="feature-list">
+            <li><strong style="color:#fff;">施工费占比高</strong> — 放线路由、熔接量与附件一一致时可复核单价与米数</li>
+            <li><strong style="color:#fff;">存储</strong> — NVR 备注与硬盘备注需统一「留存天数」，不足则加盘或降码率</li>
+            <li><strong style="color:#fff;">软件拆分</strong> — 先保证录像与出入口 DS-TMC200-E1 / DS-TMG03A-E 上线，AI 轨迹分期可减少一次性投入</li>
+            <li><strong style="color:#fff;">分期付款</strong> — 可按设备到货 / 施工节点 / 验收分笔支付</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Slide 14: 联系方式 / 结束 -->
+<div class="slide cover" id="slide-14">
+  <div class="cover-badge">THANK YOU</div>
+  <h1 style="font-size:42px;">
+    期待与您合作
+    <span style="font-size:22px; font-weight:400;">开启智慧物流安防新时代</span>
+  </h1>
+  
+  <div style="margin-top: 40px; display:flex; justify-content:center; max-width:700px;">
+    <div class="card" style="padding:24px 40px; text-align:center;">
+      <a class="contact-logo-link" href="https://aixiwu.cn" target="_blank" rel="noopener noreferrer" title="aixiwu.cn">
+        <img class="contact-logo" src="assets/lianxin-logo.png" alt="联信科技" />
+      </a>
+      <div style="font-size:14px; font-weight:700; color:#fff;">AIxiwu.cn</div>
+      <div style="font-size:12px; color:var(--muted); margin-top:4px;">联信科技 · 开发者</div>
+    </div>
+  </div>
+  
+  <div style="margin-top: 50px; padding: 20px 40px; background: rgba(0,212,255,0.06); border: 1px solid rgba(0,212,255,0.2); border-radius: 16px; max-width:600px; text-align:center;">
+    <div style="font-size:13px; color:var(--muted); margin-bottom:8px;">下一步</div>
+    <div style="font-size:15px; color:#fff; line-height:1.6;">
+      确认合作意向 → 设备采购清单确认 → 现场勘查 → 签订合同 → 启动实施
+    </div>
+  </div>
+  
+  <div style="margin-top: 30px; font-size:12px; color:var(--muted);">
+    方案版本 v1.4 · 2026-03-26 · 有效期 30 天 · 设备价以附件一为准 · 与合同不一致处以合同为准
+  </div>
+</div>
+
+</div>
+
+<div id="price-unlock-overlay" class="price-unlock-overlay" hidden aria-hidden="true">
+  <div class="price-unlock-dialog" role="dialog" aria-modal="true" aria-labelledby="price-unlock-title">
+    <h2 id="price-unlock-title" class="price-unlock-dialog__title">查看数量 / 单价 / 小计</h2>
+    <p class="price-unlock-dialog__hint">请输入查询码</p>
+    <input type="password" id="price-unlock-input" class="price-unlock-dialog__input" autocomplete="off" inputmode="numeric" />
+    <p id="price-unlock-error" class="price-unlock-dialog__error" hidden>查询码不正确</p>
+    <div class="price-unlock-dialog__actions">
+      <button type="button" id="price-unlock-cancel" class="price-unlock-dialog__btn price-unlock-dialog__btn--ghost">取消</button>
+      <button type="button" id="price-unlock-ok" class="price-unlock-dialog__btn price-unlock-dialog__btn--primary">确认</button>
+    </div>
+  </div>
+</div>
+
+<!-- 导航 -->
+<div class="page-num"><span id="cur">1</span> / <span id="total">14</span></div>
+
+<div class="nav">
+  <button type="button" id="nav-prev" aria-label="上一页">←</button>
+  <button type="button" id="nav-next" aria-label="下一页">→</button>
+</div>
+
+<script>
+  (function () {
+    function setMobileVh() {
+      document.documentElement.style.setProperty('--vh', (window.innerHeight * 0.01) + 'px');
+    }
+    setMobileVh();
+    window.addEventListener('resize', setMobileVh);
+    window.addEventListener('orientationchange', function () { setTimeout(setMobileVh, 350); });
+    window.addEventListener('pageshow', function (e) { if (e.persisted) setMobileVh(); });
+  })();
+
+  let current = 1;
+  const total = 14;
+  
+  function showSlide(n) {
+    if (n < 1) n = 1;
+    if (n > total) n = total;
+    current = n;
+    
+    document.querySelectorAll('.slide').forEach(s => s.classList.remove('active'));
+    document.getElementById('slide-' + n).classList.add('active');
+    document.getElementById('cur').textContent = n;
+    document.getElementById('progress').style.width = ((n / total) * 100) + '%';
+  }
+  
+  function nextSlide() { showSlide(current + 1); }
+  function prevSlide() { showSlide(current - 1); }
+
+  document.getElementById('nav-prev').addEventListener('click', function (e) {
+    e.preventDefault();
+    e.stopPropagation();
+    prevSlide();
+  });
+  document.getElementById('nav-next').addEventListener('click', function (e) {
+    e.preventDefault();
+    e.stopPropagation();
+    nextSlide();
+  });
+  
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'ArrowRight' || e.key === 'ArrowDown' || e.key === ' ') { e.preventDefault(); nextSlide(); }
+    if (e.key === 'ArrowLeft' || e.key === 'ArrowUp') { e.preventDefault(); prevSlide(); }
+  });
+
+  (function touchDoubleTapZoom() {
+    let startX = 0, startY = 0;
+    let lastTap = 0, lastTapX = 0, lastTapY = 0;
+    const TAP_MOVE_MAX = 18;
+    const DOUBLE_MS = 320;
+
+    function overlayOpen() {
+      const o = document.getElementById('price-unlock-overlay');
+      return o && !o.hidden;
+    }
+
+    function touchElement(t) {
+      if (!t) return null;
+      return t.nodeType === 3 ? t.parentElement : t;
+    }
+
+    function ignoreTarget(el) {
+      el = touchElement(el);
+      if (!el || typeof el.closest !== 'function') return false;
+      return !!el.closest('button, a, input, textarea, select, label, [role="dialog"], .nav, .equipment-price-unlock-btn');
+    }
+
+    document.addEventListener('touchstart', function (e) {
+      if (e.touches.length !== 1) return;
+      startX = e.touches[0].clientX;
+      startY = e.touches[0].clientY;
+    }, { passive: true });
+
+    document.addEventListener('touchend', function (e) {
+      if (e.changedTouches.length !== 1) return;
+      if (overlayOpen()) return;
+
+      if (ignoreTarget(e.target)) return;
+
+      const t = e.changedTouches[0];
+      const dx = startX - t.clientX;
+      const dy = startY - t.clientY;
+      const adx = Math.abs(dx), ady = Math.abs(dy);
+
+      if (adx > TAP_MOVE_MAX || ady > TAP_MOVE_MAX) {
+        lastTap = 0;
+        return;
+      }
+
+      const now = Date.now();
+      const x = t.clientX, y = t.clientY;
+      if (now - lastTap < DOUBLE_MS && Math.hypot(x - lastTapX, y - lastTapY) < 60) {
+        document.documentElement.classList.toggle('presentation-zoomed');
+        lastTap = 0;
+        return;
+      }
+      lastTap = now;
+      lastTapX = x;
+      lastTapY = y;
+    }, { passive: true });
+
+    document.addEventListener('dblclick', function (e) {
+      if (overlayOpen()) return;
+      if (ignoreTarget(e.target)) return;
+      e.preventDefault();
+      document.documentElement.classList.toggle('presentation-zoomed');
+    });
+  })();
+
+  (function equipmentPriceUnlock() {
+    const PRICE_QUERY_CODE = '665173';
+    const EQUIPMENT_PRICE_ROWS = [
+      ['6 台', '260', '1,560'], ['30 台', '260', '7,800'], ['2 台', '560', '1,120'], ['30 个', '15', '450'], ['2 台', '1,800', '3,600'],
+      ['7 台', '450', '3,150'], ['7 个', '150', '1,050'], ['7 个', '50', '350'], ['2 个', '100', '200'], ['2 台', '3,950', '7,900'],
+      ['2 台', '200', '400'], ['10 台', '260', '2,600'], ['1 台', '835', '835'], ['1 台', '1,245', '1,245'], ['18 个', '110', '1,980'],
+      ['2 对', '110', '220'], ['1 个', '280', '280'], ['1 个', '800', '800'], ['2 个', '125', '250'], ['12 个', '45', '540'],
+      ['1 根', '700', '700'], ['36 根', '10', '360'], ['10 根', '10', '100'], ['2 根', '10', '20'], ['11 个', '25', '275'],
+      ['2 个', '480', '960'], ['2 个', '80', '160'], ['1 台', '2,800', '2,800'], ['2 块', '2,600', '5,200'], ['1 台', '3,250', '3,250'],
+      ['2400 m', '2', '4,800'], ['600 m', '0.5', '300'], ['400 m', '2.5', '1,000'], ['35 m', '10', '350'], ['12 个', '20', '240'],
+      ['12 个', '15', '180'], ['1 根', '165', '165'], ['2000 m', '2.8', '5,600'], ['300 m', '3', '900'], ['200 m', '3', '600'],
+      ['100 芯', '15', '1,500'], ['5400 m', '2', '10,800'], ['550 m', '2', '1,100'], ['40 台', '100', '4,000'], ['12 台', '50', '600'],
+      ['2 台', '800', '1,600'], ['1 项', '200', '200'], ['1 批', '—', '1,000']
+    ];
+
+    const overlay = document.getElementById('price-unlock-overlay');
+    const btn = document.getElementById('equipment-price-unlock-btn');
+    const input = document.getElementById('price-unlock-input');
+    const err = document.getElementById('price-unlock-error');
+    const cancel = document.getElementById('price-unlock-cancel');
+    const ok = document.getElementById('price-unlock-ok');
+
+    function applyRowPrices() {
+      const trs = document.querySelectorAll('#slide-4 table.equipment-detail tbody tr');
+      EQUIPMENT_PRICE_ROWS.forEach(function (pair, i) {
+        const tr = trs[i];
+        if (!tr || tr.querySelector('td[colspan]')) return;
+        const cells = tr.querySelectorAll('td.num.price-mask');
+        if (cells.length < 3) return;
+        cells[0].textContent = pair[0];
+        cells[1].textContent = pair[1];
+        cells[2].textContent = pair[2];
+        cells[0].classList.remove('price-mask');
+        cells[1].classList.remove('price-mask');
+        cells[2].classList.remove('price-mask');
+        cells[0].removeAttribute('title');
+        cells[1].removeAttribute('title');
+        cells[2].removeAttribute('title');
+      });
+    }
+
+    function markUnlockedUi() {
+      if (btn) {
+        btn.disabled = true;
+        btn.textContent = '已显示数量 / 单价 / 小计';
+      }
+    }
+
+    function unlock() {
+      applyRowPrices();
+      markUnlockedUi();
+    }
+
+    function openDialog() {
+      if (!overlay) return;
+      overlay.hidden = false;
+      overlay.setAttribute('aria-hidden', 'false');
+      if (err) err.hidden = true;
+      if (input) {
+        input.value = '';
+        input.focus();
+      }
+    }
+
+    function closeDialog() {
+      if (!overlay) return;
+      overlay.hidden = true;
+      overlay.setAttribute('aria-hidden', 'true');
+    }
+
+    function tryUnlock() {
+      var v = input && input.value ? input.value.trim() : '';
+      if (v === PRICE_QUERY_CODE) {
+        closeDialog();
+        unlock();
+      } else if (err) {
+        err.hidden = false;
+      }
+    }
+
+    if (btn) btn.addEventListener('click', openDialog);
+    if (cancel) cancel.addEventListener('click', closeDialog);
+    if (ok) ok.addEventListener('click', tryUnlock);
+    if (input) {
+      input.addEventListener('keydown', function (e) {
+        if (e.key === 'Enter') tryUnlock();
+      });
+    }
+    if (overlay) {
+      overlay.addEventListener('click', function (e) {
+        if (e.target === overlay) closeDialog();
+      });
+    }
+    document.addEventListener('keydown', function (e) {
+      if (e.key === 'Escape' && overlay && !overlay.hidden) {
+        e.preventDefault();
+        closeDialog();
+      }
+    }, true);
+  })();
+</script>
+</body>
+</html>

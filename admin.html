@@ -1,0 +1,592 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>管理后台 - 联信装机</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="style.css">
+    <style>
+        .admin-page { max-width: 1200px; margin: 0 auto; padding: 2rem; }
+        .admin-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 2rem; }
+        .admin-table { width: 100%; border-collapse: collapse; background: #fff; border-radius: 0.5rem; overflow: hidden; box-shadow: 0 1px 3px rgba(0,0,0,0.1); }
+        .admin-table th, .admin-table td { padding: 0.75rem 1rem; text-align: left; border-bottom: 1px solid #e5e7eb; }
+        .admin-table th { background: #f3f4f6; font-weight: 600; }
+        .admin-table input { width: 100%; padding: 0.5rem; border: 1px solid #d1d5db; border-radius: 0.375rem; }
+        .admin-login { max-width: 400px; margin: 4rem auto; padding: 2rem; background: #fff; border-radius: 1rem; box-shadow: 0 4px 6px rgba(0,0,0,0.1); }
+        .admin-login h2 { text-align: center; margin-bottom: 1.5rem; }
+        .admin-login input { width: 100%; padding: 0.75rem; margin-bottom: 1rem; border: 1px solid #d1d5db; border-radius: 0.5rem; }
+        .cat-tabs { display: flex; gap: 0.5rem; margin-bottom: 1.5rem; flex-wrap: wrap; }
+        .cat-tab { padding: 0.5rem 1rem; background: #f3f4f6; border: none; border-radius: 0.5rem; cursor: pointer; }
+        .cat-tab.active { background: #2563eb; color: #fff; }
+        .add-form { background: #f9fafb; padding: 1rem; border-radius: 0.5rem; margin-bottom: 1rem; color: #111827; }
+        .add-form strong { color: #111827; font-weight: 700; }
+        .add-form input { margin-right: 0.5rem; margin-bottom: 0.5rem; padding: 0.5rem; }
+        .add-form select { padding: 0.5rem; margin-right: 0.5rem; border-radius: 0.375rem; }
+        .btn-sm { padding: 0.25rem 0.5rem; font-size: 0.875rem; }
+        .thumb-cell { display: flex; gap: 0.25rem; align-items: center; }
+        .thumb-cell input { flex: 1; min-width: 0; }
+        .btn-upload { padding: 0.25rem 0.5rem; font-size: 0.75rem; white-space: nowrap; }
+    </style>
+</head>
+<body>
+    <div id="adminLogin" class="admin-login">
+        <h2><i class="fas fa-lock"></i> 管理员登录</h2>
+        <input type="text" id="adminUser" placeholder="管理员账号" value="">
+        <input type="password" id="adminPwd" placeholder="密码" value="">
+        <button class="btn btn-primary btn-block" id="adminLoginBtn">登录</button>
+    </div>
+
+    <div id="adminPanel" class="admin-page" style="display:none">
+        <div class="admin-header">
+            <h1><i class="fas fa-cog"></i> 硬件管理后台</h1>
+            <div>
+                <a href="index.html" class="btn btn-outline"><i class="fas fa-arrow-left"></i> 返回首页</a>
+                <a href="admin-slots.html" class="btn btn-outline" title="首页四宫格配置"><i class="fas fa-th-large"></i> 首页配置</a>
+                <a href="panabit.html" class="btn btn-outline" title="流控管理（到期提醒/导入/编辑）"><i class="fas fa-shield-alt"></i> 流控管理</a>
+                <button class="btn btn-outline" id="myAiConfigBtn" title="我的AI登录配置"><i class="fas fa-robot"></i> 我的AI设置</button>
+                <button class="btn btn-outline" id="reloadDefaultBtn" title="从 app.js 重新加载默认硬件"><i class="fas fa-sync-alt"></i> 恢复默认</button>
+                <button class="btn btn-primary" id="saveHardwareBtn"><i class="fas fa-save"></i> 保存修改</button>
+            </div>
+        </div>
+        <p style="color:#6b7280;margin-bottom:1rem" id="adminHint">修改后点击「保存修改」生效。图片可填路径或URL，支持上传。</p>
+        <div class="admin-main-tabs" style="display:flex;gap:0.5rem;margin-bottom:1rem">
+            <button class="cat-tab admin-main-tab active" data-panel="hardware">硬件管理</button>
+            <button class="cat-tab admin-main-tab" data-panel="products">热门硬件</button>
+            <button class="cat-tab admin-main-tab" data-panel="guides">装机指南</button>
+            <button class="cat-tab admin-main-tab" data-panel="presets">热门配置</button>
+        </div>
+        <div id="adminHardwarePanel">
+        <div class="cat-tabs" id="catTabs"></div>
+        <div class="add-form" id="addForm">
+            <strong>添加新硬件</strong>
+            <div style="margin-top:0.5rem">
+                <select id="addCategory">
+                    <option value="cpu">处理器</option>
+                    <option value="gpu">显卡</option>
+                    <option value="motherboard">主板</option>
+                    <option value="ram">内存</option>
+                    <option value="storage">存储</option>
+                    <option value="cooling">散热</option>
+                    <option value="psu">电源</option>
+                    <option value="case">机箱</option>
+                    <option value="monitor">显示器</option>
+                    <option value="keyboard">键盘</option>
+                    <option value="mouse">鼠标</option>
+                    <option value="headset">耳麦</option>
+                </select>
+                <input type="text" id="addName" placeholder="名称">
+                <input type="text" id="addSpecs" placeholder="规格">
+                <input type="number" id="addPrice" placeholder="价格" style="width:100px">
+                <button class="btn btn-success btn-sm" id="addItemBtn"><i class="fas fa-plus"></i> 添加</button>
+            </div>
+        </div>
+        <table class="admin-table" id="hardwareTable">
+            <thead>
+                <tr><th>ID</th><th>名称</th><th>规格</th><th>价格</th><th>图片</th><th>操作</th></tr>
+            </thead>
+            <tbody id="hardwareBody"></tbody>
+        </table>
+        </div>
+        <div id="adminProductsPanel" style="display:none">
+            <div class="add-form"><strong>热门硬件推荐</strong><span style="margin-left:1rem;color:#6b7280;font-size:0.9rem">分类: gaming/workstation/budget/rgb</span>
+            <button class="btn btn-success btn-sm" id="addProductBtn" style="margin-left:1rem"><i class="fas fa-plus"></i> 添加</button></div>
+            <table class="admin-table"><thead><tr><th>ID</th><th>标题</th><th>规格</th><th>价格</th><th>分类</th><th>图片</th><th>操作</th></tr></thead><tbody id="productsBody"></tbody></table>
+        </div>
+        <div id="adminGuidesPanel" style="display:none">
+            <div class="add-form"><strong>装机指南</strong><button class="btn btn-success btn-sm" id="addGuideBtn" style="margin-left:1rem"><i class="fas fa-plus"></i> 添加</button></div>
+            <table class="admin-table"><thead><tr><th>标题</th><th>描述</th><th>链接</th><th>图片</th><th>操作</th></tr></thead><tbody id="guidesBody"></tbody></table>
+        </div>
+        <div id="adminPresetsPanel" style="display:none">
+            <div class="add-form"><strong>热门预设配置</strong><button class="btn btn-success btn-sm" id="addPresetBtn" style="margin-left:1rem"><i class="fas fa-plus"></i> 添加</button></div>
+            <table class="admin-table"><thead><tr><th>标题</th><th>标签</th><th>规格摘要</th><th>价格</th><th>图片</th><th>操作</th></tr></thead><tbody id="presetsBody"></tbody></table>
+        </div>
+    </div>
+
+    <script type="application/json" id="adminDefaultProducts">[{"id":"p_cpu_7800x3d","title":"【首推】AMD Ryzen 7 7800X3D","specs":"8核16线程 · 3D缓存 · 游戏神U","price":2699,"category":"gaming"},{"id":"p_cpu_9800x3d","title":"【首推】AMD Ryzen 9 9800X3D","specs":"16核32线程 · 3D缓存 · 次世代旗舰","price":5899,"category":"workstation"},{"id":"p_gpu_5070","title":"【首推】NVIDIA RTX 5070","specs":"16GB GDDR7 · DLSS 4","price":4599,"category":"gaming"},{"id":"p_ram_24g","title":"【首推】24GB DDR5 内存套装","specs":"24GB DDR5 6400MHz","price":899,"category":"gaming"},{"id":"p_gpu_4080s","title":"NVIDIA RTX 4080 SUPER","specs":"16GB GDDR6X · 4K游戏","price":7999,"category":"gaming"},{"id":"p_cpu_14700k","title":"Intel Core i7-14700K","specs":"20核28线程","price":2999,"category":"gaming"},{"id":"p_gpu_4070ti","title":"NVIDIA RTX 4070 Ti SUPER","specs":"16GB GDDR6X","price":5999,"category":"gaming"},{"id":"p_gpu_7800xt","title":"AMD Radeon RX 7800 XT","specs":"16GB GDDR6","price":3799,"category":"gaming"},{"id":"p_cfg_4k_edit","title":"4K 视频剪辑工作站套装","specs":"Ryzen 9 + RTX 4090 + 64GB","price":23999,"category":"workstation"},{"id":"p_cpu_9950x3d","title":"AMD Ryzen 9 9950X3D","specs":"16核32线程 · 144MB缓存","price":5499,"category":"workstation"},{"id":"p_gpu_4090","title":"NVIDIA RTX 4090","specs":"24GB GDDR6X","price":12999,"category":"workstation"},{"id":"p_ram_128g","title":"128GB DDR5 创作内存","specs":"4x32GB 6000MHz","price":4999,"category":"workstation"},{"id":"p_ssd_4t_pcie5","title":"4TB PCIe 5.0 NVMe SSD","specs":"读取 12000MB/s","price":2299,"category":"workstation"},{"id":"p_cfg_budget","title":"高性价比游戏整机","specs":"Ryzen 5 + RTX 4060 Ti","price":5999,"category":"budget"},{"id":"p_cpu_7600","title":"AMD Ryzen 5 7600","specs":"6核12线程","price":1499,"category":"budget"},{"id":"p_gpu_3060","title":"NVIDIA RTX 3060 12GB","specs":"12GB GDDR6","price":1999,"category":"budget"},{"id":"p_ram_32g","title":"32GB DDR5 游戏内存","specs":"2x16GB 5600MHz","price":549,"category":"budget"},{"id":"p_ssd_1t","title":"1TB NVMe 固态硬盘","specs":"PCIe 4.0 7000MB/s","price":499,"category":"budget"},{"id":"p_rgb_case","title":"海景房 RGB 机箱套装","specs":"三面玻璃 + 10把风扇","price":1299,"category":"rgb"},{"id":"p_rgb_cooler","title":"360 水冷 RGB 套装","specs":"ARGB 水冷", "price":899,"category":"rgb"},{"id":"p_rgb_ram","title":"32GB RGB 内存","specs":"DDR5 6000MHz", "price":799,"category":"rgb"},{"id":"p_rgb_fans","title":"ARGB 风扇 3把装","specs":"120mm PWM","price":299,"category":"rgb"},{"id":"p_rgb_strip","title":"ARGB 灯带套装","specs":"磁吸灯带","price":199,"category":"rgb"}]</script>
+    <script type="application/json" id="adminDefaultHardware">{"cpu":[{"id":"cpu0","name":"AMD Ryzen 9 9950X3D","specs":"16核32线程 144MB缓存 5.7GHz 旗舰","price":5499,"brand":"amd"},{"id":"cpu0a","name":"AMD Ryzen 9 9950X","specs":"16核32线程 4.3-5.7GHz","price":4999,"brand":"amd"},{"id":"cpu0b","name":"Intel Core i9-14900KS","specs":"24核32线程 3.2-6.2GHz 旗舰","price":5999,"brand":"intel"},{"id":"cpu0c","name":"AMD Ryzen 9 9900X3D","specs":"12核24线程 3D缓存 5.6GHz","price":4599,"brand":"amd"},{"id":"cpu1","name":"Intel Core i9-14900K","specs":"24核32线程 3.2-6.0GHz","price":3999,"brand":"intel"},{"id":"cpu2","name":"AMD Ryzen 9 7950X3D","specs":"16核32线程 3D缓存","price":4299,"brand":"amd"},{"id":"cpu2b","name":"AMD Ryzen 9 7950X","specs":"16核32线程 4.5-5.7GHz","price":3799,"brand":"amd"},{"id":"cpu3","name":"Intel Core i7-14700K","specs":"20核28线程 3.4-5.6GHz","price":2999,"brand":"intel"},{"id":"cpu4","name":"AMD Ryzen 7 7800X3D","specs":"8核16线程 4.2-5.0GHz 游戏神U","price":2699,"brand":"amd"},{"id":"cpu5","name":"Intel Core i5-14600K","specs":"14核20线程 3.5-5.3GHz","price":2099,"brand":"intel"},{"id":"cpu6","name":"AMD Ryzen 5 7600X","specs":"6核12线程 4.7-5.3GHz","price":1499,"brand":"amd"},{"id":"cpu7","name":"Intel Core i3-14100","specs":"4核8线程 3.5-4.7GHz","price":849,"brand":"intel"},{"id":"cpu8","name":"AMD Ryzen 5 5600","specs":"6核12线程 3.5-4.4GHz","price":749,"brand":"amd"}],"gpu":[{"id":"gpu0","name":"NVIDIA RTX 5090","specs":"32GB GDDR7 旗舰 Blackwell","price":18999,"brand":"nvidia"},{"id":"gpu0a","name":"NVIDIA RTX 5090D","specs":"32GB GDDR7 国行特供","price":24999,"brand":"nvidia"},{"id":"gpu0b","name":"NVIDIA RTX 5080","specs":"16GB GDDR7 DLSS 4","price":9999,"brand":"nvidia"},{"id":"gpu0c","name":"NVIDIA RTX 4090 DUAL","specs":"24GB GDDR6X 旗舰","price":13999,"brand":"nvidia"},{"id":"gpu1","name":"NVIDIA RTX 4090","specs":"24GB GDDR6X","price":11999,"brand":"nvidia"},{"id":"gpu2","name":"NVIDIA RTX 4080 SUPER","specs":"16GB GDDR6X","price":7999,"brand":"nvidia"},{"id":"gpu3","name":"AMD Radeon RX 7900 XTX","specs":"24GB GDDR6","price":7199,"brand":"amd"},{"id":"gpu3a","name":"AMD Radeon RX 7900 GRE","specs":"16GB GDDR6 高性价比","price":4299,"brand":"amd"},{"id":"gpu4","name":"NVIDIA RTX 4070 Ti SUPER","specs":"16GB GDDR6X","price":5999,"brand":"nvidia"},{"id":"gpu5","name":"AMD Radeon RX 7800 XT","specs":"16GB GDDR6","price":3799,"brand":"amd"},{"id":"gpu6","name":"NVIDIA RTX 4060 Ti","specs":"8GB GDDR6","price":2999,"brand":"nvidia"},{"id":"gpu7","name":"NVIDIA RTX 3050","specs":"8GB GDDR6","price":1399,"brand":"nvidia"},{"id":"gpu8","name":"AMD Radeon RX 6600","specs":"8GB GDDR6","price":1199,"brand":"amd"}],"motherboard":[{"id":"mb0","name":"ROG MAXIMUS Z790 EXTREME","specs":"Intel Z790 E-ATX 旗舰","price":7999,"brand":"asus"},{"id":"mb0a","name":"ROG CROSSHAIR X870E EXTREME","specs":"AMD X870E E-ATX 旗舰","price":6999,"brand":"asus"},{"id":"mb1","name":"ROG MAXIMUS Z790 HERO","specs":"Intel Z790 ATX","price":4299,"brand":"asus"},{"id":"mb2","name":"MSI MEG X670E GODLIKE","specs":"AMD X670E E-ATX","price":6499,"brand":"msi"},{"id":"mb2a","name":"技嘉 X870E AORUS MASTER","specs":"AMD X870E ATX","price":3499,"brand":"gigabyte"},{"id":"mb3","name":"ASUS TUF GAMING B760-PLUS","specs":"Intel B760 ATX","price":1399,"brand":"asus"},{"id":"mb4","name":"GIGABYTE B650 AORUS ELITE","specs":"AMD B650 ATX","price":1499,"brand":"gigabyte"},{"id":"mb5","name":"ASRock B760M Steel Legend","specs":"Intel B760 mATX","price":1099,"brand":"asrock"},{"id":"mb6","name":"MSI PRO B650M-A WIFI","specs":"AMD B650 mATX","price":1199,"brand":"msi"},{"id":"mb7","name":"华擎 H610M-HDV","specs":"Intel H610 mATX","price":469,"brand":"asrock"},{"id":"mb8","name":"微星 A520M-A PRO","specs":"AMD A520 mATX","price":379,"brand":"msi"}],"ram":[{"id":"ram0","name":"CORSAIR Dominator Titanium","specs":"128GB (4x32GB) DDR5 7200MHz 旗舰","price":5999,"brand":"corsair"},{"id":"ram0a","name":"G.SKILL Trident Z5 RGB","specs":"64GB (2x32GB) DDR5 6400MHz","price":1899,"brand":"gskill"},{"id":"ram1","name":"CORSAIR Dominator Platinum","specs":"64GB (2x32GB) DDR5 6000MHz","price":2099,"brand":"corsair"},{"id":"ram2","name":"G.SKILL Trident Z5 RGB","specs":"32GB (2x16GB) DDR5 6400MHz","price":999,"brand":"gskill"},{"id":"ram3","name":"Kingston FURY Renegade","specs":"32GB (2x16GB) DDR5 6000MHz","price":849,"brand":"kingston"},{"id":"ram4","name":"TeamGroup T-Force Delta RGB","specs":"32GB (2x16GB) DDR5 6000MHz","price":699,"brand":"teamgroup"},{"id":"ram5","name":"Crucial Pro DDR5","specs":"32GB (2x16GB) DDR5 5600MHz","price":749,"brand":"crucial"},{"id":"ram6","name":"ADATA XPG Lancer RGB","specs":"16GB (2x8GB) DDR5 6000MHz","price":549,"brand":"adata"},{"id":"ram7","name":"金百达 DDR5 32GB","specs":"32GB (2x16GB) DDR5 5600","price":499,"brand":"kingbank"},{"id":"ram8","name":"金百达 DDR4 16GB","specs":"16GB (2x8GB) DDR4 3200MHz","price":269,"brand":"kingbank"}],"storage":[{"id":"ssd0","name":"Samsung 990 EVO","specs":"4TB NVMe PCIe 5.0 旗舰","price":2299,"brand":"samsung"},{"id":"ssd0a","name":"WD Black SN850X","specs":"4TB NVMe PCIe 4.0","price":1999,"brand":"wd"},{"id":"ssd1","name":"Samsung 990 PRO","specs":"2TB NVMe PCIe 4.0","price":1099,"brand":"samsung"},{"id":"ssd2","name":"WD Black SN850X","specs":"2TB NVMe PCIe 4.0","price":999,"brand":"wd"},{"id":"ssd2a","name":"致钛 Ti600","specs":"2TB NVMe PCIe 5.0 国产","price":899,"brand":"zhitai"},{"id":"ssd3","name":"Crucial P5 Plus","specs":"1TB NVMe PCIe 4.0","price":549,"brand":"crucial"},{"id":"ssd4","name":"Kingston KC3000","specs":"2TB NVMe PCIe 4.0","price":949,"brand":"kingston"},{"id":"ssd5","name":"Seagate FireCuda 530","specs":"1TB NVMe PCIe 4.0","price":649,"brand":"seagate"},{"id":"ssd6","name":"TeamGroup Cardea Z440","specs":"2TB NVMe PCIe 4.0","price":899,"brand":"teamgroup"},{"id":"ssd7","name":"致钛 5000","specs":"512GB SATA","price":279,"brand":"zhitai"}],"cooling":[{"id":"cool0","name":"NZXT Kraken Elite 420","specs":"420mm AIO 旗舰水冷","price":1799,"brand":"nzxt"},{"id":"cool0a","name":"ROG RYUJIN III 360","specs":"360mm AIO 3.5寸屏","price":2499,"brand":"asus"},{"id":"cool1","name":"Corsair iCUE H150i ELITE","specs":"360mm AIO 水冷","price":1299,"brand":"corsair"},{"id":"cool2","name":"NZXT Kraken 360 RGB","specs":"360mm AIO 水冷","price":1099,"brand":"nzxt"},{"id":"cool3","name":"Noctua NH-D15 chromax","specs":"双塔风冷 静音","price":649,"brand":"noctua"},{"id":"cool4","name":"九州风神 LT720","specs":"360mm AIO","price":599,"brand":"deepcool"},{"id":"cool5","name":"Deepcool AK620","specs":"双塔风冷","price":349,"brand":"deepcool"},{"id":"cool6","name":"ARCTIC Liquid Freezer II","specs":"240mm AIO","price":649,"brand":"arctic"},{"id":"cool7","name":"九州风神 玄冰400","specs":"单塔风冷 入门","price":79,"brand":"deepcool"}],"psu":[{"id":"psu0","name":"Seasonic PRIME TX-1600","specs":"1600W 80+钛金 旗舰","price":3199,"brand":"seasonic"},{"id":"psu0a","name":"Corsair AX1600i","specs":"1600W 80+钛金 全模组","price":3599,"brand":"corsair"},{"id":"psu1","name":"Seasonic PRIME TX-1000","specs":"1000W 80+钛金","price":1799,"brand":"seasonic"},{"id":"psu2","name":"Corsair RM1000x SHIFT","specs":"1000W 80+金牌","price":1299,"brand":"corsair"},{"id":"psu3","name":"be quiet! Dark Power 13","specs":"850W 80+钛金","price":1499,"brand":"bequiet"},{"id":"psu4","name":"海韵 FOCUS GX-850","specs":"850W 80+金牌","price":899,"brand":"seasonic"},{"id":"psu5","name":"鑫谷 GM850","specs":"850W 80+金牌 ATX3.0","price":599,"brand":"sigo"},{"id":"psu6","name":"Thermaltake Toughpower GF1","specs":"750W 80+金牌","price":599,"brand":"thermaltake"},{"id":"psu7","name":"振华 铜皇 550W","specs":"550W 80+铜牌","price":269,"brand":"superflower"}],"case":[{"id":"case0","name":"Lian Li O11 Vision","specs":"全塔 双腔 透明 旗舰","price":1699,"brand":"lianli"},{"id":"case0a","name":"Lian Li O11 Dynamic EVO XL","specs":"全塔机箱 双腔","price":1599,"brand":"lianli"},{"id":"case1","name":"NZXT H9 Flow","specs":"双腔中塔 海景房","price":1099,"brand":"nzxt"},{"id":"case2","name":"Lian Li O11 Dynamic EVO","specs":"中塔机箱 RGB","price":899,"brand":"lianli"},{"id":"case3","name":"Fractal Design North","specs":"胡桃木中塔机箱","price":999,"brand":"fractal"},{"id":"case4","name":"Corsair 4000D Airflow","specs":"中塔 网孔面板","price":599,"brand":"corsair"},{"id":"case5","name":"爱国者 星璨 岚","specs":"中塔 海景房","price":399,"brand":"aigo"},{"id":"case6","name":"Cooler Master Q300L","specs":"紧凑型 mATX","price":349,"brand":"coolermaster"},{"id":"case7","name":"航嘉 暗夜猎手5","specs":"mATX 入门","price":129,"brand":"huntkey"}],"monitor":[{"id":"mon0","name":"华硕 ROG Swift PG32UCDM","specs":"32寸 4K 240Hz QD-OLED 旗舰","price":11999,"brand":"asus"},{"id":"mon0a","name":"LG 32GS95UE","specs":"32寸 4K 240Hz OLED","price":9999,"brand":"lg"},{"id":"mon0b","name":"三星 Odyssey G8","specs":"32寸 4K 240Hz 曲面","price":8999,"brand":"samsung"},{"id":"mon1","name":"戴尔 U2723QE","specs":"27寸 4K IPS 60Hz 专业","price":3499,"brand":"dell"},{"id":"mon2","name":"LG 27GP950","specs":"27寸 4K 144Hz Nano IPS","price":4299,"brand":"lg"},{"id":"mon3","name":"华硕 ROG PG27AQDM","specs":"27寸 2K 240Hz OLED","price":5499,"brand":"asus"},{"id":"mon4","name":"AOC AG274QX","specs":"27寸 2K 170Hz","price":2199,"brand":"aoc"},{"id":"mon5","name":"小米显示器 27寸 2K","specs":"27寸 2K 165Hz","price":1299,"brand":"xiaomi"},{"id":"mon6","name":"红米 27寸 2K","specs":"27寸 2K 165Hz","price":999,"brand":"xiaomi"},{"id":"mon7","name":"红米 24寸","specs":"24寸 1080p 75Hz","price":549,"brand":"xiaomi"}],"keyboard":[{"id":"kb0","name":"ROG 龙骑士3","specs":"磁轴 旗舰 可分离","price":1499,"brand":"asus"},{"id":"kb0a","name":"Wooting 60HE","specs":"磁轴 0.1mm 可调","price":1299,"brand":"wooting"},{"id":"kb1","name":"雷蛇黑寡妇 V4 Pro","specs":"机械 黄轴 腕托","price":1299,"brand":"razer"},{"id":"kb2","name":"ROG 游侠 RX","specs":"机械键盘 光轴","price":649,"brand":"asus"},{"id":"kb3","name":"Cherry MX 3.0S","specs":"机械键盘 茶轴","price":449,"brand":"cherry"},{"id":"kb4","name":"罗技 G Pro X","specs":"机械 热插拔","price":899,"brand":"logitech"},{"id":"kb5","name":"雷柏 V500","specs":"机械键盘 入门","price":129,"brand":"rapoo"}],"mouse":[{"id":"mouse0","name":"罗技 G PRO X SUPERLIGHT 2","specs":"60g 无线 旗舰","price":1199,"brand":"logitech"},{"id":"mouse0a","name":"雷蛇毒蝰V3 Pro","specs":"54g 无线 4K轮询","price":999,"brand":"razer"},{"id":"mouse1","name":"罗技 G PRO X","specs":"无线 63g","price":449,"brand":"logitech"},{"id":"mouse2","name":"雷蛇毒蝰V3","specs":"轻量化 有线","price":399,"brand":"razer"},{"id":"mouse3","name":"罗技 G502 X","specs":"LIGHTFORCE 混合微动","price":499,"brand":"logitech"},{"id":"mouse4","name":"赛睿 Rival 5","specs":"有线游戏","price":269,"brand":"steelseries"},{"id":"mouse5","name":"雷柏 VT350","specs":"无线办公","price":89,"brand":"rapoo"}],"headset":[{"id":"hs0","name":"ROG Delta S","specs":"Ai降噪 50mm驱动","price":1299,"brand":"asus"},{"id":"hs0a","name":"赛睿 Arctis Nova Pro","specs":"无线 双电池 旗舰","price":1999,"brand":"steelseries"},{"id":"hs1","name":"罗技 G PRO X 2","specs":"无线 50mm","price":1299,"brand":"logitech"},{"id":"hs2","name":"雷蛇北海巨妖 V3 Pro","specs":"无线 THX空间音效","price":1099,"brand":"razer"},{"id":"hs3","name":"HyperX Cloud III","specs":"有线 53mm","price":599,"brand":"hyperx"},{"id":"hs4","name":"JBL QUANTUM 400","specs":"有线 7.1","price":399,"brand":"jbl"},{"id":"hs5","name":"雷柏 VH150","specs":"入门","price":59,"brand":"rapoo"}]}</script>
+    <script>
+        const STORAGE_HARDWARE = 'pcbuilder_hardware_override';
+        const STORAGE_PRODUCTS = 'pcbuilder_products_override';
+        const STORAGE_GUIDES = 'pcbuilder_guides_override';
+        const STORAGE_PRESETS = 'pcbuilder_presets_override';
+
+        function adminAuthHeaders(isJson) {
+            const h = isJson ? { 'Content-Type': 'application/json' } : {};
+            const t = sessionStorage.getItem('adminPanelToken');
+            if (t) h['Authorization'] = 'Bearer ' + t;
+            return h;
+        }
+
+        function getDefaultHardware() {
+            return fetch('app.js').then(r => r.text()).then(t => {
+                const m = t.match(/this\.hardwareDatabase\s*=\s*(\{[\s\S]*?\});/);
+                if (m) {
+                    try {
+                        const fn = new Function('return ' + m[1]);
+                        return fn();
+                    } catch (e) {}
+                }
+                return null;
+            }).catch(() => null);
+        }
+
+        const EMPTY_CATS = { cpu: [], gpu: [], motherboard: [], ram: [], storage: [], cooling: [], psu: [], case: [], monitor: [], keyboard: [], mouse: [], headset: [] };
+
+        function getEmbeddedDefault() {
+            try {
+                const el = document.getElementById('adminDefaultHardware');
+                if (el) return JSON.parse(el.textContent);
+            } catch (e) {}
+            return null;
+        }
+
+        async function loadData(forceFromApp) {
+            // 优先从线上 hardware-v2.json 加载（单一事实来源）
+            try {
+                const res = await fetch('/api/admin/hardware/all?_=' + Date.now(), { headers: adminAuthHeaders() });
+                if (res.ok) {
+                    const { items } = await res.json();
+                    if (items && items.length) {
+                        const db = {};
+                        for (const item of items) {
+                            if (!db[item.category]) db[item.category] = [];
+                            db[item.category].push(item);
+                        }
+                        for (const k of Object.keys(EMPTY_CATS)) {
+                            if (!Array.isArray(db[k])) db[k] = [];
+                        }
+                        return db;
+                    }
+                }
+            } catch(e) {}
+
+            // fallback：本地缓存或嵌入默认数据
+            let db = forceFromApp ? null : getHardware();
+            if (!db || !Object.keys(db).length) {
+                db = await getDefaultHardware();
+                if (!db || !Object.keys(db).length) db = getEmbeddedDefault();
+                if (!db || !Object.keys(db).length) {
+                    db = { ...EMPTY_CATS, cpu: [{ id: 'cpu0', name: '示例CPU', specs: '示例规格', price: 1000 }] };
+                }
+            }
+            for (const k of Object.keys(EMPTY_CATS)) {
+                if (!Array.isArray(db[k])) db[k] = [];
+            }
+            return db;
+        }
+
+        let currentDb = {};
+        let currentCat = 'cpu';
+        let productsData = [];
+        let guidesData = [];
+        let presetsData = [];
+
+        function getDefaultProducts() {
+            try {
+                const el = document.getElementById('adminDefaultProducts');
+                if (el) return JSON.parse(el.textContent);
+            } catch(e) {}
+            return [];
+        }
+        function loadProducts() {
+            try {
+                const r = localStorage.getItem(STORAGE_PRODUCTS);
+                if (r) return JSON.parse(r);
+                return getDefaultProducts();
+            } catch(e) { return getDefaultProducts(); }
+        }
+
+        // 默认值（API 不可用时的兜底，与 hardware-v2.json 初始化数据一致）
+        function getDefaultGuides() {
+            return [
+                {id:'guide-001',title:'硬件选择指南',desc:'如何根据需求选择合适的硬件组件',link:'#',icon:'fa-clipboard-check',image:''},
+                {id:'guide-002',title:'装机步骤教学',desc:'详细的装机步骤图解和视频教程',link:'#',icon:'fa-screwdriver-wrench',image:''},
+                {id:'guide-003',title:'性能测试与优化',desc:'装机后的性能测试和超频指南',link:'#',icon:'fa-chart-line',image:''},
+                {id:'guide-004',title:'故障排除',desc:'常见装机问题和解决方案',link:'#',icon:'fa-headset',image:''},
+                {id:'guide-005',title:'智慧矿区安防',desc:'矿区安防监控方案、智能识别、网吧/酒店安防系统全覆盖',link:'security-solution.html',icon:'fa-shield-alt',image:''},
+                {id:'guide-006',title:'智慧酒店安防',desc:'酒店智能安防、人脸识别、入侵报警系统方案',link:'smart-hotel-security.html',icon:'fa-video',image:''},
+                {id:'guide-007',title:'散热与风道',desc:'散热器选择、风道规划',link:'#',icon:'fa-thermometer-half',image:''},
+                {id:'guide-008',title:'电源与线材',desc:'电源功率计算、理线技巧',link:'#',icon:'fa-plug',image:''},
+                {id:'guide-009',title:'RGB与灯光',desc:'灯效同步、ARGB 控制',link:'#',icon:'fa-palette',image:''},
+                {id:'guide-010',title:'选购防坑指南',desc:'辨别正品、避免矿卡',link:'#',icon:'fa-shield-alt',image:''}
+            ];
+        }
+        function getDefaultPresets() {
+            return [
+                {presetId:'office',title:'入门办公配置',badge:'性价比',specs:'i5 + RTX 3050 + 16GB',price:4299,image:''},
+                {presetId:'gaming',title:'主流游戏配置',badge:'游戏电竞',specs:'7800X3D + RTX 4070 Ti + 32GB',price:8999,image:''},
+                {presetId:'workstation',title:'4K视频编辑工作站',badge:'专业创作',specs:'i9 + RTX 4090 + 64GB',price:19999,image:''},
+                {presetId:'flagship',title:'极致性能旗舰',badge:'顶级旗舰',specs:'i9-14900KS + RTX 4090 + 128GB',price:29999,image:''},
+                {presetId:'streaming',title:'直播剪辑配置',badge:'游戏电竞',specs:'7900X + RTX 4070 + 32GB',price:12499,image:''},
+                {presetId:'ai',title:'AI 绘图/大模型',badge:'专业创作',specs:'i9 + RTX 4090 24GB',price:24999,image:''}
+            ];
+        }
+
+        // guides/presets 从 API 加载（与 hardware 单一事实源对齐）
+        async function loadGuides() {
+            try {
+                const r = await fetch('/api/content');
+                if (!r.ok) throw new Error('API ' + r.status);
+                const data = await r.json();
+                if (data.guides && data.guides.length > 0) return data.guides;
+            } catch(e) { console.warn('loadGuides API 失败，使用默认:', e.message); }
+            return getDefaultGuides();
+        }
+        async function loadPresets() {
+            try {
+                const r = await fetch('/api/content');
+                if (!r.ok) throw new Error('API ' + r.status);
+                const data = await r.json();
+                if (data.presets && data.presets.length > 0) return data.presets;
+            } catch(e) { console.warn('loadPresets API 失败，使用默认:', e.message); }
+            return getDefaultPresets();
+        }
+
+        function renderProductsTable(reload) {
+            if (reload !== false) productsData = loadProducts();
+            const tbody = document.getElementById('productsBody');
+            if (!tbody) return;
+            tbody.innerHTML = productsData.map((p, i) => `
+                <tr>
+                    <td><input value="${(p.id||'').replace(/"/g,'&quot;')}" data-i="${i}" data-f="id" style="width:80px"></td>
+                    <td><input value="${(p.title||'').replace(/"/g,'&quot;')}" data-i="${i}" data-f="title"></td>
+                    <td><input value="${(p.specs||'').replace(/"/g,'&quot;')}" data-i="${i}" data-f="specs"></td>
+                    <td><input type="number" value="${p.price||0}" data-i="${i}" data-f="price" style="width:80px"></td>
+                    <td><input value="${(p.category||'').replace(/"/g,'&quot;')}" data-i="${i}" data-f="category" style="width:90px" placeholder="gaming"></td>
+                    <td class="thumb-cell"><input value="${(p.image||'').replace(/"/g,'&quot;')}" data-i="${i}" data-f="image" placeholder="图片URL"><input type="file" accept="image/*" data-i="${i}" class="prod-upload" style="display:none"><button type="button" class="btn btn-outline btn-sm btn-upload" data-i="${i}"><i class="fas fa-upload"></i></button></td>
+                    <td><button class="btn btn-danger btn-sm" data-i="${i}" data-del="products">删</button></td>
+                </tr>
+            `).join('');
+            bindProductsEvents(tbody);
+        }
+        function renderGuidesTable() {
+            const tbody = document.getElementById('guidesBody');
+            if (!tbody) return;
+            tbody.innerHTML = guidesData.map((g, i) => `
+                <tr>
+                    <td><input value="${(g.id||'').replace(/"/g,'&quot;')}" data-i="${i}" data-f="id" style="width:80px" placeholder="guide-001"></td>
+                    <td><input value="${(g.title||'').replace(/"/g,'&quot;')}" data-i="${i}" data-f="title"></td>
+                    <td><input value="${(g.desc||'').replace(/"/g,'&quot;')}" data-i="${i}" data-f="desc"></td>
+                    <td><input value="${(g.link||'').replace(/"/g,'&quot;')}" data-i="${i}" data-f="link" placeholder="#"></td>
+                    <td class="thumb-cell"><input value="${(g.image||'').replace(/"/g,'&quot;')}" data-i="${i}" data-f="image" placeholder="图片"><input type="file" accept="image/*" data-i="${i}" class="guide-upload" style="display:none"><button type="button" class="btn btn-outline btn-sm btn-upload" data-i="${i}"><i class="fas fa-upload"></i></button></td>
+                    <td><button class="btn btn-danger btn-sm" data-i="${i}" data-del="guides">删</button></td>
+                </tr>
+            `).join('');
+            bindGuidePresetEvents(tbody, 'guides', (f,v) => { guidesData[i][f] = v; });
+        }
+        function renderPresetsTable() {
+            const tbody = document.getElementById('presetsBody');
+            if (!tbody) return;
+            tbody.innerHTML = presetsData.map((p, i) => `
+                <tr>
+                    <td><input value="${(p.title||'').replace(/"/g,'&quot;')}" data-i="${i}" data-f="title"></td>
+                    <td><input value="${(p.badge||'').replace(/"/g,'&quot;')}" data-i="${i}" data-f="badge" style="width:80px"></td>
+                    <td><input value="${(p.specs||'').replace(/"/g,'&quot;')}" data-i="${i}" data-f="specs"></td>
+                    <td><input type="number" value="${p.price||0}" data-i="${i}" data-f="price" style="width:80px"></td>
+                    <td class="thumb-cell"><input value="${(p.image||'').replace(/"/g,'&quot;')}" data-i="${i}" data-f="image"><input type="file" accept="image/*" data-i="${i}" class="preset-upload" style="display:none"><button type="button" class="btn btn-outline btn-sm btn-upload" data-i="${i}"><i class="fas fa-upload"></i></button></td>
+                    <td><button class="btn btn-danger btn-sm" data-i="${i}" data-del="presets">删</button></td>
+                </tr>
+            `).join('');
+            bindGuidePresetEvents(tbody, 'presets', (f,v) => { presetsData[i][f] = v; });
+        }
+        function bindProductsEvents(tbody) {
+            tbody.querySelectorAll('input').forEach(inp => {
+                inp.onchange = inp.onblur = () => { const i = parseInt(inp.dataset.i), f = inp.dataset.f; let v = inp.value; if (f === 'price') v = parseInt(v)||0; productsData[i][f] = v; };
+            });
+            tbody.querySelectorAll('button.btn-upload').forEach(btn => { btn.onclick = () => { const fi = tbody.querySelector('.prod-upload[data-i="'+btn.dataset.i+'"]'); if (fi) fi.click(); }; });
+            tbody.querySelectorAll('.prod-upload').forEach(inp => {
+                inp.onchange = () => { const f = inp.files?.[0]; if (!f) return; const i = parseInt(inp.dataset.i); const r = new FileReader(); r.onload = () => { productsData[i].image = r.result; inp.value = ''; }; r.readAsDataURL(f); };
+            });
+            tbody.querySelectorAll('button[data-del="products"]').forEach(btn => { btn.onclick = () => { productsData.splice(parseInt(btn.dataset.i), 1); renderProductsTable(false); }; });
+        }
+        function bindGuidePresetEvents(tbody, type, setter) {
+            tbody.querySelectorAll('input').forEach(inp => {
+                inp.onchange = inp.onblur = () => { const i = parseInt(inp.dataset.i), f = inp.dataset.f; let v = inp.value; if (f === 'price') v = parseInt(v)||0; (type==='guides'?guidesData:presetsData)[i][f] = v; };
+            });
+            const cls = type === 'guides' ? 'guide-upload' : 'preset-upload';
+            tbody.querySelectorAll('button.btn-upload').forEach(btn => { btn.onclick = () => { const fi = tbody.querySelector('.'+cls+'[data-i="'+btn.dataset.i+'"]'); if (fi) fi.click(); }; });
+            tbody.querySelectorAll('.'+cls).forEach(inp => {
+                inp.onchange = () => { const f = inp.files?.[0]; if (!f) return; const i = parseInt(inp.dataset.i); const r = new FileReader(); r.onload = () => { (type==='guides'?guidesData:presetsData)[i].image = r.result; inp.value = ''; }; r.readAsDataURL(f); };
+            });
+            tbody.querySelectorAll('button[data-del="'+type+'"]').forEach(btn => { btn.onclick = () => { (type==='guides'?guidesData:presetsData).splice(parseInt(btn.dataset.i), 1); type==='guides'?renderGuidesTable():renderPresetsTable(); }; });
+        }
+
+        function renderTabs() {
+            const tabs = document.getElementById('catTabs');
+            const cats = {
+                cpu: '处理器', gpu: '显卡', motherboard: '主板', ram: '内存',
+                storage: '存储', cooling: '散热', psu: '电源', case: '机箱',
+                monitor: '显示器', keyboard: '键盘', mouse: '鼠标', headset: '耳麦'
+            };
+            tabs.innerHTML = Object.entries(cats).map(([k, v]) =>
+                `<button class="cat-tab ${k === currentCat ? 'active' : ''}" data-cat="${k}">${v}</button>`
+            ).join('');
+            tabs.querySelectorAll('.cat-tab').forEach(btn => {
+                btn.onclick = () => { currentCat = btn.dataset.cat; renderTabs(); renderTable(); syncAddCategory(); };
+            });
+            syncAddCategory();
+        }
+        function syncAddCategory() {
+            const sel = document.getElementById('addCategory');
+            if (sel) sel.value = currentCat;
+        }
+
+        function renderTable() {
+            const list = currentDb[currentCat] || [];
+            const tbody = document.getElementById('hardwareBody');
+            tbody.innerHTML = list.map((item, i) => `
+                <tr>
+                    <td><input value="${item.id}" data-cat="${currentCat}" data-i="${i}" data-field="id" style="width:80px"></td>
+                    <td><input value="${(item.name || '').replace(/"/g,'&quot;')}" data-cat="${currentCat}" data-i="${i}" data-field="name"></td>
+                    <td><input value="${(item.specs || '').replace(/"/g,'&quot;')}" data-cat="${currentCat}" data-i="${i}" data-field="specs"></td>
+                    <td><input type="number" value="${item.price || 0}" data-cat="${currentCat}" data-i="${i}" data-field="price" style="width:100px"></td>
+                    <td class="thumb-cell">
+                        <input value="${item.thumb && item.thumb.startsWith('data:') ? '' : (item.thumb || '').replace(/"/g,'&quot;')}" data-cat="${currentCat}" data-i="${i}" data-field="thumb" placeholder="${item.thumb && item.thumb.startsWith('data:') ? '[已上传]' : 'icons/products/'+item.id+'.jpg'}">
+                        <input type="file" accept="image/*" data-cat="${currentCat}" data-i="${i}" class="thumb-upload-input" style="display:none">
+                        <button type="button" class="btn btn-outline btn-sm btn-upload" data-cat="${currentCat}" data-i="${i}"><i class="fas fa-upload"></i> 上传</button>
+                    </td>
+                    <td><button class="btn btn-danger btn-sm" data-cat="${currentCat}" data-i="${i}">删除</button></td>
+                </tr>
+            `).join('');
+
+            tbody.querySelectorAll('input').forEach(inp => {
+                const handler = () => {
+                    const cat = inp.dataset.cat, i = parseInt(inp.dataset.i), field = inp.dataset.field;
+                    let v = inp.value;
+                    if (field === 'price') v = parseInt(v) || 0;
+                    else if (field === 'thumb') {
+                        if (inp.dataset.uploaded === '1') { delete inp.dataset.uploaded; if (!inp.value.trim()) return; }
+                        v = inp.value.trim() || undefined;
+                    }
+                    currentDb[cat][i][field] = v;
+                };
+                inp.onchange = handler;
+                inp.onblur = handler;
+            });
+            tbody.querySelectorAll('button').forEach(btn => {
+                if (btn.classList.contains('btn-upload')) {
+                    const inp = btn.parentElement.querySelector('.thumb-upload-input');
+                    btn.onclick = () => inp && inp.click();
+                    return;
+                }
+                btn.onclick = () => {
+                    const cat = btn.dataset.cat, i = parseInt(btn.dataset.i);
+                    currentDb[cat].splice(i, 1);
+                    renderTable();
+                };
+            });
+            tbody.querySelectorAll('.thumb-upload-input').forEach(inp => {
+                inp.onchange = () => {
+                    const f = inp.files && inp.files[0];
+                    if (!f) return;
+                    const cat = inp.dataset.cat, i = parseInt(inp.dataset.i);
+                    const reader = new FileReader();
+                    reader.onload = () => {
+                        currentDb[cat][i].thumb = reader.result;
+                        const tInp = inp.parentElement.querySelector('input[data-field="thumb"]');
+                        tInp.value = ''; tInp.placeholder = '[已上传]'; tInp.dataset.uploaded = '1';
+                        inp.value = '';
+                    };
+                    reader.readAsDataURL(f);
+                };
+            });
+        }
+
+        document.getElementById('adminLoginBtn').onclick = async () => {
+            const user = document.getElementById('adminUser').value.trim();
+            const pwd = document.getElementById('adminPwd').value;
+            if (!user || !pwd) { alert('请输入账号和密码'); return; }
+            try {
+                const res = await fetch('/api/admin/panel-login', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ username: user, password: pwd }),
+                });
+                const data = await res.json().catch(() => ({}));
+                if (!res.ok || !data.ok) {
+                    alert(data.error || '登录失败');
+                    return;
+                }
+                sessionStorage.setItem('adminPanelToken', data.token);
+                document.getElementById('adminLogin').style.display = 'none';
+                document.getElementById('adminPanel').style.display = 'block';
+                initAdmin();
+            } catch (e) {
+                alert('网络错误');
+            }
+        };
+
+        async function initAdmin() {
+            currentDb = await loadData();
+            productsData = loadProducts(); // products 仍走 localStorage（暂不动）
+            guidesData = await loadGuides();
+            presetsData = await loadPresets();
+            renderTabs();
+            renderTable();
+
+            document.getElementById('addItemBtn').onclick = () => {
+                const cat = document.getElementById('addCategory').value;
+                const name = document.getElementById('addName').value.trim();
+                const specs = document.getElementById('addSpecs').value.trim();
+                const price = parseInt(document.getElementById('addPrice').value) || 0;
+                if (!name) { alert('请填写名称'); return; }
+                if (!currentDb[cat]) currentDb[cat] = [];
+                const prefix = { motherboard:'mb', storage:'ssd', keyboard:'kb', headset:'hs' }[cat] || cat.substring(0,3);
+                currentDb[cat].push({ id: prefix + '_' + Date.now(), name, specs, price });
+                document.getElementById('addName').value = '';
+                document.getElementById('addSpecs').value = '';
+                document.getElementById('addPrice').value = '';
+                currentCat = cat;
+                renderTabs();
+                renderTable();
+            };
+
+            document.getElementById('saveHardwareBtn').onclick = async () => {
+                const btn = document.getElementById('saveHardwareBtn');
+                btn.disabled = true;
+                btn.textContent = '保存中…';
+                try {
+                    // 1. 将 currentDb（按 category 分组）转为 v2 flat items 数组
+                    const items = [];
+                    for (const [category, list] of Object.entries(currentDb)) {
+                        if (!Array.isArray(list)) continue;
+                        for (const item of list) {
+                            items.push({ ...item, category });
+                        }
+                    }
+
+                    // 2. 持久化硬件到 hardware-v2.json（经后端 API）
+                    const hwRes = await fetch('/api/admin/hardware/save', {
+                        method: 'POST',
+                        headers: adminAuthHeaders(true),
+                        body: JSON.stringify({ items })
+                    });
+                    const hwResult = await hwRes.json();
+                    if (!hwRes.ok) throw new Error(hwResult.error || '硬件保存失败');
+
+                    // 3. 持久化 guides + presets 到 hardware-v2.json（经 content API）
+                    const ctRes = await fetch('/api/admin/content/save', {
+                        method: 'POST',
+                        headers: adminAuthHeaders(true),
+                        body: JSON.stringify({ guides: guidesData, presets: presetsData })
+                    });
+                    const ctResult = await ctRes.json();
+                    if (!ctRes.ok) throw new Error(ctResult.error || '指南/配置保存失败');
+
+                    // 4. localStorage 兜底仅影响本机（与线上策略脱钩）
+                    localStorage.setItem(STORAGE_HARDWARE, JSON.stringify(currentDb));
+                    localStorage.setItem(STORAGE_GUIDES, JSON.stringify(guidesData));
+                    localStorage.setItem(STORAGE_PRESETS, JSON.stringify(presetsData));
+
+                    alert(`保存成功！\n• 硬件 ${hwResult.totalItems} 条\n• 装机指南 ${ctResult.guidesCount} 条\n• 热门配置 ${ctResult.presetsCount} 条\n均已写入线上数据源。`);
+                } catch(e) {
+                    alert('保存失败：' + e.message);
+                } finally {
+                    btn.disabled = false;
+                    btn.innerHTML = '<i class="fas fa-save"></i> 保存修改';
+                }
+            };
+
+            document.querySelectorAll('.admin-main-tab').forEach(btn => {
+                btn.onclick = async () => {
+                    document.querySelectorAll('.admin-main-tab').forEach(b => b.classList.remove('active'));
+                    btn.classList.add('active');
+                    const panel = btn.dataset.panel;
+                    document.getElementById('adminHardwarePanel').style.display = panel === 'hardware' ? 'block' : 'none';
+                    document.getElementById('adminProductsPanel').style.display = panel === 'products' ? 'block' : 'none';
+                    document.getElementById('adminGuidesPanel').style.display = panel === 'guides' ? 'block' : 'none';
+                    document.getElementById('adminPresetsPanel').style.display = panel === 'presets' ? 'block' : 'none';
+                    if (panel === 'products') renderProductsTable();
+                    if (panel === 'guides') { if (!guidesData.length) guidesData = await loadGuides(); renderGuidesTable(); }
+                    if (panel === 'presets') { if (!presetsData.length) presetsData = await loadPresets(); renderPresetsTable(); }
+                };
+            });
+
+            document.getElementById('addProductBtn').onclick = () => { productsData.push({id:'p_'+Date.now(),title:'新项',specs:'',price:0,category:'gaming'}); renderProductsTable(false); };
+            document.getElementById('addGuideBtn').onclick = () => { guidesData.push({id:'guide-'+Date.now(),title:'新指南',desc:'',link:'#',icon:'fa-book',image:''}); renderGuidesTable(); };
+            document.getElementById('addPresetBtn').onclick = () => { presetsData.push({title:'新配置',badge:'',specs:'',price:0,presetId:''}); renderPresetsTable(); };
+
+            document.getElementById('reloadDefaultBtn').onclick = async () => {
+                if (!confirm('确定恢复默认硬件数据？将覆盖当前未保存的修改。')) return;
+                currentDb = await loadData(true);
+                localStorage.removeItem(STORAGE_HARDWARE);
+                renderTable();
+                alert('已恢复默认数据，请点击「保存修改」写入。');
+            };
+
+            // 我的AI设置
+            document.getElementById('myAiConfigBtn').onclick = async () => {
+                const modal = document.getElementById('myAiConfigModal');
+                modal.style.display = 'flex';
+                
+                // 加载当前配置
+                const res = await fetch('/api/myai/config/full?_=' + Date.now(), { headers: adminAuthHeaders() });
+                const data = await res.json();
+                if (data.success) {
+                    document.getElementById('myAiUsername').value = data.config.username || '';
+                    document.getElementById('myAiPassword').value = '';
+                    document.getElementById('myAiRedirectUrl').value = data.config.redirect_url || '';
+                    document.getElementById('myAiToken').value = data.config.token || '';
+                }
+            };
+            
+            document.getElementById('myAiSaveBtn').onclick = async () => {
+                const username = document.getElementById('myAiUsername').value.trim();
+                const password = document.getElementById('myAiPassword').value;
+                const redirect_url = document.getElementById('myAiRedirectUrl').value.trim();
+                const token = document.getElementById('myAiToken').value.trim();
+                
+                if (!username || !password || !redirect_url) {
+                    alert('请填写完整信息（用户名、密码、跳转URL）');
+                    return;
+                }
+                
+                const res = await fetch('/api/myai/config', {
+                    method: 'POST',
+                    headers: adminAuthHeaders(true),
+                    body: JSON.stringify({username, password, redirect_url, token})
+                });
+                const data = await res.json();
+                if (data.success) {
+                    alert('配置已保存');
+                    document.getElementById('myAiConfigModal').style.display = 'none';
+                } else {
+                    alert(data.message || '保存失败');
+                }
+            };
+            
+            document.getElementById('myAiCloseBtn').onclick = () => {
+                document.getElementById('myAiConfigModal').style.display = 'none';
+            };
+        }
+    </script>
+    
+    <!-- 我的AI设置弹窗 -->
+    <div id="myAiConfigModal" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,.5);z-index:9999;align-items:center;justify-content:center;">
+        <div style="background:#fff;border-radius:8px;padding:20px;width:450px;">
+            <h3 style="margin:0 0 16px;"><i class="fas fa-robot"></i> 我的AI设置</h3>
+            <div style="margin-bottom:12px;">
+                <label style="display:block;margin-bottom:4px;font-weight:500;">用户名</label>
+                <input type="text" id="myAiUsername" style="width:100%;padding:8px;border:1px solid #ddd;border-radius:4px;">
+            </div>
+            <div style="margin-bottom:12px;">
+                <label style="display:block;margin-bottom:4px;font-weight:500;">密码 <span style="color:#666;font-weight:normal;">(必填)</span></label>
+                <input type="password" id="myAiPassword" style="width:100%;padding:8px;border:1px solid #ddd;border-radius:4px;" placeholder="输入新密码">
+            </div>
+            <div style="margin-bottom:12px;">
+                <label style="display:block;margin-bottom:4px;font-weight:500;">跳转URL</label>
+                <input type="text" id="myAiRedirectUrl" style="width:100%;padding:8px;border:1px solid #ddd;border-radius:4px;" placeholder="http://或https://开头">
+            </div>
+            <div style="margin-bottom:16px;">
+                <label style="display:block;margin-bottom:4px;font-weight:500;">Token <span style="color:#666;font-weight:normal;">(可选，用于API验证)</span></label>
+                <input type="text" id="myAiToken" style="width:100%;padding:8px;border:1px solid #ddd;border-radius:4px;" placeholder="输入Token">
+            </div>
+            <div style="display:flex;gap:8px;justify-content:flex-end;">
+                <button id="myAiCloseBtn" style="padding:8px 16px;border:1px solid #ddd;background:#fff;border-radius:4px;cursor:pointer;">取消</button>
+                <button id="myAiSaveBtn" style="padding:8px 16px;border:none;background:#2563eb;color:#fff;border-radius:4px;cursor:pointer;">保存</button>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

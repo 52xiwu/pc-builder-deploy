@@ -1,0 +1,732 @@
+/**
+ * 电脑硬件销售网站 - 主应用逻辑
+ */
+
+class PCBuilderApp {
+    constructor() {
+        // 硬件数据库（可从 localStorage 覆盖）
+        let dbOverride = null;
+        try {
+            const raw = localStorage.getItem('pcbuilder_hardware_override');
+            if (raw) dbOverride = JSON.parse(raw);
+        } catch (e) {}
+        this.hardwareDatabase = dbOverride || {
+            cpu: [
+                { id: 'cpu0', name: 'AMD Ryzen 9 9950X3D', specs: '16核32线程 144MB缓存 5.7GHz 旗舰', price: 5499, brand: 'amd', socket: 'am5', category: 'high-end' },
+                { id: 'cpu0a', name: 'AMD Ryzen 9 9950X', specs: '16核32线程 4.3-5.7GHz', price: 4999, brand: 'amd', socket: 'am5', category: 'high-end' },
+                { id: 'cpu0b', name: 'Intel Core i9-14900KS', specs: '24核32线程 3.2-6.2GHz 旗舰', price: 5999, brand: 'intel', socket: 'lga1700', category: 'high-end' },
+                { id: 'cpu0c', name: 'AMD Ryzen 9 9900X3D', specs: '12核24线程 3D缓存 5.6GHz', price: 4599, brand: 'amd', socket: 'am5', category: 'high-end' },
+                { id: 'cpu1', name: 'Intel Core i9-14900K', specs: '24核32线程 3.2-6.0GHz', price: 3999, brand: 'intel', socket: 'lga1700', category: 'high-end' },
+                { id: 'cpu2', name: 'AMD Ryzen 9 7950X3D', specs: '16核32线程 3D缓存', price: 4299, brand: 'amd', socket: 'am5', category: 'high-end' },
+                { id: 'cpu2b', name: 'AMD Ryzen 9 7950X', specs: '16核32线程 4.5-5.7GHz', price: 3799, brand: 'amd', socket: 'am5', category: 'high-end' },
+                { id: 'cpu3', name: 'Intel Core i7-14700K', specs: '20核28线程 3.4-5.6GHz', price: 2999, brand: 'intel', socket: 'lga1700', category: 'mid-range' },
+                { id: 'cpu4', name: 'AMD Ryzen 7 7800X3D', specs: '8核16线程 4.2-5.0GHz 游戏神U', price: 2699, brand: 'amd', socket: 'am5', category: 'gaming' },
+                { id: 'cpu5', name: 'Intel Core i5-14600K', specs: '14核20线程 3.5-5.3GHz', price: 2099, brand: 'intel', socket: 'lga1700', category: 'mid-range' },
+                { id: 'cpu6', name: 'AMD Ryzen 5 7600X', specs: '6核12线程 4.7-5.3GHz', price: 1499, brand: 'amd', socket: 'am5', category: 'mid-range' },
+                { id: 'cpu7', name: 'Intel Core i3-14100', specs: '4核8线程 3.5-4.7GHz', price: 849, brand: 'intel', socket: 'lga1700', category: 'budget' },
+                { id: 'cpu8', name: 'AMD Ryzen 5 5600', specs: '6核12线程 3.5-4.4GHz', price: 749, brand: 'amd', socket: 'am4', category: 'budget' }
+            ],
+            gpu: [
+                { id: 'gpu0', name: 'NVIDIA RTX 5090', specs: '32GB GDDR7 旗舰  Blackwell', price: 18999, brand: 'nvidia', category: 'high-end' },
+                { id: 'gpu0a', name: 'NVIDIA RTX 5090D', specs: '32GB GDDR7 国行特供', price: 24999, brand: 'nvidia', category: 'high-end' },
+                { id: 'gpu0b', name: 'NVIDIA RTX 5080', specs: '16GB GDDR7 DLSS 4', price: 9999, brand: 'nvidia', category: 'high-end' },
+                { id: 'gpu0c', name: 'NVIDIA RTX 4090 DUAL', specs: '24GB GDDR6X 旗舰', price: 13999, brand: 'nvidia', category: 'high-end' },
+                { id: 'gpu1', name: 'NVIDIA RTX 4090', specs: '24GB GDDR6X', price: 11999, brand: 'nvidia', category: 'high-end' },
+                { id: 'gpu2', name: 'NVIDIA RTX 4080 SUPER', specs: '16GB GDDR6X', price: 7999, brand: 'nvidia', category: 'high-end' },
+                { id: 'gpu3', name: 'AMD Radeon RX 7900 XTX', specs: '24GB GDDR6', price: 7199, brand: 'amd', category: 'high-end' },
+                { id: 'gpu3a', name: 'AMD Radeon RX 7900 GRE', specs: '16GB GDDR6 高性价比', price: 4299, brand: 'amd', category: 'high-end' },
+                { id: 'gpu4', name: 'NVIDIA RTX 4070 Ti SUPER', specs: '16GB GDDR6X', price: 5999, brand: 'nvidia', category: 'mid-range' },
+                { id: 'gpu5', name: 'AMD Radeon RX 7800 XT', specs: '16GB GDDR6', price: 3799, brand: 'amd', category: 'mid-range' },
+                { id: 'gpu6', name: 'NVIDIA RTX 4060 Ti', specs: '8GB GDDR6', price: 2999, brand: 'nvidia', category: 'mid-range' },
+                { id: 'gpu7', name: 'NVIDIA RTX 3050', specs: '8GB GDDR6', price: 1399, brand: 'nvidia', category: 'budget' },
+                { id: 'gpu8', name: 'AMD Radeon RX 6600', specs: '8GB GDDR6', price: 1199, brand: 'amd', category: 'budget' }
+            ],
+            motherboard: [
+                { id: 'mb0', name: 'ROG MAXIMUS Z790 EXTREME', specs: 'Intel Z790 E-ATX 旗舰', price: 7999, brand: 'asus', socket: 'lga1700' },
+                { id: 'mb0a', name: 'ROG CROSSHAIR X870E EXTREME', specs: 'AMD X870E E-ATX 旗舰', price: 6999, brand: 'asus', socket: 'am5' },
+                { id: 'mb1', name: 'ROG MAXIMUS Z790 HERO', specs: 'Intel Z790 ATX', price: 4299, brand: 'asus', socket: 'lga1700' },
+                { id: 'mb2', name: 'MSI MEG X670E GODLIKE', specs: 'AMD X670E E-ATX', price: 6499, brand: 'msi', socket: 'am5' },
+                { id: 'mb2a', name: '技嘉 X870E AORUS MASTER', specs: 'AMD X870E ATX', price: 3499, brand: 'gigabyte', socket: 'am5' },
+                { id: 'mb3', name: 'ASUS TUF GAMING B760-PLUS', specs: 'Intel B760 ATX', price: 1399, brand: 'asus', socket: 'lga1700' },
+                { id: 'mb4', name: 'GIGABYTE B650 AORUS ELITE', specs: 'AMD B650 ATX', price: 1499, brand: 'gigabyte', socket: 'am5' },
+                { id: 'mb5', name: 'ASRock B760M Steel Legend', specs: 'Intel B760 mATX', price: 1099, brand: 'asrock', socket: 'lga1700' },
+                { id: 'mb6', name: 'MSI PRO B650M-A WIFI', specs: 'AMD B650 mATX', price: 1199, brand: 'msi', socket: 'am5' },
+                { id: 'mb7', name: '华擎 H610M-HDV', specs: 'Intel H610 mATX', price: 469, brand: 'asrock', socket: 'lga1700' },
+                { id: 'mb8', name: '微星 A520M-A PRO', specs: 'AMD A520 mATX', price: 379, brand: 'msi', socket: 'am4' }
+            ],
+            ram: [
+                { id: 'ram0', name: 'CORSAIR Dominator Titanium', specs: '128GB (4x32GB) DDR5 7200MHz 旗舰', price: 5999, brand: 'corsair', speed: 7200 },
+                { id: 'ram0a', name: 'G.SKILL Trident Z5 RGB', specs: '64GB (2x32GB) DDR5 6400MHz', price: 1899, brand: 'gskill', speed: 6400 },
+                { id: 'ram1', name: 'CORSAIR Dominator Platinum', specs: '64GB (2x32GB) DDR5 6000MHz', price: 2099, brand: 'corsair', speed: 6000 },
+                { id: 'ram2', name: 'G.SKILL Trident Z5 RGB', specs: '32GB (2x16GB) DDR5 6400MHz', price: 999, brand: 'gskill', speed: 6400 },
+                { id: 'ram3', name: 'Kingston FURY Renegade', specs: '32GB (2x16GB) DDR5 6000MHz', price: 849, brand: 'kingston', speed: 6000 },
+                { id: 'ram4', name: 'TeamGroup T-Force Delta RGB', specs: '32GB (2x16GB) DDR5 6000MHz', price: 699, brand: 'teamgroup', speed: 6000 },
+                { id: 'ram5', name: 'Crucial Pro DDR5', specs: '32GB (2x16GB) DDR5 5600MHz', price: 749, brand: 'crucial', speed: 5600 },
+                { id: 'ram6', name: 'ADATA XPG Lancer RGB', specs: '16GB (2x8GB) DDR5 6000MHz', price: 549, brand: 'adata', speed: 6000 },
+                { id: 'ram7', name: '金百达 DDR5 32GB', specs: '32GB (2x16GB) DDR5 5600', price: 499, brand: 'kingbank', speed: 5600 },
+                { id: 'ram8', name: '金百达 DDR4 16GB', specs: '16GB (2x8GB) DDR4 3200MHz', price: 269, brand: 'kingbank', speed: 3200 }
+            ],
+            storage: [
+                { id: 'ssd0', name: 'Samsung 990 EVO', specs: '4TB NVMe PCIe 5.0 旗舰', price: 2299, brand: 'samsung', type: 'nvme', capacity: 4000 },
+                { id: 'ssd0a', name: 'WD Black SN850X', specs: '4TB NVMe PCIe 4.0', price: 1999, brand: 'wd', type: 'nvme', capacity: 4000 },
+                { id: 'ssd1', name: 'Samsung 990 PRO', specs: '2TB NVMe PCIe 4.0', price: 1099, brand: 'samsung', type: 'nvme', capacity: 2000 },
+                { id: 'ssd2', name: 'WD Black SN850X', specs: '2TB NVMe PCIe 4.0', price: 999, brand: 'wd', type: 'nvme', capacity: 2000 },
+                { id: 'ssd2a', name: '致钛 Ti600', specs: '2TB NVMe PCIe 5.0 国产', price: 899, brand: 'zhitai', type: 'nvme', capacity: 2000 },
+                { id: 'ssd3', name: 'Crucial P5 Plus', specs: '1TB NVMe PCIe 4.0', price: 549, brand: 'crucial', type: 'nvme', capacity: 1000 },
+                { id: 'ssd4', name: 'Kingston KC3000', specs: '2TB NVMe PCIe 4.0', price: 949, brand: 'kingston', type: 'nvme', capacity: 2000 },
+                { id: 'ssd5', name: 'Seagate FireCuda 530', specs: '1TB NVMe PCIe 4.0', price: 649, brand: 'seagate', type: 'nvme', capacity: 1000 },
+                { id: 'ssd6', name: 'TeamGroup Cardea Z440', specs: '2TB NVMe PCIe 4.0', price: 899, brand: 'teamgroup', type: 'nvme', capacity: 2000 },
+                { id: 'ssd7', name: '致钛 5000', specs: '512GB SATA', price: 279, brand: 'zhitai', type: 'sata', capacity: 512 }
+            ],
+            cooling: [
+                { id: 'cool0', name: 'NZXT Kraken Elite 420', specs: '420mm AIO 旗舰水冷', price: 1799, brand: 'nzxt', type: 'aio' },
+                { id: 'cool0a', name: 'ROG RYUJIN III 360', specs: '360mm AIO 3.5寸屏', price: 2499, brand: 'asus', type: 'aio' },
+                { id: 'cool1', name: 'Corsair iCUE H150i ELITE', specs: '360mm AIO 水冷', price: 1299, brand: 'corsair', type: 'aio' },
+                { id: 'cool2', name: 'NZXT Kraken 360 RGB', specs: '360mm AIO 水冷', price: 1099, brand: 'nzxt', type: 'aio' },
+                { id: 'cool3', name: 'Noctua NH-D15 chromax', specs: '双塔风冷 静音', price: 649, brand: 'noctua', type: 'air' },
+                { id: 'cool4', name: '九州风神 LT720', specs: '360mm AIO', price: 599, brand: 'deepcool', type: 'aio' },
+                { id: 'cool5', name: 'Deepcool AK620', specs: '双塔风冷', price: 349, brand: 'deepcool', type: 'air' },
+                { id: 'cool6', name: 'ARCTIC Liquid Freezer II', specs: '240mm AIO', price: 649, brand: 'arctic', type: 'aio' },
+                { id: 'cool7', name: '九州风神 玄冰400', specs: '单塔风冷 入门', price: 79, brand: 'deepcool', type: 'air' }
+            ],
+            psu: [
+                { id: 'psu0', name: 'Seasonic PRIME TX-1600', specs: '1600W 80+钛金 旗舰', price: 3199, brand: 'seasonic', wattage: 1600 },
+                { id: 'psu0a', name: 'Corsair AX1600i', specs: '1600W 80+钛金 全模组', price: 3599, brand: 'corsair', wattage: 1600 },
+                { id: 'psu1', name: 'Seasonic PRIME TX-1000', specs: '1000W 80+钛金', price: 1799, brand: 'seasonic', wattage: 1000 },
+                { id: 'psu2', name: 'Corsair RM1000x SHIFT', specs: '1000W 80+金牌', price: 1299, brand: 'corsair', wattage: 1000 },
+                { id: 'psu3', name: 'be quiet! Dark Power 13', specs: '850W 80+钛金', price: 1499, brand: 'bequiet', wattage: 850 },
+                { id: 'psu4', name: '海韵 FOCUS GX-850', specs: '850W 80+金牌', price: 899, brand: 'seasonic', wattage: 850 },
+                { id: 'psu5', name: '鑫谷 GM850', specs: '850W 80+金牌 ATX3.0', price: 599, brand: 'sigo', wattage: 850 },
+                { id: 'psu6', name: 'Thermaltake Toughpower GF1', specs: '750W 80+金牌', price: 599, brand: 'thermaltake', wattage: 750 },
+                { id: 'psu7', name: '振华 铜皇 550W', specs: '550W 80+铜牌', price: 269, brand: 'superflower', wattage: 550 }
+            ],
+            case: [
+                { id: 'case0', name: 'Lian Li O11 Vision', specs: '全塔 双腔 透明 旗舰', price: 1699, brand: 'lianli', size: 'full-tower' },
+                { id: 'case0a', name: 'Lian Li O11 Dynamic EVO XL', specs: '全塔机箱 双腔', price: 1599, brand: 'lianli', size: 'full-tower' },
+                { id: 'case1', name: 'NZXT H9 Flow', specs: '双腔中塔 海景房', price: 1099, brand: 'nzxt', size: 'mid-tower' },
+                { id: 'case2', name: 'Lian Li O11 Dynamic EVO', specs: '中塔机箱 RGB', price: 899, brand: 'lianli', size: 'mid-tower' },
+                { id: 'case3', name: 'Fractal Design North', specs: '胡桃木中塔机箱', price: 999, brand: 'fractal', size: 'mid-tower' },
+                { id: 'case4', name: 'Corsair 4000D Airflow', specs: '中塔 网孔面板', price: 599, brand: 'corsair', size: 'mid-tower' },
+                { id: 'case5', name: '爱国者 星璨 岚', specs: '中塔 海景房', price: 399, brand: 'aigo', size: 'mid-tower' },
+                { id: 'case6', name: 'Cooler Master Q300L', specs: '紧凑型 mATX', price: 349, brand: 'coolermaster', size: 'micro-atx' },
+                { id: 'case7', name: '航嘉 暗夜猎手5', specs: 'mATX 入门', price: 129, brand: 'huntkey', size: 'micro-atx' }
+            ],
+            monitor: [
+                { id: 'mon0', name: '华硕 ROG Swift PG32UCDM', specs: '32寸 4K 240Hz QD-OLED 旗舰', price: 11999, brand: 'asus' },
+                { id: 'mon0a', name: 'LG 32GS95UE', specs: '32寸 4K 240Hz OLED', price: 9999, brand: 'lg' },
+                { id: 'mon0b', name: '三星 Odyssey G8', specs: '32寸 4K 240Hz 曲面', price: 8999, brand: 'samsung' },
+                { id: 'mon1', name: '戴尔 U2723QE', specs: '27寸 4K IPS 60Hz 专业', price: 3499, brand: 'dell' },
+                { id: 'mon2', name: 'LG 27GP950', specs: '27寸 4K 144Hz Nano IPS', price: 4299, brand: 'lg' },
+                { id: 'mon3', name: '华硕 ROG PG27AQDM', specs: '27寸 2K 240Hz OLED', price: 5499, brand: 'asus' },
+                { id: 'mon4', name: 'AOC AG274QX', specs: '27寸 2K 170Hz', price: 2199, brand: 'aoc' },
+                { id: 'mon5', name: '小米显示器 27寸 2K', specs: '27寸 2K 165Hz', price: 1299, brand: 'xiaomi' },
+                { id: 'mon6', name: '红米 27寸 2K', specs: '27寸 2K 165Hz', price: 999, brand: 'xiaomi' },
+                { id: 'mon7', name: '红米 24寸', specs: '24寸 1080p 75Hz', price: 549, brand: 'xiaomi' }
+            ],
+            keyboard: [
+                { id: 'kb0', name: 'ROG 龙骑士3', specs: '磁轴 旗舰 可分离', price: 1499, brand: 'asus' },
+                { id: 'kb0a', name: 'Wooting 60HE', specs: '磁轴 0.1mm 可调', price: 1299, brand: 'wooting' },
+                { id: 'kb1', name: '雷蛇黑寡妇 V4 Pro', specs: '机械 黄轴 腕托', price: 1299, brand: 'razer' },
+                { id: 'kb2', name: 'ROG 游侠 RX', specs: '机械键盘 光轴', price: 649, brand: 'asus' },
+                { id: 'kb3', name: 'Cherry MX 3.0S', specs: '机械键盘 茶轴', price: 449, brand: 'cherry' },
+                { id: 'kb4', name: '罗技 G Pro X', specs: '机械 热插拔', price: 899, brand: 'logitech' },
+                { id: 'kb5', name: '雷柏 V500', specs: '机械键盘 入门', price: 129, brand: 'rapoo' }
+            ],
+            mouse: [
+                { id: 'mouse0', name: '罗技 G PRO X SUPERLIGHT 2', specs: '60g 无线 旗舰', price: 1199, brand: 'logitech' },
+                { id: 'mouse0a', name: '雷蛇毒蝰V3 Pro', specs: '54g 无线 4K轮询', price: 999, brand: 'razer' },
+                { id: 'mouse1', name: '罗技 G PRO X', specs: '无线 63g', price: 449, brand: 'logitech' },
+                { id: 'mouse2', name: '雷蛇毒蝰V3', specs: '轻量化 有线', price: 399, brand: 'razer' },
+                { id: 'mouse3', name: '罗技 G502 X', specs: 'LIGHTFORCE 混合微动', price: 499, brand: 'logitech' },
+                { id: 'mouse4', name: '赛睿 Rival 5', specs: '有线游戏', price: 269, brand: 'steelseries' },
+                { id: 'mouse5', name: '雷柏 VT350', specs: '无线办公', price: 89, brand: 'rapoo' }
+            ],
+            headset: [
+                { id: 'hs0', name: 'ROG Delta S', specs: 'Ai降噪 50mm驱动', price: 1299, brand: 'asus' },
+                { id: 'hs0a', name: '赛睿 Arctis Nova Pro', specs: '无线 双电池 旗舰', price: 1999, brand: 'steelseries' },
+                { id: 'hs1', name: '罗技 G PRO X 2', specs: '无线 50mm', price: 1299, brand: 'logitech' },
+                { id: 'hs2', name: '雷蛇北海巨妖 V3 Pro', specs: '无线 THX空间音效', price: 1099, brand: 'razer' },
+                { id: 'hs3', name: 'HyperX Cloud III', specs: '有线 53mm', price: 599, brand: 'hyperx' },
+                { id: 'hs4', name: 'JBL QUANTUM 400', specs: '有线 7.1', price: 399, brand: 'jbl' },
+                { id: 'hs5', name: '雷柏 VH150', specs: '入门', price: 59, brand: 'rapoo' }
+            ]
+        };
+        try {
+            const raw = localStorage.getItem('pcbuilder_hardware_override');
+            if (raw) {
+                const override = JSON.parse(raw);
+                for (const k of Object.keys(override)) {
+                    if (Array.isArray(override[k])) this.hardwareDatabase[k] = override[k];
+                }
+            }
+        } catch (e) {}
+
+        // 当前配置
+        this.currentConfig = {
+            cpu: null,
+            monitor: null,
+            motherboard: null,
+            gpu: null,
+            ram: null,
+            storage: null,
+            cooling: null,
+            psu: null,
+            case: null,
+            keyboard: null,
+            mouse: null,
+            headset: null
+        };
+
+        // 购物车
+        this.cart = [];
+        
+        // 当前选中的硬件类别
+        this.currentCategory = 'cpu';
+        
+        this.init();
+    }
+    
+    init() {
+        console.log('🖥️ 初始化电脑硬件销售网站...');
+        
+        try {
+            this.bindEvents();
+        } catch (e) {
+            console.warn('绑定事件时出错:', e);
+        }
+        
+        this.loadHardwareList();
+        this.loadProductsGrid();
+        this.updateConfigSummary();
+        this.updateCartCount();
+        
+        // 确保硬件列表加载：若为空则延迟重试
+        const listEl = document.getElementById('hardwareList');
+        if (listEl && !listEl.children.length) {
+            setTimeout(() => this.loadHardwareList(), 100);
+        }
+        
+        console.log('✅ 网站初始化完成');
+    }
+    
+    bindEvents() {
+        // 导航菜单
+        document.querySelectorAll('.nav-link').forEach(link => {
+            link.addEventListener('click', (e) => {
+                e.preventDefault();
+                this.handleNavClick(e.target);
+            });
+        });
+        
+        // 购物车按钮
+        const cartBtn = document.getElementById('cartBtn');
+        const closeCart = document.getElementById('closeCart');
+        if (cartBtn) cartBtn.addEventListener('click', () => this.toggleCart());
+        if (closeCart) closeCart.addEventListener('click', () => this.toggleCart());
+        const closePreview = document.getElementById('closeHardwarePreview');
+        if (closePreview) closePreview.addEventListener('click', () => this.closeHardwarePreview());
+        const previewOverlay = document.getElementById('hardwarePreviewOverlay');
+        if (previewOverlay) previewOverlay.addEventListener('click', (e) => { if (e.target === previewOverlay) this.closeHardwarePreview(); });
+        
+        // 开始装机按钮
+        const startBtn = document.getElementById('startBuildingBtn');
+        if (startBtn) startBtn.addEventListener('click', () => this.scrollToSection('builder'));
+        
+        // 硬件分类标签
+        document.querySelectorAll('.tab-btn').forEach(btn => {
+            btn.addEventListener('click', (e) => {
+                const category = e.currentTarget.dataset.category;
+                if (category) this.handleCategoryChange(category);
+            });
+        });
+        
+        // 加入购物车按钮
+        const addCartBtn = document.getElementById('addToCartBtn');
+        if (addCartBtn) addCartBtn.addEventListener('click', () => this.addCurrentConfigToCart());
+        
+        // 立即购买按钮
+        const buyNowBtn = document.getElementById('buyNowBtn');
+        if (buyNowBtn) buyNowBtn.addEventListener('click', () => this.buyNow());
+        
+        // 保存配置按钮（如存在）
+        const saveConfigBtn = document.getElementById('saveConfigBtn');
+        if (saveConfigBtn) {
+            saveConfigBtn.addEventListener('click', () => this.saveConfiguration());
+        }
+        
+        // 右侧配置摘要：点击取消选取
+        document.querySelectorAll('.config-item, .config-sub-item').forEach(configItem => {
+            configItem.addEventListener('click', (e) => {
+                if (e.target.closest('.config-item-cancel')) {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    // 外设一键清空
+                    if (e.target.closest('.peripherals-clear-btn')) {
+                        ['keyboard', 'mouse', 'headset'].forEach(cat => {
+                            if (this.currentConfig[cat]) this.deselectHardware(cat);
+                        });
+                        return;
+                    }
+                    const el = e.target.closest('[data-component]');
+                    const category = el?.dataset?.component;
+                    if (category && this.currentConfig[category]) {
+                        this.deselectHardware(category);
+                    }
+                }
+            });
+        });
+        
+        // 外设：点击展开/收起子项（键盘、鼠标、耳麦）
+        document.querySelector('.expand-toggle')?.addEventListener('click', (e) => {
+            if (e.target.closest('.config-item-cancel')) return;
+            const sub = document.querySelector('.peripherals-sub');
+            if (sub) sub.classList.toggle('peripherals-collapsed');
+        });
+        
+        // 产品筛选
+        document.querySelectorAll('.filter-btn[data-category]').forEach(btn => {
+            btn.addEventListener('click', (e) => {
+                this.filterProducts(e.currentTarget.dataset.category);
+            });
+        });
+        // 分页：每页数量
+        document.querySelectorAll('.pagination-size').forEach(btn => {
+            btn.addEventListener('click', (e) => {
+                const size = parseInt(e.currentTarget.dataset.size || '6', 10);
+                this.productsPageSize = size;
+                document.querySelectorAll('.pagination-size').forEach(b => b.classList.remove('active'));
+                e.currentTarget.classList.add('active');
+                this.productsCurrentPage = 1;
+                this.loadProductsGrid();
+            });
+        });
+        
+        // 预设配置按钮
+        document.querySelectorAll('[data-preset]').forEach(btn => {
+            btn.addEventListener('click', (e) => {
+                this.loadPreset(e.target.dataset.preset);
+            });
+        });
+        
+        // 登录按钮
+        const loginBtn = document.getElementById('loginBtn');
+        if (loginBtn) loginBtn.addEventListener('click', () => this.showLoginModal());
+    }
+    
+    handleNavClick(target) {
+        // 移除所有active类
+        document.querySelectorAll('.nav-link').forEach(link => {
+            link.classList.remove('active');
+        });
+        
+        // 添加active类
+        target.classList.add('active');
+        
+        // 滚动到对应区域
+        const sectionId = target.getAttribute('href').substring(1);
+        this.scrollToSection(sectionId);
+    }
+    
+    scrollToSection(sectionId) {
+        const section = document.getElementById(sectionId);
+        if (section) {
+            section.scrollIntoView({ behavior: 'smooth' });
+        }
+    }
+    
+    toggleCart() {
+        const cartSidebar = document.getElementById('cartSidebar');
+        cartSidebar.classList.toggle('open');
+    }
+    
+    handleCategoryChange(category) {
+        if (!category || !this.hardwareDatabase[category]) return;
+        this.currentCategory = category;
+        
+        // 更新标签按钮状态
+        document.querySelectorAll('.tab-btn').forEach(btn => {
+            btn.classList.remove('active');
+            if (btn.dataset.category === category) {
+                btn.classList.add('active');
+            }
+        });
+        
+        // 加载对应硬件列表
+        this.loadHardwareList();
+    }
+    
+    loadHardwareList() {
+        const hardwareList = document.getElementById('hardwareList');
+        const hardwareItems = this.hardwareDatabase[this.currentCategory];
+        
+        if (!hardwareList || !hardwareItems) return;
+        
+        hardwareList.innerHTML = '';
+        
+        hardwareItems.slice(0, 6).forEach(item => {
+            const hardwareItem = document.createElement('div');
+            hardwareItem.className = 'hardware-item';
+            hardwareItem.dataset.id = item.id;
+            hardwareItem.dataset.category = this.currentCategory;
+            
+            // 检查是否已选中
+            const isSelected = this.currentConfig[this.currentCategory]?.id === item.id;
+            if (isSelected) {
+                hardwareItem.classList.add('selected');
+            }
+            
+            // 本地 SVG 图标路径，全网可访问（不依赖 CDN）
+            const iconMap = {
+                cpu: 'icons/hardware/cpu.svg',
+                gpu: 'icons/hardware/gpu.svg',
+                motherboard: 'icons/hardware/motherboard.svg',
+                ram: 'icons/hardware/ram.svg',
+                storage: 'icons/hardware/storage.svg',
+                cooling: 'icons/hardware/cooling.svg',
+                psu: 'icons/hardware/psu.svg',
+                case: 'icons/hardware/case.svg',
+                monitor: 'icons/hardware/monitor.svg',
+                keyboard: 'icons/hardware/keyboard.svg',
+                mouse: 'icons/hardware/mouse.svg',
+                headset: 'icons/hardware/headset.svg'
+            };
+            const iconSrc = iconMap[this.currentCategory] || 'icons/hardware/cpu.svg';
+            
+            hardwareItem.innerHTML = `
+                <div class="hardware-icon">
+                    <img src="${iconSrc}" alt="${this.currentCategory}" />
+                </div>
+                <div class="hardware-info">
+                    <div class="hardware-name">${item.name}</div>
+                    <div class="hardware-specs">${item.specs}</div>
+                    <div class="hardware-brand hardware-brand-clickable" title="点击查看硬件预览">品牌: ${item.brand}</div>
+                </div>
+                <div class="hardware-price">¥${item.price}</div>
+            `;
+            
+            hardwareItem.addEventListener('click', (e) => {
+                if (e.target.closest('.hardware-brand-clickable')) {
+                    e.stopPropagation();
+                    this.showHardwarePreview(item);
+                    return;
+                }
+                this.selectHardware(item, this.currentCategory);
+            });
+            
+            hardwareList.appendChild(hardwareItem);
+        });
+    }
+    
+    selectHardware(item, category) {
+        // 更新当前配置
+        this.currentConfig[category] = item;
+        
+        // 更新硬件列表选中状态
+        document.querySelectorAll('.hardware-item').forEach(hwItem => {
+            hwItem.classList.remove('selected');
+            if (hwItem.dataset.id === item.id && hwItem.dataset.category === category) {
+                hwItem.classList.add('selected');
+            }
+        });
+        
+        // 更新配置摘要
+        this.updateConfigSummary();
+        
+        // 更新兼容性检查
+        this.updateCompatibility();
+    }
+    
+    deselectHardware(category) {
+        this.currentConfig[category] = null;
+        
+        // 移除该分类下所有硬件项的选中状态
+        document.querySelectorAll(`.hardware-item[data-category="${category}"]`).forEach(hwItem => {
+            hwItem.classList.remove('selected');
+        });
+        
+        this.updateConfigSummary();
+        this.updateCompatibility();
+    }
+
+    getHardwareThumbUrl(item) {
+        if (item.thumb) return item.thumb;
+        return `icons/products/${item.id}.jpg`;
+    }
+
+    showHardwarePreview(item) {
+        const overlay = document.getElementById('hardwarePreviewOverlay');
+        const imgEl = document.getElementById('hardwarePreviewImg');
+        const nameEl = document.getElementById('hardwarePreviewName');
+        const specsEl = document.getElementById('hardwarePreviewSpecs');
+        const brandEl = document.getElementById('hardwarePreviewBrand');
+        const priceEl = document.getElementById('hardwarePreviewPrice');
+        if (!overlay || !imgEl) return;
+
+        const iconMap = {
+            cpu: 'icons/hardware/cpu.svg', gpu: 'icons/hardware/gpu.svg',
+            motherboard: 'icons/hardware/motherboard.svg', ram: 'icons/hardware/ram.svg',
+            storage: 'icons/hardware/storage.svg', cooling: 'icons/hardware/cooling.svg',
+            psu: 'icons/hardware/psu.svg', case: 'icons/hardware/case.svg',
+            monitor: 'icons/hardware/monitor.svg', keyboard: 'icons/hardware/keyboard.svg',
+            mouse: 'icons/hardware/mouse.svg', headset: 'icons/hardware/headset.svg'
+        };
+        const fallbackIcon = iconMap[this.currentCategory] || 'icons/hardware/cpu.svg';
+
+        imgEl.src = this.getHardwareThumbUrl(item);
+        imgEl.alt = item.name;
+        imgEl.onerror = () => { imgEl.src = fallbackIcon; };
+        nameEl.textContent = item.name;
+        specsEl.textContent = item.specs;
+        brandEl.textContent = item.brand;
+        priceEl.textContent = '¥' + item.price;
+        overlay.classList.add('open');
+    }
+
+    closeHardwarePreview() {
+        document.getElementById('hardwarePreviewOverlay')?.classList.remove('open');
+    }
+    
+    capitalizeFirst(str) {
+        return str ? str.charAt(0).toUpperCase() + str.slice(1) : '';
+    }
+    
+    updateConfigSummary() {
+        // 更新每个组件的显示
+        Object.keys(this.currentConfig).forEach(category => {
+            if (['keyboard', 'mouse', 'headset'].includes(category)) return; // 外设子项单独处理
+            const item = this.currentConfig[category];
+            const element = document.getElementById(`selected${this.capitalizeFirst(category)}`);
+            const priceElement = element?.parentElement?.querySelector('.component-price');
+            if (element) {
+                if (item) {
+                    element.textContent = item.name;
+                    if (priceElement) priceElement.textContent = `¥${item.price}`;
+                } else {
+                    element.textContent = '未选择';
+                    if (priceElement) priceElement.textContent = '¥0';
+                }
+            }
+        });
+        // 外设汇总：未选择显示「未选择」，有选择则显示第一个设备名，其他在展开后查看
+        const kb = this.currentConfig.keyboard;
+        const mouse = this.currentConfig.mouse;
+        const hs = this.currentConfig.headset;
+        const first = kb || mouse || hs;
+        const summaryEl = document.getElementById('selectedPeripheralsSummary');
+        const priceEl = document.getElementById('peripheralsTotalPrice');
+        if (summaryEl) summaryEl.textContent = first ? first.name : '未选择';
+        if (priceEl) priceEl.textContent = `¥${(kb?.price || 0) + (mouse?.price || 0) + (hs?.price || 0)}`;
+        // 更新子项
+        ['keyboard', 'mouse', 'headset'].forEach(cat => {
+            const el = document.getElementById(`selected${this.capitalizeFirst(cat)}`);
+            const pe = el?.parentElement?.querySelector('.component-price');
+            const it = this.currentConfig[cat];
+            if (el) el.textContent = it ? it.name : '未选择';
+            if (pe) pe.textContent = it ? `¥${it.price}` : '¥0';
+        });
+        // 更新总价
+        this.updateTotalPrice();
+    }
+    
+    updateTotalPrice() {
+        let total = 0;
+        Object.values(this.currentConfig).forEach(item => {
+            if (item && item.price) total += item.price;
+        });
+        const hardwareTotalEl = document.getElementById('hardwareTotal');
+        const grandTotalEl = document.getElementById('grandTotal');
+        if (hardwareTotalEl) hardwareTotalEl.textContent = `¥${total}`;
+        if (grandTotalEl) grandTotalEl.textContent = `¥${total + 299}`;
+    }
+    
+    updateCompatibility() {
+        const cpu = this.currentConfig.cpu;
+        const mb = this.currentConfig.motherboard;
+        const ram = this.currentConfig.ram;
+        const gpu = this.currentConfig.gpu;
+        const psu = this.currentConfig.psu;
+        const caseItem = this.currentConfig.case;
+        const list = document.querySelector('.compatibility-list');
+        if (!list) return;
+        list.innerHTML = '';
+        const addItem = (ok, msg, type = 'compatible') => {
+            const div = document.createElement('div');
+            div.className = `compat-item ${type}`;
+            div.innerHTML = `<i class="fas fa-${ok ? 'check' : 'times'}"></i><span>${msg}</span>`;
+            list.appendChild(div);
+        };
+        // CPU与主板兼容：根据 socket 匹配
+        if (cpu && mb) {
+            const cpuSocket = (cpu.socket || '').toLowerCase();
+            const mbSocket = (mb.socket || '').toLowerCase();
+            const compat = cpuSocket && mbSocket && cpuSocket === mbSocket;
+            addItem(compat, compat ? 'CPU与主板兼容' : `CPU与主板不兼容（${cpu.brand}需${cpuSocket}，主板为${mbSocket}）`, compat ? 'compatible' : 'incompatible');
+        } else {
+            addItem(true, 'CPU与主板兼容');
+        }
+        addItem(true, '内存兼容');
+        if (psu && (gpu || cpu)) {
+            const psuW = psu.wattage || 550;
+            const recommend = (gpu?.category === 'high-end' ? 850 : cpu?.category === 'high-end' ? 750 : 650);
+            const ok = psuW >= recommend;
+            addItem(ok, `电源功率${ok ? '充足' : '建议' + recommend + 'W'}（当前${psuW}W）`, ok ? 'compatible' : 'warning');
+        } else {
+            addItem(true, '电源功率建议: 650W');
+        }
+        addItem(true, '机箱空间充足');
+    }
+
+    // 热门硬件推荐：加载产品卡片
+    loadProductsGrid() {
+        const grid = document.getElementById('productsGrid');
+        if (!grid) return;
+
+        let override = null;
+        try { const r = localStorage.getItem('pcbuilder_products_override'); if (r) override = JSON.parse(r); } catch(e) {}
+        if (override && Array.isArray(override) && override.length > 0) {
+            this.allProducts = override;
+        } else if (!this.allProducts) {
+            this.allProducts = [
+                // 首推款（排在最前面）
+                { id: 'p_cpu_7800x3d',  title: '【首推】AMD Ryzen 7 7800X3D', specs: '8核16线程 · 3D缓存 · 游戏神U',          price: 2699, category: 'gaming' },
+                { id: 'p_cpu_9800x3d',  title: '【首推】AMD Ryzen 9 9800X3D', specs: '16核32线程 · 3D缓存 · 次世代旗舰',      price: 5899, category: 'workstation' },
+                { id: 'p_gpu_5070',     title: '【首推】NVIDIA RTX 5070',      specs: '16GB GDDR7 · DLSS 4 · 2K/4K 全能',     price: 4599, category: 'gaming' },
+                { id: 'p_ram_24g',      title: '【首推】24GB DDR5 内存套装',   specs: '24GB (2x12GB) DDR5 6400MHz · 游戏优选', price: 899,  category: 'gaming' },
+
+                // 游戏电竞 gaming
+                { id: 'p_gpu_4080s',    title: 'NVIDIA RTX 4080 SUPER',       specs: '16GB GDDR6X · 光追 4K 游戏',           price: 7999, category: 'gaming' },
+                { id: 'p_cpu_14700k',   title: 'Intel Core i7-14700K',        specs: '20核28线程 · 主流游戏/直播利器',       price: 2999, category: 'gaming' },
+                { id: 'p_gpu_4070ti',   title: 'NVIDIA RTX 4070 Ti SUPER',    specs: '16GB GDDR6X · 2K 240Hz 甜品卡',        price: 5999, category: 'gaming' },
+                { id: 'p_gpu_7800xt',   title: 'AMD Radeon RX 7800 XT',       specs: '16GB GDDR6 · 2K 高刷性价比',           price: 3799, category: 'gaming' },
+
+                // 工作站 workstation
+                { id: 'p_cfg_4k_edit',  title: '4K 视频剪辑工作站套装',         specs: 'Ryzen 9 + RTX 4090 + 64GB + 2TB SSD', price: 23999, category: 'workstation' },
+                { id: 'p_cpu_9950x3d',  title: 'AMD Ryzen 9 9950X3D',         specs: '16核32线程 · 144MB 缓存 · 创作&游戏',  price: 5499, category: 'workstation' },
+                { id: 'p_gpu_4090',     title: 'NVIDIA RTX 4090',             specs: '24GB GDDR6X · AI/渲染旗舰',             price: 12999, category: 'workstation' },
+                { id: 'p_ram_128g',     title: '128GB DDR5 创作内存套装',       specs: '4x32GB DDR5 6000MHz · 大项目无压力',   price: 4999, category: 'workstation' },
+                { id: 'p_ssd_4t_pcie5', title: '4TB PCIe 5.0 NVMe SSD',       specs: '顺序读取 12000MB/s · 大型工程磁盘',      price: 2299, category: 'workstation' },
+
+                // 性价比 budget
+                { id: 'p_cfg_budget',   title: '高性价比游戏整机',              specs: 'Ryzen 5 + RTX 4060 Ti + 16GB + 1TB',  price: 5999, category: 'budget' },
+                { id: 'p_cpu_7600',     title: 'AMD Ryzen 5 7600',            specs: '6核12线程 · 主流游戏足够用',            price: 1499, category: 'budget' },
+                { id: 'p_gpu_3060',     title: 'NVIDIA RTX 3060 12GB',        specs: '12GB GDDR6 · 1080p 高画质',             price: 1999, category: 'budget' },
+                { id: 'p_ram_32g',      title: '32GB DDR5 游戏内存',           specs: '2x16GB DDR5 5600MHz',                  price: 549,  category: 'budget' },
+                { id: 'p_ssd_1t',       title: '1TB NVMe 固态硬盘',            specs: 'PCIe 4.0 · 读取 7000MB/s',             price: 499,  category: 'budget' },
+
+                // RGB 光效 rgb
+                { id: 'p_rgb_case',     title: '海景房 RGB 机箱套装',            specs: '三面玻璃 + 10 把 ARGB 风扇',          price: 1299, category: 'rgb' },
+                { id: 'p_rgb_cooler',   title: '360 一体式水冷 RGB 套装',        specs: 'ARGB 水冷 + 集线器',                  price: 899,  category: 'rgb' },
+                { id: 'p_rgb_ram',      title: '32GB RGB 内存套装',             specs: '2x16GB DDR5 6000MHz · 全彩灯效',       price: 799,  category: 'rgb' },
+                { id: 'p_rgb_fans',     title: 'ARGB 风扇 3 把装',              specs: '120mm PWM 风扇 · 支持灯效联动',        price: 299,  category: 'rgb' },
+                { id: 'p_rgb_strip',    title: 'ARGB 灯带套装',                 specs: '磁吸灯带 · 主板同步',                  price: 199,  category: 'rgb' }
+            ];
+        }
+
+        if (!this.renderProductsGrid) {
+            this.renderProductsGrid = (items) => {
+                grid.innerHTML = '';
+                items.forEach(p => {
+                    const card = document.createElement('div');
+                    card.className = 'product-card';
+                    card.dataset.category = p.category;
+                    const imgHtml = p.image ? `<img src="${p.image.startsWith('data:')?p.image:p.image}" alt="" style="width:100%;height:100%;object-fit:contain" onerror="this.parentElement.innerHTML='<i class=\\'fas fa-image\\'></i>'">` : `<i class="fas ${p.category === 'gaming' ? 'fa-gamepad' : p.category === 'workstation' ? 'fa-briefcase' : p.category === 'budget' ? 'fa-coins' : 'fa-lightbulb'}"></i>`;
+                    card.innerHTML = `
+                        <div class="product-image">
+                            ${imgHtml}
+                        </div>
+                        <div class="product-content">
+                            <h3 class="product-title">${p.title}</h3>
+                            <p class="product-specs">${p.specs}</p>
+                            <div class="product-price">¥${p.price.toLocaleString('zh-CN')}</div>
+                            <div class="product-actions">
+                                <button class="btn btn-outline btn-sm">查看详情</button>
+                                <button class="btn btn-primary btn-sm">加入购物车</button>
+                            </div>
+                        </div>
+                    `;
+                    // 加入购物车按钮交互由 features.js 接管（通过 interactionFixer）
+                    const addBtn = card.querySelector('.btn-primary');
+                    if (addBtn) {
+                        addBtn.addEventListener('click', (e) => {
+                            e.preventDefault();
+                            if (window.interactionFixer && typeof window.interactionFixer.addToCart === 'function') {
+                                window.interactionFixer.addToCart(card);
+                            }
+                        });
+                    }
+                    grid.appendChild(card);
+                });
+            };
+        }
+
+        this.currentProductFilter = this.currentProductFilter || 'all';
+        this.productsPageSize = this.productsPageSize ?? 6;
+        this.productsCurrentPage = this.productsCurrentPage ?? 1;
+
+        const isAll = this.currentProductFilter === 'all';
+        const perCatLimit = (cat) => (cat === 'gaming' || cat === 'budget' || cat === 'rgb' ? 6 : 10);
+
+        let items;
+        if (isAll) {
+            const start = (this.productsCurrentPage - 1) * this.productsPageSize;
+            items = this.allProducts.slice(start, start + this.productsPageSize);
+        } else {
+            items = this.allProducts.filter(p => p.category === this.currentProductFilter).slice(0, perCatLimit(this.currentProductFilter));
+        }
+
+        this.renderProductsGrid(items);
+
+        // 分页条：全部模式下显示并生成页码，分类模式下隐藏
+        const bar = document.getElementById('productsPaginationBar');
+        const pagesEl = document.getElementById('paginationPages');
+        const infoEl = document.getElementById('paginationInfo');
+        if (bar && pagesEl && infoEl) {
+            if (isAll && this.allProducts.length > 0) {
+                bar.style.display = 'flex';
+                const total = this.allProducts.length;
+                const totalPages = Math.ceil(total / this.productsPageSize) || 1;
+                const page = Math.min(this.productsCurrentPage, totalPages);
+                this.productsCurrentPage = page;
+
+                let html = '';
+                for (let i = 1; i <= totalPages; i++) {
+                    html += `<button class="filter-btn page-btn ${i === page ? 'active' : ''}" data-page="${i}">${i}</button>`;
+                }
+                pagesEl.innerHTML = html;
+                infoEl.textContent = `页 / 共 ${total} 个`;
+
+                pagesEl.querySelectorAll('.page-btn').forEach(btn => {
+                    btn.addEventListener('click', (e) => {
+                        this.productsCurrentPage = parseInt(e.currentTarget.dataset.page, 10);
+                        this.loadProductsGrid();
+                    });
+                });
+            } else {
+                bar.style.display = 'none';
+            }
+        }
+    }
+
+    updateCartCount() {}
+    addCurrentConfigToCart() {}
+    buyNow() {}
+    saveConfiguration() {}
+
+    // 热门硬件推荐分类筛选
+    filterProducts(category) {
+        this.currentProductFilter = category || 'all';
+        this.productsCurrentPage = 1;
+        // 更新筛选按钮样式（仅影响 data-category 的筛选按钮，不影响分页按钮）
+        document.querySelectorAll('.filter-btn[data-category]').forEach(btn => {
+            if (!category || category === 'all') {
+                btn.classList.toggle('active', btn.dataset.category === 'all');
+            } else {
+                btn.classList.toggle('active', btn.dataset.category === category);
+            }
+        });
+        this.loadProductsGrid();
+    }
+
+    loadPreset() {}
+    showLoginModal() {}
+}

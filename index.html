@@ -1,0 +1,1236 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="theme-color" content="#05080f">
+    <meta name="description" content="电脑硬件自选销售平台 - 专业装机配置工具">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="apple-mobile-web-app-title" content="联信装机">
+    <link rel="manifest" href="/manifest.json">
+    <link rel="icon" href="/favicon.png" type="image/png" sizes="192x192">
+    <link rel="icon" href="/favicon.ico" type="image/x-icon">
+    <link rel="apple-touch-icon" href="/favicon.png">
+    <title>🖥️ 联信装机 - 电脑硬件自选销售平台</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="page-size-picker.css">
+    <link rel="stylesheet" href="mobile.css">
+    <link rel="stylesheet" href="tech-style.css">
+</head>
+<body>
+    <!-- 背景 -->
+    <div class="page-bg"></div>
+    <div class="page-particles"></div>
+
+    <!-- 导航栏 -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <a href="#home" class="nav-logo" aria-label="联信装机 — 返回首页">
+                <div class="nav-logo-icon">
+                    <svg class="nav-logo-svg" viewBox="0 0 40 40" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false">
+                        <defs>
+                            <linearGradient id="lxNavLG" x1="0%" y1="0%" x2="100%" y2="100%">
+                                <stop offset="0%" stop-color="#7dffff"/>
+                                <stop offset="45%" stop-color="#00c8ea"/>
+                                <stop offset="100%" stop-color="#a78bfa"/>
+                            </linearGradient>
+                            <linearGradient id="lxNavLG2" x1="0" y1="0" x2="0" y2="1">
+                                <stop offset="0" stop-color="#152238"/>
+                                <stop offset="1" stop-color="#060b14"/>
+                            </linearGradient>
+                            <linearGradient id="lxNavLG3" x1="0" y1="0" x2="1" y2="0">
+                                <stop offset="0%" stop-color="#00f5ff" stop-opacity="0"/>
+                                <stop offset="50%" stop-color="#00f5ff" stop-opacity="0.35"/>
+                                <stop offset="100%" stop-color="#00f5ff" stop-opacity="0"/>
+                            </linearGradient>
+                        </defs>
+                        <rect x="3" y="5" width="34" height="23" rx="5.5" fill="url(#lxNavLG2)" stroke="url(#lxNavLG)" stroke-width="1.45"/>
+                        <rect x="7" y="9" width="26" height="13" rx="2.2" fill="#030810" stroke="rgba(0,229,255,0.14)" stroke-width="0.6"/>
+                        <rect x="9" y="11" width="10" height="2.4" rx="1.2" fill="url(#lxNavLG)"/>
+                        <rect x="9" y="15.4" width="17" height="2.4" rx="1.2" fill="url(#lxNavLG)" opacity="0.5"/>
+                        <rect x="9" y="19.8" width="12" height="1.7" rx="0.85" fill="url(#lxNavLG)" opacity="0.32"/>
+                        <rect x="7" y="9" width="26" height="6" rx="2.2" fill="url(#lxNavLG3)"/>
+                        <path d="M15 28.5h10l-1.4 4.8h-7.2z" fill="url(#lxNavLG)"/>
+                        <ellipse cx="20" cy="34.2" rx="9" ry="1.4" fill="#00e5ff" opacity="0.25"/>
+                    </svg>
+                </div>
+                <div class="nav-logo-text">
+                    <h1>联信装机</h1>
+                    <span class="nav-logo-eng" translate="no">PC Builder <b>Pro</b></span>
+                </div>
+            </a>
+            
+            <div class="nav-menu">
+                <a href="#home" class="nav-link active"><i class="fas fa-home"></i> 首页</a>
+                <a href="#builder" class="nav-link"><i class="fas fa-tools"></i> 装机配置</a>
+                <a href="#products" class="nav-link"><i class="fas fa-microchip"></i> 硬件商城</a>
+                <a href="#guides" class="nav-link"><i class="fas fa-book"></i> 装机指南</a>
+                <a href="#presets" class="nav-link"><i class="fas fa-star"></i> 热门配置</a>
+                <a href="javascript:void(0)" 
+                   id="myAiBtn"
+                   class="nav-link nav-link-ai" 
+                   title="打开我的AI聊天界面">
+                    <i class="fas fa-robot"></i> 我的AI
+                </a>
+            </div>
+            
+            <div class="nav-actions">
+                <button class="btn btn-outline" id="myOrdersBtn" style="font-size:.8rem;padding:.3rem .75rem" title="我的订单">
+                    <i class="fas fa-box"></i> 我的订单
+                </button>
+                <button class="btn btn-outline" id="cartBtn">
+                    <i class="fas fa-shopping-cart"></i>
+                    <span class="cart-count">0</span>
+                </button>
+                <button class="btn btn-primary" id="loginBtn">
+                    <i class="fas fa-user"></i> 登录
+                </button>
+            </div>
+        </div>
+    </nav>
+
+    <!-- 购物车侧边栏 -->
+    <div class="cart-sidebar" id="cartSidebar">
+        <div class="cart-header">
+            <h3><i class="fas fa-shopping-cart"></i> 购物车</h3>
+            <button class="btn-close" id="closeCart">&times;</button>
+        </div>
+        <div class="cart-items" id="cartItems">
+            <!-- 购物车商品动态加载 -->
+            <div class="cart-empty">
+                <i class="fas fa-shopping-basket"></i>
+                <p>购物车是空的</p>
+            </div>
+        </div>
+        <div class="cart-footer">
+            <div class="cart-total">
+                <span>总计:</span>
+                <span class="total-price">¥0.00</span>
+            </div>
+            <div style="margin-bottom:0.75rem">
+                <input type="tel" id="customerPhone" placeholder="联系电话（必填）" maxlength="11"
+                    style="width:100%;padding:0.6rem 0.75rem;border:1px solid #d1d5db;border-radius:0.5rem;font-size:0.9rem;box-sizing:border-box">
+            </div>
+            <button class="btn btn-success btn-block" id="checkoutBtn">
+                <i class="fas fa-credit-card"></i> 去结算
+            </button>
+        </div>
+    </div>
+
+    <!-- 主内容区 -->
+    <main class="main-content">
+        <!-- 英雄区域 -->
+        <section class="hero-section" id="home">
+            <div class="hero-content">
+                <div class="hero-badge">
+                    <i class="fas fa-bolt"></i>
+                    AI智能装机助手
+                </div>
+                <h2 class="hero-title">
+                    打造你的<span class="highlight">梦想主机</span>
+                </h2>
+                <p class="hero-subtitle">
+                    从零开始自由搭配，专业级硬件组合<br>
+                    让每一分钱都花在刀刃上
+                </p>
+                <div class="hero-actions">
+                    <a href="#builder" class="btn btn-rocket">
+                        <i class="fas fa-rocket"></i> 开始装机
+                    </a>
+                    <a href="#products" class="btn btn-ghost">
+                        <i class="fas fa-th-large"></i> 浏览硬件
+                    </a>
+                </div>
+                <div class="hero-stats">
+                    <div class="stat-card">
+                        <div class="stat-icon"><i class="fas fa-microchip"></i></div>
+                        <div class="stat-number">5000<span class="accent">+</span></div>
+                        <div class="stat-label">硬件型号</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-icon"><i class="fas fa-users"></i></div>
+                        <div class="stat-number">10<span class="accent">万</span>+</div>
+                        <div class="stat-label">装机用户</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-icon"><i class="fas fa-star"></i></div>
+                        <div class="stat-number">4.9</div>
+                        <div class="stat-label">用户评分</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 右侧装饰视觉 -->
+            <div class="hero-visual">
+                <div class="hero-glow-ring"></div>
+                <div class="float-block fb-cpu">
+                    <i class="fas fa-microchip"></i>
+                    <span>CPU</span>
+                </div>
+                <div class="float-block fb-gpu">
+                    <i class="fas fa-gamepad"></i>
+                    <span>GPU</span>
+                </div>
+                <div class="float-block fb-ram">
+                    <i class="fas fa-memory"></i>
+                    <span>内存</span>
+                </div>
+                <div class="float-block fb-case">
+                    <i class="fas fa-server"></i>
+                    <span>机箱</span>
+                </div>
+                <div class="float-block fb-game">
+                    <i class="fas fa-keyboard"></i>
+                    <span>外设</span>
+                </div>
+                <div class="float-block fb-psu">
+                    <i class="fas fa-plug"></i>
+                    <span>电源</span>
+                </div>
+            </div>
+        </section>
+
+        <!-- ═══════════════════════════════════════════
+             装机配置器
+        ═══════════════════════════════════════════ -->
+        <section class="builder-page" id="builder">
+            <div class="builder-page-bg"></div>
+
+            <!-- 页面标题 -->
+            <div class="builder-page-header">
+                <div class="section-eyebrow"><i class="fas fa-tools"></i></div>
+                <h2 class="builder-page-title">装机配置器</h2>
+                <p class="builder-page-subtitle">选择组件，实时查看兼容性与总价</p>
+            </div>
+
+            <!-- 主容器：玻璃卡片 -->
+            <div class="builder-card">
+
+                <!-- 左侧：商品选择 -->
+                <div class="builder-left">
+
+                    <!-- Tab 栏 -->
+                    <div class="builder-tabs" role="tablist">
+                        <button class="builder-tab active" data-category="cpu" role="tab">
+                            <i class="fas fa-microchip"></i>处理器
+                        </button>
+                        <button class="builder-tab" data-category="gpu" role="tab">
+                            <i class="fas fa-gamepad"></i>显卡
+                        </button>
+                        <button class="builder-tab" data-category="motherboard" role="tab">
+                            <i class="fas fa-server"></i>主板
+                        </button>
+                        <button class="builder-tab" data-category="ram" role="tab">
+                            <i class="fas fa-memory"></i>内存
+                        </button>
+                        <button class="builder-tab" data-category="storage" role="tab">
+                            <i class="fas fa-hdd"></i>存储
+                        </button>
+                        <button class="builder-tab" data-category="cooling" role="tab">
+                            <i class="fas fa-fan"></i>散热
+                        </button>
+                        <button class="builder-tab" data-category="psu" role="tab">
+                            <i class="fas fa-plug"></i>电源
+                        </button>
+                        <button class="builder-tab" data-category="case" role="tab">
+                            <i class="fas fa-desktop"></i>机箱
+                        </button>
+                        <button class="builder-tab" data-category="monitor" role="tab">
+                            <i class="fas fa-desktop"></i>显示器
+                        </button>
+                        <button class="builder-tab" data-category="keyboard" role="tab">
+                            <i class="fas fa-keyboard"></i>键盘
+                        </button>
+                        <button class="builder-tab" data-category="mouse" role="tab">
+                            <i class="fas fa Mouse"></i>鼠标
+                        </button>
+                        <button class="builder-tab" data-category="headset" role="tab">
+                            <i class="fas fa-headset"></i>耳麦
+                        </button>
+                    </div>
+
+                    <!-- 商品网格 -->
+                    <div class="builder-grid" id="builderGrid">
+                        <!-- 动态渲染 -->
+                    </div>
+                </div>
+
+                <!-- 右侧：配置摘要 -->
+                <div class="builder-right">
+
+                    <!-- 摘要标题条 -->
+                    <div class="summary-titlebar">
+                        <div class="summary-titlebar-left">
+                            <i class="fas fa-sliders-h"></i>
+                            <span>配置摘要</span>
+                        </div>
+                        <button class="btn-reset" id="resetConfigBtn" title="清空配置">
+                            <i class="fas fa-trash-alt"></i> 清空
+                        </button>
+                    </div>
+
+                    <!-- 摘要槽位列表 -->
+                    <div class="summary-slots" id="summarySlots">
+                        <!-- 12个槽位，动态渲染 -->
+                    </div>
+
+                    <!-- 价格汇总 -->
+                    <div class="summary-pricing">
+                        <div class="price-row price-sub">
+                            <span class="price-label">硬件合计</span>
+                            <span class="price-value" id="hardwareSubtotal">¥0</span>
+                        </div>
+                        <div class="price-row price-sub">
+                            <span class="price-label">装机服务费</span>
+                            <span class="price-value">¥299</span>
+                        </div>
+                        <div class="price-row price-grand">
+                            <span class="price-label">合计</span>
+                            <span class="price-value price-grand-value" id="grandTotal">¥299</span>
+                        </div>
+                    </div>
+
+                    <!-- 操作按钮 -->
+                    <div class="summary-actions">
+                        <button class="btn-cart" id="addToCartBtn">
+                            <i class="fas fa-cart-plus"></i> 加入购物车
+                        </button>
+                        <button class="btn-buy" id="buyNowBtn">
+                            <i class="fas fa-bolt"></i> 立即购买
+                        </button>
+                    </div>
+
+                    <!-- 兼容性检测 -->
+                    <div class="compat-panel">
+                        <div class="compat-title">
+                            <i class="fas fa-shield-halved"></i> 兼容性检测
+                        </div>
+                        <div class="compat-list" id="compatList">
+                            <div class="compat-item compat-ok">
+                                <i class="fas fa-circle-check"></i>
+                                <span>平台兼容性</span>
+                            </div>
+                            <div class="compat-item compat-ok">
+                                <i class="fas fa-circle-check"></i>
+                                <span>功率需求</span>
+                            </div>
+                            <div class="compat-item compat-ok">
+                                <i class="fas fa-circle-check"></i>
+                                <span>物理尺寸</span>
+                            </div>
+                            <div class="compat-item compat-warn">
+                                <i class="fas fa-triangle-exclamation"></i>
+                                <span>散热建议</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 热门硬件 -->
+        <section class="products-section" id="products">
+            <div class="section-header">
+                <div class="section-eyebrow">
+                    <!-- 芯片 SVG 图标 -->
+                    <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M6 4h12v4h-3v2h2v2h-2v2h2v2h-3V4zM4 8v12h16V8H4zm2 2h12v8H6v-8z"/>
+                    </svg>
+                </div>
+                <h2>热门硬件推荐</h2>
+                <p>精选高性价比硬件，满足不同需求</p>
+            </div>
+
+            <div class="hw-tabs" role="tablist" aria-label="硬件分类筛选">
+                <!-- 全部 -->
+                <button class="hw-tab active" data-filter="all" role="tab" aria-selected="true">
+                    <svg viewBox="0 0 16 16" xmlns="http://www.w3.org/2000/svg"><path d="M2 4h12v2H2V4zm0 3h12v2H2V7zm0 3h12v2H2v-2z"/></svg>
+                    全部
+                </button>
+                <!-- 游戏电竞 -->
+                <button class="hw-tab" data-filter="gaming" role="tab" aria-selected="false">
+                    <svg viewBox="0 0 16 16" xmlns="http://www.w3.org/2000/svg"><path d="M3 2l1.5 3L7 4l2 3-2 3-2.5-1L3 14l-1-3 2.5-1L2 7l1-2z"/></svg>
+                    游戏电竞
+                </button>
+                <!-- 工作站 -->
+                <button class="hw-tab" data-filter="workstation" role="tab" aria-selected="false">
+                    <svg viewBox="0 0 16 16" xmlns="http://www.w3.org/2000/svg"><rect x="1" y="2" width="14" height="10" rx="1.5" fill="none" stroke="currentColor" stroke-width="1.2"/><path d="M5 12v2M11 12v2M8 14v2" stroke="currentColor" stroke-width="1.2"/></svg>
+                    工作站
+                </button>
+                <!-- 性价比 -->
+                <button class="hw-tab" data-filter="budget" role="tab" aria-selected="false">
+                    <svg viewBox="0 0 16 16" xmlns="http://www.w3.org/2000/svg"><path d="M8 1v14M5 4h4.5a2 2 0 010 4H7a1 1 0 000 2h4a2 2 0 010 4H5" fill="none" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/></svg>
+                    性价比
+                </button>
+                <!-- RGB光效 -->
+                <button class="hw-tab" data-filter="rgb" role="tab" aria-selected="false">
+                    <svg viewBox="0 0 16 16" xmlns="http://www.w3.org/2000/svg"><circle cx="8" cy="8" r="2.5" fill="none" stroke="currentColor" stroke-width="1.2"/><path d="M8 1v2M8 13v2M1 8h2M13 8h2M3.3 3.3l1.4 1.4M11.3 11.3l1.4 1.4M3.3 12.7l1.4-1.4M11.3 4.7l1.4-1.4" stroke="currentColor" stroke-width="1.2"/></svg>
+                    RGB光效
+                </button>
+            </div>
+
+            <div class="products-scroll-wrapper">
+                <div class="products-scroll-track" id="productsScrollTrack">
+
+                <!-- 商品1: CPU — 游戏电竞 -->
+                <div class="product-card" data-filter="gaming">
+                    <div class="product-image">
+                        <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M6 4h12v4h-3v2h2v2h-2v2h2v2h-3V4zM4 8v12h16V8H4zm2 2h12v8H6v-8z"/>
+                        </svg>
+                    </div>
+                    <div class="product-content">
+                        <h3 class="product-title">Intel Core i9-14900K</h3>
+                        <p class="product-specs">24核心/32线程 · 3.2-6.0GHz · LGA1700</p>
+                        <div class="product-price">¥4,299</div>
+                        <div class="product-actions">
+                            <button type="button" class="btn-card-detail">查看详情</button>
+                            <button type="button" class="btn-card-cart">加入购物车</button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 商品2: GPU — 游戏电竞 + RGB -->
+                <div class="product-card" data-filter="gaming rgb">
+                    <div class="product-image">
+                        <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                            <rect x="2" y="6" width="20" height="12" rx="2" fill="none" stroke="currentColor" stroke-width="1.5"/>
+                            <path d="M7 18v2M17 18v2M12 10v4M9 12h6" stroke="currentColor" stroke-width="1.5"/>
+                        </svg>
+                    </div>
+                    <div class="product-content">
+                        <h3 class="product-title">NVIDIA GeForce RTX 4090</h3>
+                        <p class="product-specs">24GB GDDR6X · 旗舰级光追</p>
+                        <div class="product-price">¥12,999</div>
+                        <div class="product-actions">
+                            <button type="button" class="btn-card-detail">查看详情</button>
+                            <button type="button" class="btn-card-cart">加入购物车</button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 商品3: 内存 — RGB -->
+                <div class="product-card" data-filter="rgb">
+                    <div class="product-image">
+                        <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                            <rect x="3" y="8" width="18" height="8" rx="1.5" fill="none" stroke="currentColor" stroke-width="1.5"/>
+                            <path d="M6 8V6M10 8V6M14 8V6M18 8V6M6 16v2M10 16v2M14 16v2M18 16v2" stroke="currentColor" stroke-width="1.5"/>
+                        </svg>
+                    </div>
+                    <div class="product-content">
+                        <h3 class="product-title">G.SKILL Trident Z5 RGB</h3>
+                        <p class="product-specs">32GB (2×16GB) · DDR5 6000MHz</p>
+                        <div class="product-price">¥1,099</div>
+                        <div class="product-actions">
+                            <button type="button" class="btn-card-detail">查看详情</button>
+                            <button type="button" class="btn-card-cart">加入购物车</button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 商品4: SSD — 性价比 -->
+                <div class="product-card" data-filter="budget">
+                    <div class="product-image">
+                        <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                            <rect x="3" y="4" width="18" height="16" rx="2" fill="none" stroke="currentColor" stroke-width="1.5"/>
+                            <path d="M8 9h8M8 12h8M8 15h4" stroke="currentColor" stroke-width="1.5"/>
+                        </svg>
+                    </div>
+                    <div class="product-content">
+                        <h3 class="product-title">Samsung 990 PRO</h3>
+                        <p class="product-specs">2TB NVMe PCIe 4.0 · 7450MB/s</p>
+                        <div class="product-price">¥1,299</div>
+                        <div class="product-actions">
+                            <button type="button" class="btn-card-detail">查看详情</button>
+                            <button type="button" class="btn-card-cart">加入购物车</button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 商品5: 主板 — 工作站 -->
+                <div class="product-card" data-filter="workstation">
+                    <div class="product-image">
+                        <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                            <rect x="2" y="3" width="20" height="18" rx="2" fill="none" stroke="currentColor" stroke-width="1.5"/>
+                            <rect x="6" y="7" width="5" height="4" rx="0.5" fill="none" stroke="currentColor" stroke-width="1"/>
+                            <rect x="13" y="7" width="5" height="4" rx="0.5" fill="none" stroke="currentColor" stroke-width="1"/>
+                            <path d="M6 14v3M10 14v3M14 14v3M18 14v3" stroke="currentColor" stroke-width="1.5"/>
+                        </svg>
+                    </div>
+                    <div class="product-content">
+                        <h3 class="product-title">ASUS ROG MAXIMUS Z790</h3>
+                        <p class="product-specs">LGA1700 · DDR5 · Wi-Fi 6E</p>
+                        <div class="product-price">¥3,899</div>
+                        <div class="product-actions">
+                            <button type="button" class="btn-card-detail">查看详情</button>
+                            <button type="button" class="btn-card-cart">加入购物车</button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 商品6: 电源 — 性价比 -->
+                <div class="product-card" data-filter="budget">
+                    <div class="product-image">
+                        <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M13 2L4 14h7l-1 8 9-12h-7l1-8z" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"/>
+                        </svg>
+                    </div>
+                    <div class="product-content">
+                        <h3 class="product-title">Corsair RM1000x</h3>
+                        <p class="product-specs">1000W · 80+ Gold · 全模组</p>
+                        <div class="product-price">¥1,199</div>
+                        <div class="product-actions">
+                            <button type="button" class="btn-card-detail">查看详情</button>
+                            <button type="button" class="btn-card-cart">加入购物车</button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 商品7: 机箱 — RGB -->
+                <div class="product-card" data-filter="rgb">
+                    <div class="product-image">
+                        <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                            <rect x="4" y="3" width="16" height="18" rx="2" fill="none" stroke="currentColor" stroke-width="1.5"/>
+                            <path d="M4 8h16M9 8v13" stroke="currentColor" stroke-width="1.5"/>
+                            <circle cx="7" cy="5.5" r="0.5" fill="currentColor"/>
+                        </svg>
+                    </div>
+                    <div class="product-content">
+                        <h3 class="product-title">Lian Li O11 Dynamic EVO</h3>
+                        <p class="product-specs">中塔式 ATX · 双舱设计 · 全景玻璃</p>
+                        <div class="product-price">¥799</div>
+                        <div class="product-actions">
+                            <button type="button" class="btn-card-detail">查看详情</button>
+                            <button type="button" class="btn-card-cart">加入购物车</button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 商品8: 散热器 — 工作站 -->
+                <div class="product-card" data-filter="workstation">
+                    <div class="product-image">
+                        <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                            <circle cx="12" cy="12" r="4" fill="none" stroke="currentColor" stroke-width="1.5"/>
+                            <path d="M12 2v3M12 19v3M2 12h3M19 12h3M4.9 4.9l2.1 2.1M16.9 16.9l2.1 2.1M4.9 19.1l2.1-2.1M16.9 7.1l2.1-2.1" stroke="currentColor" stroke-width="1.5"/>
+                        </svg>
+                    </div>
+                    <div class="product-content">
+                        <h3 class="product-title">Noctua NH-D15</h3>
+                        <p class="product-specs">双塔风冷 · 140mm × 2 · 165W TDP</p>
+                        <div class="product-price">¥699</div>
+                        <div class="product-actions">
+                            <button type="button" class="btn-card-detail">查看详情</button>
+                            <button type="button" class="btn-card-cart">加入购物车</button>
+                        </div>
+                    </div>
+                </div>
+
+                </div><!-- /.products-scroll-track -->
+            </div><!-- /.products-scroll-wrapper -->
+
+            <div class="products-pagination-bar" id="productsPaginationBar">
+                <!-- 每页条数选择器（新浮层） -->
+                <div class="page-size-dropdown" id="pageSizeDropdown">
+                    <button
+                        class="page-size-trigger"
+                        id="pageSizeTrigger"
+                        aria-haspopup="listbox"
+                        aria-expanded="false"
+                        aria-controls="pageSizePanel"
+                    >
+                        <span class="trigger-label">每页</span>
+                        <span class="trigger-value" id="triggerValue">6</span>
+                        <span class="trigger-arrow">▲</span>
+                    </button>
+                    <div class="page-size-panel" id="pageSizePanel" role="listbox" aria-label="选择每页条数">
+                        <div class="page-size-panel-inner">
+                            <div class="page-size-panel-title">每页条数</div>
+                            <div class="page-size-options">
+                                <button class="page-size-option active" data-size="6" role="option" aria-selected="true">6</button>
+                                <button class="page-size-option" data-size="12" role="option" aria-selected="false">12</button>
+                                <button class="page-size-option" data-size="24" role="option" aria-selected="false">24</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- 遮罩层 -->
+                <div class="page-size-backdrop" id="pageSizeBackdrop"></div>
+                <span class="pagination-label">个</span>
+                <div class="pagination-pages" id="paginationPages"></div>
+                <span class="pagination-info" id="paginationInfo"></span>
+            </div>
+        </section>
+
+        <!-- 装机指南 -->
+        <section class="guides-section" id="guides">
+            <div class="section-header">
+                <div class="section-eyebrow"><i class="fas fa-book"></i></div>
+                <h2><i class="fas fa-graduation-cap"></i> 装机指南</h2>
+                <p>从新手到专家，一步步教你装机</p>
+            </div>
+            
+            <div class="guides-container" id="guidesContainer">
+                <div class="guide-card">
+                    <div class="guide-icon">
+                        <i class="fas fa-clipboard-check"></i>
+                    </div>
+                    <h3>硬件选择指南</h3>
+                    <p>如何根据需求选择合适的硬件组件，避免性能瓶颈和兼容性问题。</p>
+                    <a href="#" class="guide-link">查看详情 <i class="fas fa-arrow-right"></i></a>
+                </div>
+                
+                <div class="guide-card">
+                    <div class="guide-icon">
+                        <i class="fas fa-screwdriver-wrench"></i>
+                    </div>
+                    <h3>装机步骤教学</h3>
+                    <p>详细的装机步骤图解和视频教程，手把手教你组装电脑。</p>
+                    <a href="#" class="guide-link">查看详情 <i class="fas fa-arrow-right"></i></a>
+                </div>
+                
+                <div class="guide-card">
+                    <div class="guide-icon">
+                        <i class="fas fa-chart-line"></i>
+                    </div>
+                    <h3>性能测试与优化</h3>
+                    <p>装机后的性能测试方法，系统优化和超频指南。</p>
+                    <a href="#" class="guide-link">查看详情 <i class="fas fa-arrow-right"></i></a>
+                </div>
+                
+                <div class="guide-card">
+                    <div class="guide-icon">
+                        <i class="fas fa-headset"></i>
+                    </div>
+                    <h3>故障排除</h3>
+                    <p>常见装机问题和解决方案，快速诊断硬件故障。</p>
+                    <a href="#" class="guide-link">查看详情 <i class="fas fa-arrow-right"></i></a>
+                </div>
+                <div class="guide-card">
+                    <div class="guide-icon">
+                        <i class="fas fa-shield-alt"></i>
+                    </div>
+                    <h3>智慧矿区安防</h3>
+                    <p>矿区安防监控方案、智能识别、网吧/酒店安防系统全覆盖。</p>
+                    <a href="security-solution.html" class="guide-link">查看详情 <i class="fas fa-arrow-right"></i></a>
+                </div>
+                <div class="guide-card">
+                    <div class="guide-icon">
+                        <i class="fas fa-video"></i>
+                    </div>
+                    <h3>智慧酒店安防</h3>
+                    <p>酒店智能安防、人脸识别、入侵报警系统方案。</p>
+                    <a href="smart-hotel-security.html" class="guide-link">查看详情 <i class="fas fa-arrow-right"></i></a>
+                </div>
+            </div>
+        </section>
+
+        <!-- 热门预设配置 -->
+        <section class="presets-section" id="presets">
+            <div class="section-header">
+                <div class="section-eyebrow">
+                    <!-- 发光青色五角星 SVG -->
+                    <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M12 2l2.4 7.4h7.6l-6 4.6 2.3 7-6.3-4.6-6.3 4.6 2.3-7-6-4.6h7.6z"/>
+                    </svg>
+                </div>
+                <h2>热门预设配置</h2>
+                <p>一键选择专业推荐的装机方案</p>
+            </div>
+
+            <div class="presets-container" id="presetsContainer">
+                <!-- 卡片1: 入门办公 -->
+                <div class="preset-card">
+                    <div class="preset-badge office">入门办公</div>
+                    <h3>入门办公配置</h3>
+                    <div class="preset-specs">
+                        <div class="spec-item">
+                            <div class="spec-icon">
+                                <!-- CPU 芯片 -->
+                                <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                    <path d="M6 4h12v4h-3v2h2v2h-2v2h2v2h-3V4zM4 8v12h16V8H4zm2 2h12v8H6v-8z"/>
+                                </svg>
+                            </div>
+                            <span>Intel i5-13400</span>
+                        </div>
+                        <div class="spec-item">
+                            <div class="spec-icon">
+                                <!-- 显卡 -->
+                                <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                    <rect x="2" y="6" width="20" height="12" rx="2" fill="none" stroke="currentColor" stroke-width="1.5"/>
+                                    <path d="M7 18v2M17 18v2M12 10v4M9 12h6" stroke="currentColor" stroke-width="1.5"/>
+                                </svg>
+                            </div>
+                            <span>RTX 3050</span>
+                        </div>
+                        <div class="spec-item">
+                            <div class="spec-icon">
+                                <!-- 内存条 -->
+                                <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                    <rect x="3" y="8" width="18" height="8" rx="1.5" fill="none" stroke="currentColor" stroke-width="1.5"/>
+                                    <path d="M6 8V6M10 8V6M14 8V6M18 8V6M6 16v2M10 16v2M14 16v2M18 16v2" stroke="currentColor" stroke-width="1.5"/>
+                                </svg>
+                            </div>
+                            <span>16GB DDR4</span>
+                        </div>
+                    </div>
+                    <div class="preset-price">¥4,299</div>
+                    <div class="preset-actions">
+                        <button type="button" class="btn btn-outline btn-select-preset" data-preset="office">选择此配置</button>
+                        <button type="button" class="btn btn-primary" data-preset="office" data-action="addToCart">一键加购</button>
+                    </div>
+                </div>
+
+                <!-- 卡片2: 主流游戏 -->
+                <div class="preset-card">
+                    <div class="preset-badge gaming">主流游戏</div>
+                    <h3>主流游戏配置</h3>
+                    <div class="preset-specs">
+                        <div class="spec-item">
+                            <div class="spec-icon">
+                                <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                    <path d="M6 4h12v4h-3v2h2v2h-2v2h2v2h-3V4zM4 8v12h16V8H4zm2 2h12v8H6v-8z"/>
+                                </svg>
+                            </div>
+                            <span>AMD Ryzen 7 7800X3D</span>
+                        </div>
+                        <div class="spec-item">
+                            <div class="spec-icon">
+                                <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                    <rect x="2" y="6" width="20" height="12" rx="2" fill="none" stroke="currentColor" stroke-width="1.5"/>
+                                    <path d="M7 18v2M17 18v2M12 10v4M9 12h6" stroke="currentColor" stroke-width="1.5"/>
+                                </svg>
+                            </div>
+                            <span>RTX 4070 Ti</span>
+                        </div>
+                        <div class="spec-item">
+                            <div class="spec-icon">
+                                <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                    <rect x="3" y="8" width="18" height="8" rx="1.5" fill="none" stroke="currentColor" stroke-width="1.5"/>
+                                    <path d="M6 8V6M10 8V6M14 8V6M18 8V6M6 16v2M10 16v2M14 16v2M18 16v2" stroke="currentColor" stroke-width="1.5"/>
+                                </svg>
+                            </div>
+                            <span>32GB DDR5</span>
+                        </div>
+                    </div>
+                    <div class="preset-price">¥8,999</div>
+                    <div class="preset-actions">
+                        <button type="button" class="btn btn-outline btn-select-preset" data-preset="gaming">选择此配置</button>
+                        <button type="button" class="btn btn-primary" data-preset="gaming" data-action="addToCart">一键加购</button>
+                    </div>
+                </div>
+
+                <!-- 卡片3: 4K视频编辑 -->
+                <div class="preset-card">
+                    <div class="preset-badge workstation">专业创作</div>
+                    <h3>4K视频编辑工作站</h3>
+                    <div class="preset-specs">
+                        <div class="spec-item">
+                            <div class="spec-icon">
+                                <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                    <path d="M6 4h12v4h-3v2h2v2h-2v2h2v2h-3V4zM4 8v12h16V8H4zm2 2h12v8H6v-8z"/>
+                                </svg>
+                            </div>
+                            <span>Intel i9-14900K</span>
+                        </div>
+                        <div class="spec-item">
+                            <div class="spec-icon">
+                                <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                    <rect x="2" y="6" width="20" height="12" rx="2" fill="none" stroke="currentColor" stroke-width="1.5"/>
+                                    <path d="M7 18v2M17 18v2M12 10v4M9 12h6" stroke="currentColor" stroke-width="1.5"/>
+                                </svg>
+                            </div>
+                            <span>RTX 4090</span>
+                        </div>
+                        <div class="spec-item">
+                            <div class="spec-icon">
+                                <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                    <rect x="3" y="8" width="18" height="8" rx="1.5" fill="none" stroke="currentColor" stroke-width="1.5"/>
+                                    <path d="M6 8V6M10 8V6M14 8V6M18 8V6M6 16v2M10 16v2M14 16v2M18 16v2" stroke="currentColor" stroke-width="1.5"/>
+                                </svg>
+                            </div>
+                            <span>64GB DDR5</span>
+                        </div>
+                    </div>
+                    <div class="preset-price">¥19,999</div>
+                    <div class="preset-actions">
+                        <button type="button" class="btn btn-outline btn-select-preset" data-preset="workstation">选择此配置</button>
+                        <button type="button" class="btn btn-primary" data-preset="workstation" data-action="addToCart">一键加购</button>
+                    </div>
+                </div>
+
+                <!-- 卡片4: 极致旗舰 -->
+                <div class="preset-card">
+                    <div class="preset-badge flagship">顶级旗舰</div>
+                    <h3>极致性能旗舰</h3>
+                    <div class="preset-specs">
+                        <div class="spec-item">
+                            <div class="spec-icon">
+                                <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                    <path d="M6 4h12v4h-3v2h2v2h-2v2h2v2h-3V4zM4 8v12h16V8H4zm2 2h12v8H6v-8z"/>
+                                </svg>
+                            </div>
+                            <span>Intel i9-14900KS</span>
+                        </div>
+                        <div class="spec-item">
+                            <div class="spec-icon">
+                                <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                    <rect x="2" y="6" width="20" height="12" rx="2" fill="none" stroke="currentColor" stroke-width="1.5"/>
+                                    <path d="M7 18v2M17 18v2M12 10v4M9 12h6" stroke="currentColor" stroke-width="1.5"/>
+                                </svg>
+                            </div>
+                            <span>RTX 4090 OC</span>
+                        </div>
+                        <div class="spec-item">
+                            <div class="spec-icon">
+                                <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                    <rect x="3" y="8" width="18" height="8" rx="1.5" fill="none" stroke="currentColor" stroke-width="1.5"/>
+                                    <path d="M6 8V6M10 8V6M14 8V6M18 8V6M6 16v2M10 16v2M14 16v2M18 16v2" stroke="currentColor" stroke-width="1.5"/>
+                                </svg>
+                            </div>
+                            <span>128GB DDR5</span>
+                        </div>
+                    </div>
+                    <div class="preset-price">¥29,999</div>
+                    <div class="preset-actions">
+                        <button type="button" class="btn btn-outline btn-select-preset" data-preset="flagship">选择此配置</button>
+                        <button type="button" class="btn btn-primary" data-preset="flagship" data-action="addToCart">一键加购</button>
+                    </div>
+                </div>
+
+                <!-- 卡片5: 直播剪辑 -->
+                <div class="preset-card">
+                    <div class="preset-badge streaming">直播推流</div>
+                    <h3>直播剪辑配置</h3>
+                    <div class="preset-specs">
+                        <div class="spec-item">
+                            <div class="spec-icon">
+                                <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                    <path d="M6 4h12v4h-3v2h2v2h-2v2h2v2h-3V4zM4 8v12h16V8H4zm2 2h12v8H6v-8z"/>
+                                </svg>
+                            </div>
+                            <span>AMD Ryzen 9 7900X</span>
+                        </div>
+                        <div class="spec-item">
+                            <div class="spec-icon">
+                                <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                    <rect x="2" y="6" width="20" height="12" rx="2" fill="none" stroke="currentColor" stroke-width="1.5"/>
+                                    <path d="M7 18v2M17 18v2M12 10v4M9 12h6" stroke="currentColor" stroke-width="1.5"/>
+                                </svg>
+                            </div>
+                            <span>RTX 4070</span>
+                        </div>
+                        <div class="spec-item">
+                            <div class="spec-icon">
+                                <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                    <rect x="3" y="8" width="18" height="8" rx="1.5" fill="none" stroke="currentColor" stroke-width="1.5"/>
+                                    <path d="M6 8V6M10 8V6M14 8V6M18 8V6M6 16v2M10 16v2M14 16v2M18 16v2" stroke="currentColor" stroke-width="1.5"/>
+                                </svg>
+                            </div>
+                            <span>32GB DDR5</span>
+                        </div>
+                    </div>
+                    <div class="preset-price">¥12,499</div>
+                    <div class="preset-actions">
+                        <button type="button" class="btn btn-outline btn-select-preset" data-preset="streaming">选择此配置</button>
+                        <button type="button" class="btn btn-primary" data-preset="streaming" data-action="addToCart">一键加购</button>
+                    </div>
+                </div>
+
+                <!-- 卡片6: AI 绘图 -->
+                <div class="preset-card">
+                    <div class="preset-badge ai">AI 创作</div>
+                    <h3>AI 绘图 / 大模型</h3>
+                    <div class="preset-specs">
+                        <div class="spec-item">
+                            <div class="spec-icon">
+                                <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                    <path d="M6 4h12v4h-3v2h2v2h-2v2h2v2h-3V4zM4 8v12h16V8H4zm2 2h12v8H6v-8z"/>
+                                </svg>
+                            </div>
+                            <span>Intel i9-14900K</span>
+                        </div>
+                        <div class="spec-item">
+                            <div class="spec-icon">
+                                <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                    <rect x="2" y="6" width="20" height="12" rx="2" fill="none" stroke="currentColor" stroke-width="1.5"/>
+                                    <path d="M7 18v2M17 18v2M12 10v4M9 12h6" stroke="currentColor" stroke-width="1.5"/>
+                                </svg>
+                            </div>
+                            <span>RTX 4090 24GB</span>
+                        </div>
+                        <div class="spec-item">
+                            <div class="spec-icon">
+                                <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                    <rect x="3" y="8" width="18" height="8" rx="1.5" fill="none" stroke="currentColor" stroke-width="1.5"/>
+                                    <path d="M6 8V6M10 8V6M14 8V6M18 8V6M6 16v2M10 16v2M14 16v2M18 16v2" stroke="currentColor" stroke-width="1.5"/>
+                                </svg>
+                            </div>
+                            <span>64GB DDR5</span>
+                        </div>
+                    </div>
+                    <div class="preset-price">¥24,999</div>
+                    <div class="preset-actions">
+                        <button type="button" class="btn btn-outline btn-select-preset" data-preset="ai">选择此配置</button>
+                        <button type="button" class="btn btn-primary" data-preset="ai" data-action="addToCart">一键加购</button>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- 页脚 -->
+    <footer class="footer">
+        <div class="footer-container">
+            <div class="footer-section">
+                <h3><i class="fas fa-desktop"></i> 联信装机</h3>
+                <p>专业的电脑硬件自选销售平台</p>
+                <p>打造你的梦想电脑，从选择开始</p>
+            </div>
+            
+            <div class="footer-section">
+                <h4>快速链接</h4>
+                <ul>
+                    <li><a href="#home"><i class="fas fa-home"></i> 首页</a></li>
+                    <li><a href="#builder"><i class="fas fa-tools"></i> 装机配置</a></li>
+                    <li><a href="#products"><i class="fas fa-microchip"></i> 硬件商城</a></li>
+                    <li><a href="#guides"><i class="fas fa-book"></i> 装机指南</a></li>
+                    <li><a href="#presets"><i class="fas fa-star"></i> 热门配置</a></li>
+                </ul>
+            </div>
+            
+            <div class="footer-section">
+                <h4>联系我们</h4>
+                <ul>
+                    <li><i class="fas fa-envelope"></i> <a href="mailto:88278867@qq.com">88278867@qq.com</a></li>
+                    <li><i class="fas fa-phone"></i> <a href="tel:15148605173">15148605173</a></li>
+                    <li><i class="fas fa-map-marker-alt"></i> 内蒙古锡林浩特市西乌珠穆沁旗</li>
+                </ul>
+            </div>
+            
+            <div class="footer-section">
+                <h4>关注我们</h4>
+                <div class="social-links">
+                    <a href="https://wpa.qq.com/msgrd?v=3&uin=88278867&site=qq&menu=yes" target="_blank" rel="noopener" class="social-link" title="QQ 88278867"><i class="fab fa-qq"></i></a>
+                    <a href="weixin://dl/chat?woaixiwu" class="social-link" title="微信 woaixiwu"><i class="fab fa-weixin"></i></a>
+                </div>
+                <p class="footer-note">
+                    © 2024 联信装机 PC Builder Pro. 保留所有权利。<br>
+                    <a href="https://beian.miit.gov.cn/" target="_blank" rel="noopener" style="color: var(--gray-400); text-decoration: none;">蒙ICP备2026002078号-1</a>
+                </p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- JavaScript - 同步加载：增强版核心 -->
+    <script src="api-service.js"></script>
+    <script src="app-enhanced.js"></script>
+    <script src="app-enhanced-continued.js"></script>
+    <script src="app.js"></script>
+    <script src="fix-interactions.js"></script>
+    <script src="page-size-picker.js"></script>
+    <script src="memory-toggle.js"></script>
+    <script src="features.js"></script>
+    <script src="orders-lookup.js"></script>
+
+    <!-- PWA Service Worker 注册 -->
+    <script>
+        // 注册Service Worker
+        if ('serviceWorker' in navigator) {
+            window.addEventListener('load', () => {
+                navigator.serviceWorker.register('/sw.js')
+                    .then(registration => {
+                        console.log('✅ Service Worker 注册成功:', registration.scope);
+                        
+                        // 检查更新
+                        registration.addEventListener('updatefound', () => {
+                            const newWorker = registration.installing;
+                            console.log('🔄 Service Worker 更新中...');
+                            
+                            newWorker.addEventListener('statechange', () => {
+                                if (newWorker.state === 'installed' && navigator.serviceWorker.controller) {
+                                    console.log('🆕 新版本可用，请刷新页面');
+                                    showUpdateNotification();
+                                }
+                            });
+                        });
+                    })
+                    .catch(error => {
+                        console.log('❌ Service Worker 注册失败:', error);
+                    });
+            });
+        }
+
+        // 显示更新通知
+        function showUpdateNotification() {
+            if (Notification.permission === 'granted') {
+                new Notification('联信装机更新', {
+                    body: '新版本可用，点击刷新页面',
+                    icon: '/icons/icon-192x192.png',
+                    tag: 'update'
+                }).onclick = () => {
+                    window.location.reload();
+                };
+            }
+        }
+
+        // 请求通知权限
+        function requestNotificationPermission() {
+            if ('Notification' in window && Notification.permission === 'default') {
+                Notification.requestPermission().then(permission => {
+                    console.log('通知权限:', permission);
+                });
+            }
+        }
+
+        // 添加到主屏幕提示
+        let deferredPrompt;
+        window.addEventListener('beforeinstallprompt', (e) => {
+            e.preventDefault();
+            deferredPrompt = e;
+            
+            // 显示安装按钮
+            const installBtn = document.createElement('button');
+            installBtn.className = 'btn btn-primary install-btn';
+            installBtn.innerHTML = '<i class="fas fa-plus"></i> 添加到主屏幕';
+            installBtn.style.position = 'fixed';
+            installBtn.style.bottom = '20px';
+            installBtn.style.right = '20px';
+            installBtn.style.zIndex = '1000';
+            
+            installBtn.addEventListener('click', () => {
+                deferredPrompt.prompt();
+                deferredPrompt.userChoice.then((choiceResult) => {
+                    if (choiceResult.outcome === 'accepted') {
+                        console.log('✅ 用户同意安装');
+                    }
+                    deferredPrompt = null;
+                    installBtn.remove();
+                });
+            });
+            
+            document.body.appendChild(installBtn);
+            
+            // 7天后自动隐藏
+            setTimeout(() => {
+                if (installBtn.parentNode) {
+                    installBtn.remove();
+                }
+            }, 7 * 24 * 60 * 60 * 1000);
+        });
+
+        // 页面加载完成后请求通知权限
+        document.addEventListener('DOMContentLoaded', () => {
+            setTimeout(requestNotificationPermission, 2000);
+        });
+
+        // 检测网络状态
+        window.addEventListener('online', () => {
+            console.log('🌐 网络已连接');
+            showToast('网络已恢复连接', 'success');
+        });
+
+        window.addEventListener('offline', () => {
+            console.log('📴 网络已断开');
+            showToast('网络连接已断开，部分功能可能受限', 'warning');
+        });
+
+        // 显示Toast通知
+        function showToast(message, type = 'info') {
+            const toast = document.createElement('div');
+            toast.className = `toast toast-${type}`;
+            toast.textContent = message;
+            toast.style.cssText = `
+                position: fixed;
+                top: 20px;
+                right: 20px;
+                padding: 12px 20px;
+                background: ${type === 'success' ? '#10b981' : type === 'warning' ? '#f59e0b' : '#3b82f6'};
+                color: white;
+                border-radius: 8px;
+                z-index: 10000;
+                animation: slideIn 0.3s ease;
+            `;
+            
+            document.body.appendChild(toast);
+            
+            setTimeout(() => {
+                toast.style.animation = 'slideOut 0.3s ease';
+                setTimeout(() => toast.remove(), 300);
+            }, 3000);
+        }
+
+        // 添加CSS动画
+        const style = document.createElement('style');
+        style.textContent = `
+            @keyframes slideIn {
+                from { transform: translateX(100%); opacity: 0; }
+                to { transform: translateX(0); opacity: 1; }
+            }
+            @keyframes slideOut {
+                from { transform: translateX(0); opacity: 1; }
+                to { transform: translateX(100%); opacity: 0; }
+            }
+            .install-btn {
+                box-shadow: 0 4px 12px rgba(59, 130, 246, 0.3);
+            }
+        `;
+        document.head.appendChild(style);
+    </script>
+
+    <script>
+        (function() {
+            try {
+                var g = localStorage.getItem('pcbuilder_guides_override');
+                if (g) {
+                    var arr = JSON.parse(g);
+                    if (Array.isArray(arr) && arr.length > 0) {
+                        var el = document.getElementById('guidesContainer');
+                        if (el) {
+                            el.innerHTML = arr.map(function(x) {
+                                var img = x.image ? '<div class="guide-icon" style="overflow:hidden;border-radius:0.5rem"><img src="' + (x.image.startsWith('data:') ? x.image : x.image) + '" alt="" style="width:100%;height:100%;object-fit:cover"/></div>' : '<div class="guide-icon"><i class="fas ' + (x.icon||'fa-book') + '"></i></div>';
+                                return '<div class="guide-card">' + img + '<h3>' + (x.title||'') + '</h3><p>' + (x.desc||'') + '</p><a href="' + (x.link||'#') + '" class="guide-link">查看详情 <i class="fas fa-arrow-right"></i></a></div>';
+                            }).join('');
+                        }
+                    }
+                }
+                var p = localStorage.getItem('pcbuilder_presets_override');
+                if (p) {
+                    var arr = JSON.parse(p);
+                    if (Array.isArray(arr) && arr.length > 0) {
+                        var el = document.getElementById('presetsContainer');
+                        if (el) {
+                            var badgeCls = { '性价比':'budget', '游戏电竞':'gaming', '专业创作':'workstation', '顶级旗舰':'flagship' };
+                            el.innerHTML = arr.map(function(x) {
+                                var bc = badgeCls[x.badge] || 'gaming';
+                                var img = x.image ? '<div style="height:80px;margin-bottom:0.5rem;border-radius:0.5rem;overflow:hidden;background:#f3f4f6"><img src="' + (x.image.startsWith('data:') ? x.image : x.image) + '" alt="" style="width:100%;height:100%;object-fit:cover"/></div>' : '';
+                                return '<div class="preset-card">' + img + '<div class="preset-badge ' + bc + '">' + (x.badge||'') + '</div><h3>' + (x.title||'') + '</h3><div class="preset-specs"><div class="spec-item"><span>' + (x.specs||'') + '</span></div></div><div class="preset-price">¥' + (x.price||0).toLocaleString() + '</div><div class="preset-actions"><button type="button" class="btn btn-outline btn-block btn-select-preset" data-preset="' + (x.presetId||'') + '">选择此配置</button><button type="button" class="btn btn-primary btn-block" data-preset="' + (x.presetId||'') + '" data-action="addToCart">一键加购</button></div></div>';
+                            }).join('');
+                        }
+                    }
+                }
+            } catch(e) {}
+        })();
+    </script>
+
+    <!-- 硬件缩略图预览弹窗 -->
+    <div class="hardware-preview-overlay" id="hardwarePreviewOverlay" role="dialog" aria-label="硬件预览">
+        <div class="hardware-preview-modal">
+            <button class="hardware-preview-close" id="closeHardwarePreview" aria-label="关闭">&times;</button>
+            <div class="hardware-preview-thumb">
+                <img id="hardwarePreviewImg" src="" alt="" />
+            </div>
+            <div class="hardware-preview-info">
+                <h3 id="hardwarePreviewName"></h3>
+                <p class="hardware-preview-specs" id="hardwarePreviewSpecs"></p>
+                <p class="hardware-preview-brand">品牌: <span id="hardwarePreviewBrand"></span></p>
+                <p class="hardware-preview-price" id="hardwarePreviewPrice"></p>
+            </div>
+        </div>
+    </div>
+    
+    <!-- 我的AI登录弹窗 -->
+    <div id="myAiLoginModal" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,.45);z-index:9999;">
+        <div style="width:320px;background:#fff;border-radius:10px;padding:16px;margin:10% auto;">
+            <h3 style="margin:0 0 12px;">我的AI登录</h3>
+            <input id="myAiUser" type="text" placeholder="用户名" style="width:100%;margin-bottom:8px;padding:8px;border:1px solid #ddd;border-radius:4px;">
+            <input id="myAiPwd" type="password" placeholder="密码" style="width:100%;margin-bottom:8px;padding:8px;border:1px solid #ddd;border-radius:4px;">
+            <div id="myAiErr" style="color:#d00;font-size:12px;min-height:18px;"></div>
+            <div style="display:flex;gap:8px;justify-content:flex-end;">
+                <button id="myAiCancel" style="padding:8px 16px;border:1px solid #ddd;background:#fff;border-radius:4px;cursor:pointer;">取消</button>
+                <button id="myAiSubmit" style="padding:8px 16px;border:none;background:#667eea;color:#fff;border-radius:4px;cursor:pointer;">登录</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+    (function () {
+        const btn = document.getElementById('myAiBtn');
+        const modal = document.getElementById('myAiLoginModal');
+        const user = document.getElementById('myAiUser');
+        const pwd = document.getElementById('myAiPwd');
+        const err = document.getElementById('myAiErr');
+        const cancel = document.getElementById('myAiCancel');
+        const submit = document.getElementById('myAiSubmit');
+        if (!btn) return;
+        function openModal() {
+            localStorage.removeItem('xiaolongxia_auth');
+            err.textContent = '';
+            user.value = '';
+            pwd.value = '';
+            modal.style.display = 'block';
+            user.focus();
+        }
+        function closeModal() { modal.style.display = 'none'; }
+        async function doLogin() {
+            err.textContent = '';
+            const username = user.value.trim();
+            const password = pwd.value;
+            if (!username || !password) { err.textContent = '请输入用户名和密码'; return; }
+            try {
+                const res = await fetch('/api/login-check?_=' + Date.now(), {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ username, password }),
+                });
+                const data = await res.json();
+                if (!res.ok || !data.success) { err.textContent = data.message || '用户名或密码错误'; return; }
+                let url = '/index.html#home';
+                try {
+                    const c = await fetch('/api/myai/config?_=' + Date.now());
+                    const j = await c.json();
+                    if (j.success && j.config && j.config.redirect_url) url = j.config.redirect_url;
+                } catch (_) {}
+                window.location.href = url;
+            } catch (e) { err.textContent = '网络异常，请稍后重试'; }
+        }
+        btn.addEventListener('click', async function (e) {
+            e.preventDefault();
+            try {
+                const res = await fetch('/api/myai/config?_=' + Date.now());
+                const data = await res.json();
+                if (data.success && data.config.redirect_url) {
+                    window.location.href = data.config.redirect_url;
+                    return;
+                }
+            } catch (e) { /* ignore */ }
+            openModal();
+        });
+
+        cancel.addEventListener('click', closeModal);
+        submit.addEventListener('click', doLogin);
+        modal.addEventListener('click', function (e) { if (e.target === modal) closeModal(); });
+        pwd.addEventListener('keydown', function (e) { if (e.key === 'Enter') doLogin(); });
+    })();
+    
+    // 首页四宫格配置加载
+    (async function() {
+        try {
+            const res = await fetch('/api/home-slots');
+            const data = await res.json();
+            if (data.success && data.data) {
+                data.data.forEach(slot => {
+                    const el = document.querySelector('.pc-part[data-slot="' + slot.slot + '"]');
+                    if (el) {
+                        if (slot.tooltip) el.setAttribute('data-tooltip', slot.tooltip);
+                        if (slot.imageUrl) {
+                            el.innerHTML = '<img src="' + slot.imageUrl + '" alt="' + (slot.alt || '') + '" loading="lazy" onerror="this.parentElement.innerHTML=\'<i class=\'fas fa-' + (slot.slot==1?'microchip':slot.slot==2?'gamepad':slot.slot==3?'memory':'hd') + '\'></i>\'">';
+                        }
+                        if (slot.link) {
+                            el.style.cursor = 'pointer';
+                            el.onclick = function() { window.location.href = slot.link; };
+                        }
+                    }
+                });
+            }
+        } catch(e) { console.log('加载首页配置失败:', e); }
+    })();
+    </script>
+
+    <script src="hot-hardware-filter.js"></script>
+    <script src="builder-controller.js"></script>
+
+</body>
+</html>

@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>分类测试</title>
+    <style>
+        body { font-family: Arial, sans-serif; padding: 20px; }
+        .test { margin: 20px 0; padding: 20px; border: 2px solid #ddd; border-radius: 10px; }
+        .pass { border-color: #10b981; background: #d4edda; }
+        .fail { border-color: #dc3545; background: #f8d7da; }
+        button { padding: 15px 30px; font-size: 18px; margin: 10px; }
+        #productsGrid { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 20px; margin: 20px 0; }
+        .product-card { border: 1px solid #ddd; padding: 15px; border-radius: 8px; }
+    </style>
+</head>
+<body>
+    <h1>分类筛选功能测试</h1>
+    
+    <div class="test">
+        <h2>测试1: 筛选按钮</h2>
+        <div id="filterButtons">
+            <button class="filter-btn active" data-category="all">全部</button>
+            <button class="filter-btn" data-category="gaming">游戏电竞</button>
+            <button class="filter-btn" data-category="workstation">工作站</button>
+            <button class="filter-btn" data-category="budget">性价比</button>
+            <button class="filter-btn" data-category="rgb">RGB光效</button>
+        </div>
+        <p id="test1-result">点击按钮测试...</p>
+    </div>
+    
+    <div class="test">
+        <h2>测试2: 产品网格</h2>
+        <div id="productsGrid">
+            产品将在这里显示...
+        </div>
+        <p id="test2-result">等待产品加载...</p>
+    </div>
+    
+    <div class="test">
+        <h2>测试3: 控制台输出</h2>
+        <p>打开浏览器控制台(F12 → Console)查看详细日志</p>
+        <div id="console-output" style="background: #f8f9fa; padding: 10px; border-radius: 5px; font-family: monospace; height: 150px; overflow-y: auto;"></div>
+    </div>
+    
+    <script>
+        // 重写console.log以在页面上显示
+        const originalLog = console.log;
+        const consoleOutput = document.getElementById('console-output');
+        
+        console.log = function(...args) {
+            originalLog.apply(console, args);
+            const message = args.map(arg => 
+                typeof arg === 'object' ? JSON.stringify(arg) : arg
+            ).join(' ');
+            
+            const line = document.createElement('div');
+            line.textContent = `> ${message}`;
+            consoleOutput.appendChild(line);
+            consoleOutput.scrollTop = consoleOutput.scrollHeight;
+        };
+        
+        console.warn = function(...args) {
+            originalLog.apply(console, ['⚠️', ...args]);
+            const message = args.join(' ');
+            const line = document.createElement('div');
+            line.textContent = `⚠️ ${message}`;
+            line.style.color = '#f59e0b';
+            consoleOutput.appendChild(line);
+            consoleOutput.scrollTop = consoleOutput.scrollHeight;
+        };
+        
+        console.error = function(...args) {
+            originalLog.apply(console, ['❌', ...args]);
+            const message = args.join(' ');
+            const line = document.createElement('div');
+            line.textContent = `❌ ${message}`;
+            line.style.color = '#dc3545';
+            consoleOutput.appendChild(line);
+            consoleOutput.scrollTop = consoleOutput.scrollHeight;
+        };
+    </script>
+    
+    <!-- 加载修复脚本 -->
+    <script src="fix-categories.js"></script>
+    <script src="fix-categories-complete.js"></script>
+    <script src="fix-categories-final.js"></script>
+    
+    <script>
+        // 手动触发测试
+        setTimeout(() => {
+            console.log('🧪 开始分类功能测试...');
+            
+            const filterButtons = document.querySelectorAll('.filter-btn');
+            const test1Result = document.getElementById('test1-result');
+            const test2Result = document.getElementById('test2-result');
+            
+            // 测试1: 筛选按钮
+            if (filterButtons.length > 0) {
+                test1Result.textContent = `✅ 找到 ${filterButtons.length} 个筛选按钮`;
+                test1Result.style.color = '#198754';
+                
+                // 测试每个按钮
+                filterButtons.forEach((btn, index) => {
+                    setTimeout(() => {
+                        console.log(`🔘 测试按钮: ${btn.textContent}`);
+                        btn.click();
+                        
+                        setTimeout(() => {
+                            const productsGrid = document.getElementById('productsGrid');
+                            if (productsGrid && productsGrid.children.length > 0) {
+                                console.log(`✅ ${btn.textContent}: 显示 ${productsGrid.children.length} 个产品`);
+                            } else {
+                                console.warn(`⚠️ ${btn.textContent}: 没有显示产品`);
+                            }
+                        }, 500);
+                    }, index * 1000);
+                });
+                
+                test1Result.parentElement.className = 'test pass';
+            } else {
+                test1Result.textContent = '❌ 未找到筛选按钮';
+                test1Result.style.color = '#dc3545';
+                test1Result.parentElement.className = 'test fail';
+            }
+            
+            // 测试2: 产品网格
+            setTimeout(() => {
+                const productsGrid = document.getElementById('productsGrid');
+                
+                if (productsGrid && productsGrid.children.length > 0) {
+                    test2Result.innerHTML = `✅ 产品网格已加载: ${productsGrid.children.length} 个产品`;
+                    test2Result.style.color = '#198754';
+                    test2Result.parentElement.className = 'test pass';
+                } else {
+                    test2Result.textContent = '❌ 产品网格未加载';
+                    test2Result.style.color = '#dc3545';
+                    test2Result.parentElement.className = 'test fail';
+                }
+            }, 6000);
+            
+        }, 1000);
+    </script>
+</body>
+</html>

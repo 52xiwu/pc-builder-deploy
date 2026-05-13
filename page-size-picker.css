@@ -1,0 +1,188 @@
+/* ═══════════════════════════════════════════════
+   每页条数选择器 - 向上弹出浮层
+══════════════════════════════════════════════ */
+
+/* 触发器 */
+.page-size-trigger {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.45rem;
+    padding: 0.35rem 0.85rem;
+    background: rgba(255, 255, 255, 0.04);
+    border: 1px solid rgba(99, 102, 241, 0.22);
+    border-radius: 999px;
+    color: rgba(255, 255, 255, 0.6);
+    font-size: 0.82rem;
+    cursor: pointer;
+    transition:
+        border-color 0.2s ease,
+        color 0.2s ease,
+        background 0.2s ease,
+        box-shadow 0.2s ease;
+    user-select: none;
+}
+
+.page-size-trigger:hover {
+    border-color: rgba(0, 242, 255, 0.4);
+    color: rgba(255, 255, 255, 0.85);
+    background: rgba(0, 242, 255, 0.06);
+}
+
+.page-size-trigger:focus-visible {
+    outline: 2px solid rgba(0, 242, 255, 0.55);
+    outline-offset: 2px;
+}
+
+.page-size-trigger .trigger-label {
+    color: rgba(255, 255, 255, 0.35);
+}
+
+.page-size-trigger .trigger-value {
+    color: #00f2ff;
+    font-weight: 600;
+}
+
+.page-size-trigger .trigger-arrow {
+    font-size: 0.65rem;
+    color: rgba(255, 255, 255, 0.3);
+    transition: transform 0.25s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+.page-size-trigger[aria-expanded="true"] .trigger-arrow {
+    transform: rotate(180deg);
+}
+
+/* 浮层容器 */
+.page-size-dropdown {
+    position: relative;
+    display: inline-block;
+}
+
+/* 浮层面板 */
+.page-size-panel {
+    position: absolute;
+    bottom: calc(100% + 10px);
+    left: 50%;
+    transform: translateX(-50%) scale(0.92);
+    transform-origin: bottom center;
+    opacity: 0;
+    pointer-events: none;
+    transition:
+        opacity 0.22s ease,
+        transform 0.25s cubic-bezier(0.34, 1.56, 0.64, 1);
+    z-index: 1000;
+}
+
+.page-size-panel.open {
+    opacity: 1;
+    pointer-events: auto;
+    transform: translateX(-50%) scale(1);
+}
+
+/* 浮层面板内部 */
+.page-size-panel-inner {
+    background: #050510;
+    border: 1px solid rgba(99, 102, 241, 0.25);
+    border-radius: 16px;
+    padding: 0.85rem 0.75rem;
+    min-width: 130px;
+    box-shadow:
+        0 20px 60px rgba(0, 0, 0, 0.6),
+        0 0 0 1px rgba(255, 255, 255, 0.03) inset,
+        0 0 40px rgba(99, 102, 241, 0.08);
+    position: relative;
+}
+
+/* 向上三角装饰 */
+.page-size-panel-inner::after {
+    content: '';
+    position: absolute;
+    bottom: -7px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 12px;
+    height: 7px;
+    background: #050510;
+    clip-path: polygon(0 0, 100% 0, 50% 100%);
+}
+
+.page-size-panel-inner::before {
+    content: '';
+    position: absolute;
+    bottom: -8px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 14px;
+    height: 8px;
+    background: rgba(99, 102, 241, 0.25);
+    clip-path: polygon(0 0, 100% 0, 50% 100%);
+    z-index: -1;
+}
+
+/* 面板标题 */
+.page-size-panel-title {
+    text-align: center;
+    font-size: 0.68rem;
+    color: rgba(255, 255, 255, 0.25);
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    padding-bottom: 0.55rem;
+    margin-bottom: 0.35rem;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+}
+
+/* 选项列表 */
+.page-size-options {
+    display: flex;
+    flex-direction: column;
+    gap: 0.28rem;
+}
+
+.page-size-option {
+    width: 100%;
+    padding: 0.58rem 1rem;
+    background: transparent;
+    border: 1px solid rgba(255, 255, 255, 0.07);
+    border-radius: 10px;
+    color: rgba(255, 255, 255, 0.55);
+    font-size: 0.88rem;
+    font-weight: 500;
+    cursor: pointer;
+    text-align: center;
+    transition:
+        border-color 0.18s ease,
+        color 0.18s ease,
+        background 0.18s ease,
+        box-shadow 0.18s ease;
+    letter-spacing: 0.02em;
+}
+
+.page-size-option:hover {
+    border-color: rgba(255, 255, 255, 0.2);
+    color: rgba(255, 255, 255, 0.85);
+    background: rgba(255, 255, 255, 0.04);
+}
+
+.page-size-option.active {
+    border-color: rgba(0, 242, 255, 0.5);
+    color: #00f2ff;
+    background: rgba(0, 242, 255, 0.07);
+    box-shadow: 0 0 10px rgba(0, 242, 255, 0.15);
+}
+
+.page-size-option:focus-visible {
+    outline: 2px solid rgba(0, 242, 255, 0.55);
+    outline-offset: 1px;
+}
+
+/* 暗色遮罩层（点击外部关闭） */
+.page-size-backdrop {
+    position: fixed;
+    inset: 0;
+    z-index: 999;
+    display: none;
+}
+
+.page-size-backdrop.show {
+    display: block;
+}

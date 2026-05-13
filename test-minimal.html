@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>最小测试页面</title>
+    <style>
+        body { 
+            font-family: Arial, sans-serif; 
+            padding: 20px;
+            background: #f5f5f5;
+        }
+        .container {
+            max-width: 600px;
+            margin: 0 auto;
+            background: white;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        h1 { color: #333; }
+        .status { 
+            padding: 10px;
+            margin: 10px 0;
+            border-radius: 5px;
+        }
+        .success { background: #d1fae5; color: #065f46; }
+        .error { background: #fee2e2; color: #991b1b; }
+        .info { background: #dbeafe; color: #1e40af; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>最小测试页面</h1>
+        <p>如果这个页面能正常显示，说明网站基本功能正常。</p>
+        
+        <div class="status info">
+            <strong>页面状态:</strong> 加载中...
+        </div>
+        
+        <div class="status info">
+            <strong>JavaScript状态:</strong> 检查中...
+        </div>
+        
+        <div class="status info">
+            <strong>连接状态:</strong> 测试中...
+        </div>
+        
+        <h2>下一步操作</h2>
+        <ul>
+            <li><a href="/">返回主页面</a></li>
+            <li><a href="/test.html">查看完整测试页面</a></li>
+            <li><a href="/debug-simple.html">查看调试页面</a></li>
+        </ul>
+    </div>
+    
+    <script>
+        // 更新状态
+        document.querySelectorAll('.status')[0].innerHTML = 
+            '<strong>页面状态:</strong> <span class="success">✅ 已加载</span>';
+        
+        document.querySelectorAll('.status')[1].innerHTML = 
+            '<strong>JavaScript状态:</strong> <span class="success">✅ 运行正常</span>';
+        
+        // 测试连接
+        fetch('/')
+            .then(response => {
+                const status = response.ok ? 
+                    '<span class="success">✅ 连接正常 (HTTP ' + response.status + ')</span>' :
+                    '<span class="error">❌ 连接失败 (HTTP ' + response.status + ')</span>';
+                document.querySelectorAll('.status')[2].innerHTML = 
+                    '<strong>连接状态:</strong> ' + status;
+            })
+            .catch(error => {
+                document.querySelectorAll('.status')[2].innerHTML = 
+                    '<strong>连接状态:</strong> <span class="error">❌ 网络错误: ' + error.message + '</span>';
+            });
+    </script>
+</body>
+</html>

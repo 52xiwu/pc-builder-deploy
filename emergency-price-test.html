@@ -1,0 +1,311 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>紧急总价测试</title>
+    <style>
+        body { font-family: Arial, sans-serif; padding: 20px; background: #f8f9fa; }
+        .container { max-width: 800px; margin: 0 auto; }
+        .test-section { background: white; padding: 25px; border-radius: 12px; margin-bottom: 25px; box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1); }
+        .hardware-card { border: 2px solid #e5e7eb; border-radius: 10px; padding: 20px; margin: 15px 0; cursor: pointer; transition: all 0.3s ease; }
+        .hardware-card:hover { border-color: #3b82f6; transform: translateY(-3px); }
+        .hardware-card.selected { border-color: #10b981; background: #f0fdf4; }
+        .price-display { font-size: 2rem; font-weight: 800; color: #dc2626; text-align: center; margin: 30px 0; padding: 20px; background: #fef2f2; border-radius: 10px; }
+        .btn { padding: 12px 24px; border: none; border-radius: 8px; cursor: pointer; font-weight: 600; font-size: 1rem; }
+        .btn-primary { background: #3b82f6; color: white; }
+        .btn-success { background: #10b981; color: white; }
+        .status { padding: 10px; border-radius: 6px; margin: 10px 0; }
+        .status-success { background: #d4edda; color: #198754; border: 1px solid #c3e6cb; }
+        .status-error { background: #f8d7da; color: #dc3545; border: 1px solid #f5c6cb; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1 style="color: #dc2626; text-align: center;">🚨 紧急总价计算测试</h1>
+        
+        <div class="test-section">
+            <h2>1. 选择您的硬件配置</h2>
+            <div id="hardwareSelection">
+                <!-- CPU -->
+                <div class="hardware-card" data-category="cpu" data-name="AMD Ryzen 9 9850X3D" data-price="6999">
+                    <div style="display: flex; justify-content: space-between; align-items: center;">
+                        <div>
+                            <h3 style="margin: 0 0 10px 0;">AMD Ryzen 9 9850X3D</h3>
+                            <p style="color: #6b7280; margin: 0;">24核心/48线程 3D V-Cache</p>
+                        </div>
+                        <div style="font-size: 1.5rem; font-weight: 700; color: #10b981;">¥6999</div>
+                    </div>
+                </div>
+                
+                <!-- 显卡 -->
+                <div class="hardware-card" data-category="gpu" data-name="NVIDIA RTX 5090" data-price="19999">
+                    <div style="display: flex; justify-content: space-between; align-items: center;">
+                        <div>
+                            <h3 style="margin: 0 0 10px 0;">NVIDIA RTX 5090</h3>
+                            <p style="color: #6b7280; margin: 0;">32GB GDDR7 旗舰显卡</p>
+                        </div>
+                        <div style="font-size: 1.5rem; font-weight: 700; color: #10b981;">¥19999</div>
+                    </div>
+                </div>
+                
+                <!-- 主板 -->
+                <div class="hardware-card" data-category="motherboard" data-name="ROG MAXIMUS Z890 EXTREME" data-price="8999">
+                    <div style="display: flex; justify-content: space-between; align-items: center;">
+                        <div>
+                            <h3 style="margin: 0 0 10px 0;">ROG MAXIMUS Z890 EXTREME</h3>
+                            <p style="color: #6b7280; margin: 0;">Intel Z890 E-ATX 旗舰主板</p>
+                        </div>
+                        <div style="font-size: 1.5rem; font-weight: 700; color: #10b981;">¥8999</div>
+                    </div>
+                </div>
+                
+                <!-- 内存 -->
+                <div class="hardware-card" data-category="ram" data-name="G.SKILL Trident Z5 RGB 8000" data-price="3999">
+                    <div style="display: flex; justify-content: space-between; align-items: center;">
+                        <div>
+                            <h3 style="margin: 0 0 10px 0;">G.SKILL Trident Z5 RGB 8000</h3>
+                            <p style="color: #6b7280; margin: 0;">64GB DDR5 8000MHz RGB内存</p>
+                        </div>
+                        <div style="font-size: 1.5rem; font-weight: 700; color: #10b981;">¥3999</div>
+                    </div>
+                </div>
+            </div>
+            
+            <button class="btn btn-primary" id="selectAllBtn" style="margin-top: 20px; width: 100%;">
+                🎯 一键选择所有硬件（模拟您的选择）
+            </button>
+        </div>
+        
+        <div class="test-section">
+            <h2>2. 价格计算结果</h2>
+            <div class="price-display">
+                <div>硬件总价: <span id="emergencyHardwareTotal">¥0</span></div>
+                <div style="font-size: 1.2rem; color: #6b7280; margin: 10px 0;">装机服务费: ¥299</div>
+                <div style="font-size: 2.5rem; margin-top: 15px;">总计: <span id="emergencyGrandTotal">¥299</span></div>
+            </div>
+            
+            <div id="expectedResult" style="background: #e0f2fe; padding: 15px; border-radius: 8px; margin-top: 20px;">
+                <h3 style="margin: 0 0 10px 0; color: #0369a1;">🎯 预期结果</h3>
+                <p style="margin: 0; color: #374151;">
+                    CPU: ¥6999 + 显卡: ¥19999 + 主板: ¥8999 + 内存: ¥3999 = <strong>¥39996</strong><br>
+                    硬件总价: ¥39996 + 服务费: ¥299 = <strong>总计: ¥40295</strong>
+                </p>
+            </div>
+        </div>
+        
+        <div class="test-section">
+            <h2>3. 测试状态</h2>
+            <div id="testStatus" class="status status-error">
+                ❌ 等待测试开始...
+            </div>
+            
+            <div style="display: flex; gap: 15px; margin-top: 20px;">
+                <button class="btn btn-success" id="runTestBtn">▶️ 运行测试</button>
+                <button class="btn btn-primary" id="checkMainBtn">🔍 检查主网站</button>
+                <button class="btn" id="resetBtn">🔄 重置测试</button>
+            </div>
+        </div>
+        
+        <div class="test-section">
+            <h2>4. 控制台输出</h2>
+            <div id="consoleOutput" style="background: #1f2937; color: #e5e7eb; padding: 15px; border-radius: 8px; font-family: monospace; height: 200px; overflow-y: auto; font-size: 0.9rem;">
+                > 等待日志输出...
+            </div>
+        </div>
+    </div>
+    
+    <script>
+        // 重写console.log
+        const originalLog = console.log;
+        const consoleOutput = document.getElementById('consoleOutput');
+        
+        function addLog(message, type = 'info') {
+            const line = document.createElement('div');
+            line.textContent = `> ${message}`;
+            
+            if (type === 'error') line.style.color = '#f87171';
+            else if (type === 'success') line.style.color = '#34d399';
+            else if (type === 'warning') line.style.color = '#fbbf24';
+            
+            consoleOutput.appendChild(line);
+            consoleOutput.scrollTop = consoleOutput.scrollHeight;
+        }
+        
+        console.log = function(...args) {
+            originalLog.apply(console, args);
+            addLog(args.join(' '));
+        };
+        
+        console.error = function(...args) {
+            originalLog.apply(console, args);
+            addLog(`❌ ${args.join(' ')}`, 'error');
+        };
+        
+        console.warn = function(...args) {
+            originalLog.apply(console, args);
+            addLog(`⚠️ ${args.join(' ')}`, 'warning');
+        };
+        
+        // 初始化
+        console.log('🚀 紧急总价测试初始化...');
+        
+        // 硬件选择逻辑
+        const hardwareCards = document.querySelectorAll('.hardware-card');
+        let selectedHardware = {
+            cpu: 0, gpu: 0, motherboard: 0, ram: 0,
+            storage: 0, cooling: 0, psu: 0, case: 0
+        };
+        
+        // 点击选择硬件
+        hardwareCards.forEach(card => {
+            card.addEventListener('click', function() {
+                const category = this.dataset.category;
+                const price = parseInt(this.dataset.price);
+                
+                // 切换选择状态
+                if (this.classList.contains('selected')) {
+                    this.classList.remove('selected');
+                    selectedHardware[category] = 0;
+                    console.log(`➖ 取消选择: ${this.dataset.name}`);
+                } else {
+                    this.classList.add('selected');
+                    selectedHardware[category] = price;
+                    console.log(`✅ 选择: ${this.dataset.name} - ¥${price}`);
+                }
+                
+                // 更新价格
+                updateEmergencyPrices();
+            });
+        });
+        
+        // 一键选择所有硬件
+        document.getElementById('selectAllBtn').addEventListener('click', function() {
+            console.log('🎯 一键选择所有硬件...');
+            
+            hardwareCards.forEach(card => {
+                card.classList.add('selected');
+                const category = card.dataset.category;
+                const price = parseInt(card.dataset.price);
+                selectedHardware[category] = price;
+            });
+            
+            updateEmergencyPrices();
+            
+            const status = document.getElementById('testStatus');
+            status.className = 'status status-success';
+            status.innerHTML = '✅ 已选择所有硬件，请查看价格计算结果';
+            
+            console.log('✅ 一键选择完成');
+        });
+        
+        // 更新价格显示
+        function updateEmergencyPrices() {
+            // 计算硬件总价
+            let hardwareTotal = 0;
+            Object.values(selectedHardware).forEach(price => {
+                hardwareTotal += price;
+            });
+            
+            // 计算总计
+            const serviceFee = 299;
+            const grandTotal = hardwareTotal + serviceFee;
+            
+            // 更新显示
+            document.getElementById('emergencyHardwareTotal').textContent = `¥${hardwareTotal}`;
+            document.getElementById('emergencyGrandTotal').textContent = `¥${grandTotal}`;
+            
+            console.log(`💰 价格更新: 硬件 ¥${hardwareTotal}, 总计 ¥${grandTotal}`);
+            
+            // 检查是否正确
+            const expectedTotal = 6999 + 19999 + 8999 + 3999;
+            if (hardwareTotal === expectedTotal) {
+                console.log('🎉 价格计算正确!');
+            } else {
+                console.warn(`⚠️ 价格计算可能有问题: 预期 ¥${expectedTotal}, 实际 ¥${hardwareTotal}`);
+            }
+        }
+        
+        // 运行测试
+        document.getElementById('runTestBtn').addEventListener('click', function() {
+            console.log('🧪 开始运行测试...');
+            
+            const status = document.getElementById('testStatus');
+            status.className = 'status';
+            status.innerHTML = '🔄 测试运行中...';
+            
+            // 模拟选择过程
+            setTimeout(() => {
+                // 选择CPU
+                hardwareCards[0].click();
+                status.innerHTML = '🔄 选择CPU: AMD Ryzen 9 9850X3D - ¥6999';
+                
+                setTimeout(() => {
+                    // 选择显卡
+                    hardwareCards[1].click();
+                    status.innerHTML = '🔄 选择显卡: NVIDIA RTX 5090 - ¥19999';
+                    
+                    setTimeout(() => {
+                        // 选择主板
+                        hardwareCards[2].click();
+                        status.innerHTML = '🔄 选择主板: ROG MAXIMUS Z890 EXTREME - ¥8999';
+                        
+                        setTimeout(() => {
+                            // 选择内存
+                            hardwareCards[3].click();
+                            status.innerHTML = '🔄 选择内存: G.SKILL Trident Z5 RGB 8000 - ¥3999';
+                            
+                            setTimeout(() => {
+                                // 验证结果
+                                const hardwareTotal = 6999 + 19999 + 8999 + 3999;
+                                const grandTotal = hardwareTotal + 299;
+                                
+                                const actualHardware = selectedHardware.cpu + selectedHardware.gpu + 
+                                                      selectedHardware.motherboard + selectedHardware.ram;
+                                
+                                if (actualHardware === hardwareTotal) {
+                                    status.className = 'status status-success';
+                                    status.innerHTML = `✅ 测试通过!<br>硬件总价: ¥${actualHardware}<br>总计: ¥${grandTotal}`;
+                                    console.log(`🎉 测试通过! 硬件总价: ¥${actualHardware}, 总计: ¥${grandTotal}`);
+                                } else {
+                                    status.className = 'status status-error';
+                                    status.innerHTML = `❌ 测试失败!<br>预期: ¥${hardwareTotal}<br>实际: ¥${actualHardware}`;
+                                    console.error(`❌ 测试失败! 预期: ¥${hardwareTotal}, 实际: ¥${actualHardware}`);
+                                }
+                            }, 500);
+                        }, 500);
+                    }, 500);
+                }, 500);
+            }, 500);
+        });
+        
+        // 检查主网站
+        document.getElementById('checkMainBtn').addEventListener('click', function() {
+            console.log('🔍 检查主网站...');
+            window.open('https://82.156.44.180', '_blank');
+        });
+        
+        // 重置测试
+        document.getElementById('resetBtn').addEventListener('click', function() {
+            console.log('🔄 重置测试...');
+            
+            hardwareCards.forEach(card => {
+                card.classList.remove('selected');
+            });
+            
+            selectedHardware = {
+                cpu: 0, gpu: 0, motherboard: 0, ram: 0,
+                storage: 0, cooling: 0, psu: 0, case: 0
+            };
+            
+            updateEmergencyPrices();
+            
+            const status = document.getElementById('testStatus');
+            status.className = 'status';
+            status.innerHTML = '🔄 测试已重置';
+            
+            console.log('✅ 测试重置完成');
+        });
+        
+        console.log('✅ 紧急总价测试准备就绪');
+    </script>
+</body>
+</html>

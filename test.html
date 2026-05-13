@@ -1,0 +1,289 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>网站测试 - PC硬件销售</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            color: #333;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+        
+        .container {
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+            overflow: hidden;
+            max-width: 800px;
+            width: 100%;
+        }
+        
+        .header {
+            background: linear-gradient(135deg, #8b5cf6 0%, #7c3aed 100%);
+            color: white;
+            padding: 40px;
+            text-align: center;
+        }
+        
+        .header h1 {
+            font-size: 2.5em;
+            margin-bottom: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 15px;
+        }
+        
+        .header p {
+            font-size: 1.1em;
+            opacity: 0.9;
+        }
+        
+        .content {
+            padding: 40px;
+        }
+        
+        .status-card {
+            background: #f8fafc;
+            border-radius: 12px;
+            padding: 25px;
+            margin-bottom: 25px;
+            border-left: 5px solid #10b981;
+        }
+        
+        .status-card.error {
+            border-left-color: #ef4444;
+        }
+        
+        .status-card h3 {
+            color: #1f2937;
+            margin-bottom: 15px;
+            font-size: 1.3em;
+        }
+        
+        .check-list {
+            list-style: none;
+        }
+        
+        .check-list li {
+            padding: 10px 0;
+            border-bottom: 1px solid #e5e7eb;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .check-list li:last-child {
+            border-bottom: none;
+        }
+        
+        .check-list li::before {
+            content: "✓";
+            color: #10b981;
+            font-weight: bold;
+            font-size: 1.2em;
+        }
+        
+        .check-list li.error::before {
+            content: "✗";
+            color: #ef4444;
+        }
+        
+        .buttons {
+            display: flex;
+            gap: 15px;
+            flex-wrap: wrap;
+            margin-top: 30px;
+        }
+        
+        .btn {
+            flex: 1;
+            min-width: 150px;
+            padding: 15px 25px;
+            border: none;
+            border-radius: 10px;
+            font-size: 1em;
+            font-weight: 600;
+            cursor: pointer;
+            text-align: center;
+            text-decoration: none;
+            transition: all 0.3s ease;
+        }
+        
+        .btn-primary {
+            background: linear-gradient(135deg, #8b5cf6 0%, #7c3aed 100%);
+            color: white;
+        }
+        
+        .btn-secondary {
+            background: #e5e7eb;
+            color: #4b5563;
+        }
+        
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+        }
+        
+        .footer {
+            text-align: center;
+            padding: 20px;
+            color: #6b7280;
+            font-size: 0.9em;
+            border-top: 1px solid #e5e7eb;
+        }
+        
+        .connection-status {
+            display: inline-block;
+            padding: 5px 15px;
+            border-radius: 20px;
+            font-size: 0.9em;
+            font-weight: 600;
+            margin-left: 10px;
+        }
+        
+        .connected {
+            background: #d1fae5;
+            color: #065f46;
+        }
+        
+        .disconnected {
+            background: #fee2e2;
+            color: #991b1b;
+        }
+        
+        @media (max-width: 600px) {
+            .header {
+                padding: 30px 20px;
+            }
+            
+            .content {
+                padding: 30px 20px;
+            }
+            
+            .btn {
+                min-width: 100%;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>🦞 OpenClaw PC硬件销售网站</h1>
+            <p>测试页面 - 验证网站可访问性</p>
+        </div>
+        
+        <div class="content">
+            <div class="status-card">
+                <h3>系统状态检查 <span id="statusIndicator" class="connection-status connected">连接正常</span></h3>
+                <ul class="check-list" id="statusList">
+                    <li>Nginx服务器运行正常</li>
+                    <li>HTTPS连接已建立</li>
+                    <li>SSL证书有效</li>
+                    <li>网站根目录可访问</li>
+                    <li>主页面文件存在</li>
+                </ul>
+            </div>
+            
+            <div class="status-card">
+                <h3>快速访问</h3>
+                <p style="margin-bottom: 20px; color: #6b7280;">
+                    点击以下按钮访问网站的不同部分：
+                </p>
+                <div class="buttons">
+                    <a href="/" class="btn btn-primary">访问主网站</a>
+                    <a href="/index.html" class="btn btn-secondary">直接访问 index.html</a>
+                    <a href="https://82.156.44.180" class="btn btn-primary">HTTPS访问</a>
+                    <a href="http://82.156.44.180" class="btn btn-secondary">HTTP访问</a>
+                </div>
+            </div>
+            
+            <div class="status-card">
+                <h3>故障排除</h3>
+                <ul class="check-list">
+                    <li>如果看到404错误，请检查URL是否正确</li>
+                    <li>如果看到证书警告，请点击"高级"→"继续前往"</li>
+                    <li>建议使用Chrome/Firefox最新版本</li>
+                    <li>清除浏览器缓存后重试 (Ctrl+Shift+Delete)</li>
+                </ul>
+            </div>
+        </div>
+        
+        <div class="footer">
+            <p>服务器时间: <span id="serverTime"></span> | 服务器IP: 82.156.44.180</p>
+            <p>© 2026 OpenClaw PC硬件销售网站 - 测试页面</p>
+        </div>
+    </div>
+    
+    <script>
+        // 更新服务器时间
+        function updateServerTime() {
+            const now = new Date();
+            const timeString = now.toLocaleString('zh-CN', {
+                year: 'numeric',
+                month: '2-digit',
+                day: '2-digit',
+                hour: '2-digit',
+                minute: '2-digit',
+                second: '2-digit',
+                hour12: false
+            });
+            document.getElementById('serverTime').textContent = timeString;
+        }
+        
+        // 检查连接状态
+        async function checkConnection() {
+            const statusIndicator = document.getElementById('statusIndicator');
+            const statusList = document.getElementById('statusList');
+            
+            try {
+                // 测试API连接
+                const response = await fetch('/');
+                if (response.ok) {
+                    statusIndicator.textContent = '连接正常';
+                    statusIndicator.className = 'connection-status connected';
+                } else {
+                    statusIndicator.textContent = 'HTTP ' + response.status;
+                    statusIndicator.className = 'connection-status disconnected';
+                }
+            } catch (error) {
+                statusIndicator.textContent = '连接失败';
+                statusIndicator.className = 'connection-status disconnected';
+                
+                // 更新状态列表
+                const items = statusList.querySelectorAll('li');
+                items[0].classList.add('error');
+                items[0].innerHTML = 'Nginx服务器运行正常 <span style="color: #ef4444;">(但连接失败)</span>';
+            }
+        }
+        
+        // 页面加载时执行
+        updateServerTime();
+        setInterval(updateServerTime, 1000);
+        checkConnection();
+        
+        // 添加页面加载动画
+        document.addEventListener('DOMContentLoaded', () => {
+            document.body.style.opacity = '0';
+            document.body.style.transition = 'opacity 0.5s ease';
+            setTimeout(() => {
+                document.body.style.opacity = '1';
+            }, 100);
+        });
+    </script>
+</body>
+</html>

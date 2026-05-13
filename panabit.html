@@ -1,0 +1,325 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>流控管理 - 联信装机</title>
+  <link rel="stylesheet" href="style.css">
+  <style>
+    .page { max-width: 100%; margin: 0 auto; padding: 2rem; }
+    .toolbar { display:flex; gap:0.75rem; align-items:center; justify-content:space-between; margin-bottom: 1rem; white-space:nowrap; overflow:visible; }
+    .toolbar .left, .toolbar .right { display:flex; gap:0.75rem; align-items:center; flex-wrap:nowrap; overflow:visible; }
+    .toolbar input[type="text"] { white-space:nowrap; }
+    .table { width:100%; border-collapse: collapse; background:#fff; border-radius: 0.75rem; overflow:hidden; box-shadow: var(--shadow-sm); color: #111827; }
+    .table th { background: #f1f5f9; color: #0f172a; font-weight: 700; position: sticky; top: 0; z-index: 0; }
+    .table td { color: #111827; padding: 0.75rem 1rem; border-bottom: 1px solid var(--gray-200); text-align:left; vertical-align: top; }
+    .table td .cell-clip,
+    .table td .pill { color: #111827; }
+    .table tr:hover td { background: #f8fafc; }
+    .expired { background: rgba(239,68,68,0.14); }
+    .soon { background: rgba(245,158,11,0.16); }
+    .pill { display:inline-block; padding: 0.15rem 0.5rem; border-radius: 999px; border: 1px solid var(--gray-300); font-size: 12px; margin-right: 0.35rem;}
+    .pill.red { border-color: rgba(239,68,68,0.4); }
+    .pill.yellow { border-color: rgba(245,158,11,0.45); }
+    .pill.green { border-color: rgba(16,185,129,0.45); }
+    input, select, textarea { padding: 0.6rem 0.75rem; border: 1px solid var(--gray-300); border-radius: 0.5rem; }
+    textarea { width:100%; min-height: 80px; }
+    .modal { position: fixed; inset: 0; background: rgba(0,0,0,0.45); display:none; align-items:center; justify-content:center; padding: 1rem; z-index: 9999; }
+    .modal.open { display:flex; }
+    .panel { width: min(820px, 100%); background:#fff; border-radius: 1rem; padding: 1rem; box-shadow: var(--shadow-lg); z-index: 10000; position: relative; }
+    .grid { display:grid; grid-template-columns: repeat(2, minmax(0,1fr)); gap: 0.75rem; }
+    .full { grid-column: 1 / -1; }
+    .muted { color: var(--gray-500); font-size: 12px; margin-bottom: 0.25rem; }
+    .row { display:flex; justify-content:flex-end; gap: 0.75rem; margin-top: 0.75rem; }
+    .hint { color: var(--gray-600); font-size: 12px; line-height: 1.6; margin: 0.5rem 0 1rem;}
+    @media (max-width: 800px) { .grid { grid-template-columns: 1fr; } }
+
+    /* 让“分类 / 门店”横向一整行显示；太长用省略号 */
+    th.col-cat,
+    th.col-shop,
+    th.col-range,
+    th.col-left,
+    th.col-max,
+    th.col-sys,
+    th.col-remark {
+      white-space: nowrap;
+      text-align: center;
+      min-width: 140px;
+    }
+    th.col-cat { min-width: 120px; }
+    th.col-shop { min-width: 160px; }
+    th.col-sys { min-width: 280px; }
+    th.col-remark { min-width: 280px; }
+    td.col-cat,
+    td.col-shop,
+    td.col-range,
+    td.col-left,
+    td.col-max,
+    td.col-sys,
+    td.col-remark {
+      white-space: nowrap;
+      cursor: default;
+    }
+    td.col-sys { max-width: 280px; overflow: hidden; text-overflow: ellipsis; }
+    td.col-remark { max-width: 280px; overflow: hidden; text-overflow: ellipsis; }
+    td.col-shop { max-width: 160px; overflow: hidden; text-overflow: ellipsis; }
+    td.col-range { max-width: 180px; overflow: hidden; text-overflow: ellipsis; }
+
+    .cell-clip {
+      display: inline-block;
+      max-width: 140px;
+      overflow: hidden;
+      white-space: nowrap;
+      text-overflow: ellipsis;
+      vertical-align: bottom;
+    }
+
+    .cell-more {
+      margin-left: 4px;
+      padding: 0 4px;
+      font-size: 11px;
+      line-height: 1.2;
+      border-radius: 4px;
+      border: 1px solid var(--gray-300);
+      background: #fff;
+      cursor: pointer;
+    }
+  
+    /* 横向滚动条样式 */
+    #tableWrap { overflow-x: auto; overflow-y: visible; }
+    #tableWrap::-webkit-scrollbar { height: 8px; }
+    #tableWrap::-webkit-scrollbar-track { background: #f0f0f0; border-radius: 4px; }
+    #tableWrap::-webkit-scrollbar-thumb { background: #9ca3af; border-radius: 4px; }
+    #tableWrap { scrollbar-width: thin; scrollbar-color: #9ca3af #f0f0f0; }
+    #hscrollbar { display: block !important; position: sticky; top: 0; z-index: 10; background: #fff; padding-top: 4px; }
+
+</style>
+
+</head>
+<body>
+  <div class="page">
+    <div class="admin-header" style="display:flex;justify-content:space-between;align-items:center;margin-bottom:1rem">
+      <h1 style="margin:0"><i class="fas fa-shield-alt"></i> 流控管理</h1>
+      <div>
+        <a href="gluidcadmin" class="btn btn-outline"><i class="fas fa-arrow-left"></i> 返回后台</a>
+        <a href="index.html" class="btn btn-outline"><i class="fas fa-home"></i> 首页</a>
+      </div>
+    </div>
+
+    <div class="toolbar">
+      <div class="left">
+        <select id="category">
+          <option value="">全部分类</option>
+          <option value="电竞网吧">电竞网吧</option>
+          <option value="电竞酒店">电竞酒店</option>
+        </select>
+        <input id="q" type="text" placeholder="搜索" style="width:160px">
+        <button class="btn btn-outline" id="refresh"><i class="fas fa-sync-alt"></i> 刷新</button>
+      </div>
+      <div class="right">
+        <input id="file" type="file" accept=".xlsx,.xls">
+        <button class="btn btn-outline" id="import"><i class="fas fa-file-import"></i> 导入</button>
+        <button class="btn btn-outline" id="pasteImport" title="把授权信息原文粘贴进来，自动识别并添加/更新"><i class="fas fa-paste"></i> 粘贴识别</button>
+        <button class="btn btn-primary" id="add"><i class="fas fa-plus"></i> 新增</button>
+      </div>
+    </div>
+
+
+    <div class="hint">
+            - 到期（结束时间 &lt; 今天）：整行标红；距离到期 ≤ 20 天：整行标黄。<br>
+      - Excel 导入表头支持：分类、门店名称、授权编号、使用许可开始时间、使用许可结束时间、最大在线IP数、系统编号、备注（存在相同授权编号自动更新）。
+    </div>
+
+    <div id="tableWrap" style="overflow:auto;border-radius:0.75rem;">
+      <!-- 自定义横向滚动条（位于表格上方） -->
+      <div id="hscrollbar" style="display:none; position:relative; height:20px; margin-bottom:4px; user-select:none;">
+        <div id="hscroll-track" style="position:absolute; left:0; right:0; top:50%; height:6px; transform:translateY(-50%); background:#e5e7eb; border-radius:3px; cursor:pointer;"></div>
+        <div id="hscroll-thumb" style="position:absolute; top:50%; height:6px; transform:translateY(-50%); background:#9ca3af; border-radius:3px; cursor:grab; min-width:40px;"></div>
+      </div>
+      <table class="table">
+        <thead>
+          <tr>
+            <th class="col-cat">分类</th>
+            <th class="col-shop">门店</th>
+            <th>授权编号</th>
+            <th class="col-range">许可时间</th>
+            <th class="col-left">剩余天数</th>
+            <th class="col-max">最大在线IP</th>
+            <th class="col-sys">系统编号</th>
+            <th class="col-remark">备注</th>
+            <th>操作</th>
+          </tr>
+        </thead>
+        <tbody id="tbody"></tbody>
+      </table>
+    </div>
+
+  </div>
+
+  <div class="modal" id="modal">
+    <div class="panel">
+      <h2 id="modalTitle" style="margin:0.25rem 0 0.75rem">新增</h2>
+      <div class="grid">
+        <div>
+          <div class="muted">分类</div>
+          <select id="f_category">
+            <option value="电竞网吧">电竞网吧</option>
+            <option value="电竞酒店">电竞酒店</option>
+          </select>
+        </div>
+        <div>
+          <div class="muted">门店名称</div>
+          <input id="f_shopName" type="text" placeholder="例如：内蒙古别克">
+        </div>
+        <div class="full">
+          <div class="muted">授权编号（唯一）</div>
+          <input id="f_authCode" type="text" placeholder="例如：PW7d0000P417">
+        </div>
+        <div>
+          <div class="muted">许可开始时间</div>
+          <input id="f_startAt" type="datetime-local">
+        </div>
+        <div>
+          <div class="muted">许可结束时间</div>
+          <input id="f_endAt" type="datetime-local">
+        </div>
+        <div>
+          <div class="muted">最大在线IP数</div>
+          <input id="f_maxOnlineIps" type="number" min="0" step="1" placeholder="例如：80">
+        </div>
+        <div>
+          <div class="muted">系统编号</div>
+          <input id="f_sysCode" type="text" placeholder="长串系统编号">
+        </div>
+        <div class="full">
+          <div class="muted">备注</div>
+          <textarea id="f_remark" placeholder="可选"></textarea>
+        </div>
+      </div>
+      <div class="row" style="justify-content:space-between">
+        <button class="btn btn-outline" id="pasteUpdateBtn" title="粘贴授权信息原文，自动解析并更新此条记录"><i class="fas fa-paste"></i> 粘贴更新</button>
+        <div style="display:flex;gap:0.75rem">
+          <button class="btn btn-outline" id="cancel">取消</button>
+          <button class="btn btn-primary" id="save">保存</button>
+        </div>
+      </div>
+      <div id="pasteUpdateArea" style="display:none;margin-top:1rem;padding-top:1rem;border-top:1px solid var(--gray-200)">
+        <div class="muted">粘贴授权信息原文（自动识别时间、编号等字段覆盖上方表单）</div>
+        <textarea id="f_pasteText" placeholder="授权编号： PWej0000Q417&#10;使用许可时间： 2026-04-17 00:00:00 -> 2027-04-17 12:00:00&#10;升级许可时间： 2026-04-17 00:00:00 -> 2027-06-25 00:00:00&#10;最大在线IP数： 80&#10;系统编号： ..." style="width:100%;min-height:100px;margin-top:0.5rem"></textarea>
+        <div class="row" style="margin-top:0.5rem">
+          <button class="btn btn-primary" id="doPasteUpdate">确认更新</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="modal" id="pasteModal">
+    <div class="panel">
+      <h2 style="margin:0.25rem 0 0.75rem"><i class="fas fa-paste"></i> 粘贴识别导入</h2>
+      <div class="grid">
+        <div class="full">
+          <div class="muted">分类（识别不出来时使用）</div>
+          <select id="p_category">
+            <option value="电竞网吧">电竞网吧</option>
+            <option value="电竞酒店">电竞酒店</option>
+          </select>
+        </div>
+        <div class="full">
+          <div class="muted">原文（支持一次粘贴多条，用空行分隔）</div>
+          <textarea id="p_text" placeholder="例如：&#10;授权编号： PW7d0000P417&#10;使用许可时间： 2025-04-17 00:00:00 -> 2026-04-17 12:00:00&#10;最大在线IP数： 80&#10;系统编号： ..."></textarea>
+        </div>
+        <div class="full">
+          <div class="muted">识别预览</div>
+          <pre id="p_preview" style="margin:0;background:#f9fafb;border:1px solid var(--gray-200);border-radius:0.75rem;padding:0.75rem;white-space:pre-wrap;word-break:break-all;min-height:84px"></pre>
+        </div>
+      </div>
+      <div class="row">
+        <button class="btn btn-outline" id="p_cancel">取消</button>
+        <button class="btn btn-outline" id="p_parse">重新识别</button>
+        <button class="btn btn-primary" id="p_submit">添加/更新</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="modal" id="detailModal">
+    <div class="panel">
+      <h2 id="detailTitle" style="margin:0.25rem 0 0.75rem">详情</h2>
+      <div class="full">
+        <textarea id="detailText" readonly style="width:100%;min-height:120px"></textarea>
+      </div>
+      <div class="row">
+        <button class="btn btn-outline" id="detailClose">关闭</button>
+        <button class="btn btn-primary" id="detailCopy">复制全部</button>
+      </div>
+    </div>
+  </div>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/js/all.min.js"></script>
+  <script src="panabit.js"></script>
+  <script>
+    // 鼠标滚轮 → 横向滚动
+    (function() {
+      var wrap = document.getElementById('tableWrap');
+      if (!wrap) return;
+
+      // 滚轮保持默认竖向滚动，不拦截
+
+      // 拖拽横向滚动
+      var isDragging = false, startX = 0, scrollLeft = 0;
+      wrap.addEventListener('mousedown', function(e) {
+        isDragging = true;
+        startX = e.pageX - this.offsetLeft;
+        scrollLeft = this.scrollLeft;
+      });
+      document.addEventListener('mouseup', function() { isDragging = false; });
+      wrap.addEventListener('mousemove', function(e) {
+        if (!isDragging) return;
+        e.preventDefault();
+        this.scrollLeft = scrollLeft - (e.pageX - this.offsetLeft - startX);
+      });
+
+      // 自定义滚动条
+      var hbar = document.getElementById('hscrollbar');
+      var track = document.getElementById('hscroll-track');
+      var thumb = document.getElementById('hscroll-thumb');
+      if (!hbar || !track || !thumb) return;
+
+      function updateHScroll() {
+        var sw = wrap.scrollWidth, cw = wrap.clientWidth;
+        if (sw <= cw) { hbar.style.display = 'none'; return; }
+        hbar.style.display = 'block';
+        var tw = Math.max(Math.round((cw / sw) * (hbar.offsetWidth || 800)), 40);
+        thumb.style.width = tw + 'px';
+        var maxLeft = (hbar.offsetWidth || 800) - tw;
+        thumb.style.left = Math.round((wrap.scrollLeft / (sw - cw)) * maxLeft) + 'px';
+      }
+
+      wrap.addEventListener('scroll', updateHScroll);
+      window.addEventListener('resize', updateHScroll);
+      setTimeout(updateHScroll, 100);
+
+      // 拖拽滚动条
+      var hDragging = false, hStartX = 0, hStartScroll = 0;
+      function startDrag(e) {
+        hDragging = true; hStartX = e.clientX; hStartScroll = wrap.scrollLeft;
+        e.preventDefault();
+      }
+      thumb.addEventListener('mousedown', startDrag);
+      track.addEventListener('mousedown', function(e) {
+        var rect = track.getBoundingClientRect();
+        wrap.scrollLeft = ((e.clientX - rect.left) / rect.width) * wrap.scrollWidth - cw / 2;
+        hStartX = e.clientX; hStartScroll = wrap.scrollLeft; hDragging = true;
+        e.preventDefault();
+      });
+      document.addEventListener('mousemove', function(e) {
+        if (!hDragging) return;
+        var sw = wrap.scrollWidth, cw = wrap.clientWidth;
+        var maxLeft = (hbar.offsetWidth || 800) - thumb.offsetWidth;
+        wrap.scrollLeft = hStartScroll + ((e.clientX - hStartX) / maxLeft) * (sw - cw);
+      });
+      document.addEventListener('mouseup', function() { hDragging = false; });
+    })();
+  </script>
+</body>
+</html>
+

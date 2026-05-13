@@ -885,12 +885,12 @@ initializeDatabase().then(async () => {
     // POST /api/panabit/update
     app.post('/api/panabit/update', requireAdmin, async (req, res) => {
         try {
-            const { id, authCode, category, shopName, startAt, endAt, maxOnlineIps, sysCode, remark } = req.body;
+            const { id, category, shopName, startAt, endAt, maxOnlineIps, sysCode, remark } = req.body;
             if (!id) return res.status(400).json({ ok: false, error: '缺少 id' });
             await db.run(`
-                UPDATE panabit SET authCode=?,category=?,shopName=?,startAt=?,endAt=?,maxOnlineIps=?,sysCode=?,remark=?,updated_at=datetime('now','localtime')
+                UPDATE panabit SET category=?,shopName=?,startAt=?,endAt=?,maxOnlineIps=?,sysCode=?,remark=?,updated_at=datetime('now','localtime')
                 WHERE id=?`,
-                [authCode||'', category||'电竞网吧', shopName||'', startAt||'', endAt||'', maxOnlineIps||0, sysCode||'', remark||'', id]);
+                [category||'电竞网吧', shopName||'', startAt||'', endAt||'', maxOnlineIps||0, sysCode||'', remark||'', id]);
             res.json({ ok: true });
         } catch (err) {
             console.error('/api/panabit/update error:', err.message);
@@ -976,10 +976,120 @@ initializeDatabase().then(async () => {
             maxOnlineIps INTEGER NOT NULL DEFAULT 0,
             sysCode TEXT NOT NULL DEFAULT '',
             remark TEXT NOT NULL DEFAULT '',
+            notified7days INTEGER NOT NULL DEFAULT 0,
+            notified1day INTEGER NOT NULL DEFAULT 0,
             created_at TEXT NOT NULL DEFAULT (datetime('now','localtime')),
             updated_at TEXT NOT NULL DEFAULT (datetime('now','localtime'))
         )
     `);
+    // 迁移已有数据补充新列（如列已存在会报错，可忽略）
+    try { await db.exec(`ALTER TABLE panabit ADD COLUMN notified7days INTEGER NOT NULL DEFAULT 0`); } catch (_) {}
+    try { await db.exec(`ALTER TABLE panabit ADD COLUMN notified1day INTEGER NOT NULL DEFAULT 0`); } catch (_) {}
+    try { await db.exec(`ALTER TABLE panabit ADD COLUMN notified3days INTEGER NOT NULL DEFAULT 0`); } catch (_) {}
+    try { await db.exec(`ALTER TABLE panabit ADD COLUMN notified5days INTEGER NOT NULL DEFAULT 0`); } catch (_) {}
+    try { await db.exec(`ALTER TABLE panabit ADD COLUMN notified10days INTEGER NOT NULL DEFAULT 0`); } catch (_) {}
+
+    // ============================================================
+    // 流控到期飞书提醒
+    // ============================================================
+    const PANABIT_WEBHOOK = process.env.FEISHU_PANABIT_WEBHOOK;
+    const REMIND_DAYS = [3, 5, 10]; // 提前N天提醒（去重）
+
+    async function notifyPanabitExpiry(rows) {
+      if (!PANABIT_WEBHOOK) return;
+      const card = {
+        msg_type: 'interactive',
+        card: {
+          config: { wide_screen_mode: true },
+          elements: [
+            { tag: 'markdown', content: '**🔔 流控授权到期提醒**' },
+            { tag: 'hr' },
+            ...rows.map(r => ({
+              tag: 'markdown',
+              content: `• **${r.shopName}**（${r.category}）\n` +
+                `授权编号：${r.authCode}\n` +
+                `系统编号：${r.sysCode || '—'}\n` +
+                `到期时间：${r.endAt}（还有 ${r.daysLeft} 天）\n` +
+                `⚠️ 请及时联系供应商续费！\n` +
+                `📞 渠道经理：源中宇电脑 · 刘兴武 · 电话：15547989888`
+            })),
+            { tag: 'hr' },
+            { tag: 'markdown', content: `_由联信装机系统自动推送 · ${new Date().toLocaleString('zh-CN')}_` }
+          ]
+        }
+      };
+      try {
+        const res = await fetch(PANABIT_WEBHOOK, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(card),
+        });
+        const json = await res.json();
+        console.log('[panabit] notify result:', json);
+      } catch (e) {
+        console.error('[panabit] notify error:', e.message);
+      }
+    }
+
+    async function checkPanabitExpiry() {
+      try {
+        const rows = await db.all('SELECT * FROM panabit');
+        const now = Date.now();
+        const toNotify = [];
+
+        for (const r of rows) {
+          const endMs = new Date(r.endAt).getTime();
+          const daysLeft = Math.ceil((endMs - now) / (1000 * 60 * 60 * 24));
+
+          for (const d of REMIND_DAYS) {
+            const col = `notified${d}days`;
+            if (daysLeft <= d && daysLeft > 0 && r[col] !== 1) {
+              toNotify.push({ ...r, daysLeft, flag: `${d}days` });
+              break; // 同一条记录同一天只通知一次
+            }
+          }
+        }
+
+        if (toNotify.length) {
+          await notifyPanabitExpiry(toNotify);
+          // 标记已通知
+          for (const item of toNotify) {
+            const col = `notified${item.flag}`;
+            await db.run(`UPDATE panabit SET ${col}=1 WHERE authCode=?`, [item.authCode]);
+          }
+        }
+      } catch (e) {
+        console.error('[panabit] check error:', e.message);
+      }
+    }
+
+    // 计算距下次 9:00 的毫秒数
+    function msUntil9am() {
+      const now = new Date();
+      const today9 = new Date(now);
+      today9.setHours(9, 0, 0, 0);
+      if (now >= today9) today9.setDate(today9.getDate() + 1);
+      return today9.getTime() - now.getTime();
+    }
+
+    // 启动时检查一次
+    setTimeout(checkPanabitExpiry, 3000);
+    // 每天 9:00 定时检查
+    function schedulePanabitCheck() {
+      const delay = msUntil9am();
+      setTimeout(async () => {
+        await checkPanabitExpiry();
+        schedulePanabitCheck(); // 再次计算下个 9:00
+      }, delay);
+    }
+    schedulePanabitCheck();
+
+    // 手动触发流控到期检查（GET /api/panabit/check-expiry?force=true）
+    app.get('/api/panabit/check-expiry', requireAdmin, async (req, res) => {
+        await checkPanabitExpiry();
+        res.json({ ok: true, time: new Date().toLocaleString('zh-CN') });
+    });
+
     app.listen(PORT, () => {
         console.log(`联信装机后端服务运行在 http://localhost:${PORT}`);
     });

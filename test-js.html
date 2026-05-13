@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>JavaScript测试</title>
+</head>
+<body>
+    <h1>JavaScript加载测试</h1>
+    
+    <div id="test-result">等待测试...</div>
+    
+    <script>
+        console.log("✅ 基础JavaScript已加载");
+        document.getElementById('test-result').textContent = '✅ 基础JavaScript正常';
+    </script>
+    
+    <script src="api-service.js"></script>
+    <script>
+        if (typeof ApiService !== 'undefined') {
+            console.log("✅ api-service.js 已加载");
+            document.getElementById('test-result').textContent += ' | ✅ api-service.js正常';
+        } else {
+            console.log("❌ api-service.js 未加载");
+            document.getElementById('test-result').textContent += ' | ❌ api-service.js失败';
+        }
+    </script>
+    
+    <script src="app-enhanced.js"></script>
+    <script>
+        if (typeof PCBuilderAppEnhanced !== 'undefined') {
+            console.log("✅ app-enhanced.js 已加载");
+            document.getElementById('test-result').textContent += ' | ✅ app-enhanced.js正常';
+        } else {
+            console.log("❌ app-enhanced.js 未加载");
+            document.getElementById('test-result').textContent += ' | ❌ app-enhanced.js失败';
+        }
+    </script>
+    
+    <script src="fix-hardware-expanded.js"></script>
+    <script>
+        if (typeof HardwareExpander !== 'undefined') {
+            console.log("✅ fix-hardware-expanded.js 已加载");
+            document.getElementById('test-result').textContent += ' | ✅ 硬件扩展正常';
+        } else {
+            console.log("❌ fix-hardware-expanded.js 未加载");
+            document.getElementById('test-result').textContent += ' | ❌ 硬件扩展失败';
+        }
+    </script>
+    
+    <script src="fix-ultra-high-end.js"></script>
+    <script>
+        if (typeof UltraHighEndHardware !== 'undefined') {
+            console.log("✅ fix-ultra-high-end.js 已加载");
+            document.getElementById('test-result').textContent += ' | ✅ 超高端硬件正常';
+        } else {
+            console.log("❌ fix-ultra-high-end.js 未加载");
+            document.getElementById('test-result').textContent += ' | ❌ 超高端硬件失败';
+        }
+    </script>
+    
+    <h2>测试完成</h2>
+    <p>查看浏览器控制台(F12)获取详细日志</p>
+</body>
+</html>

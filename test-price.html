@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>总价计算测试</title>
+    <style>
+        body { font-family: Arial, sans-serif; padding: 20px; }
+        .test { margin: 20px 0; padding: 20px; border: 2px solid #ddd; border-radius: 10px; }
+        .pass { border-color: #10b981; background: #d4edda; }
+        .fail { border-color: #dc3545; background: #f8d7da; }
+        .hardware-item { border: 1px solid #ddd; padding: 15px; margin: 10px; border-radius: 8px; cursor: pointer; }
+        .hardware-item.selected { border-color: #3b82f6; background: #e0f2fe; }
+        .price-display { font-size: 1.5rem; font-weight: bold; color: #10b981; margin: 20px 0; }
+    </style>
+</head>
+<body>
+    <h1>总价计算功能测试</h1>
+    
+    <div class="test">
+        <h2>测试1: 硬件选择模拟</h2>
+        <div id="hardwareSimulator">
+            <div class="hardware-item" data-category="cpu" data-name="测试CPU" data-price="2999">
+                <strong>测试CPU</strong> - ¥2999
+            </div>
+            <div class="hardware-item" data-category="gpu" data-name="测试显卡" data-price="8999">
+                <strong>测试显卡</strong> - ¥8999
+            </div>
+            <div class="hardware-item" data-category="ram" data-name="测试内存" data-price="1099">
+                <strong>测试内存</strong> - ¥1099
+            </div>
+        </div>
+        <button id="simulateSelect">模拟选择硬件</button>
+        <p id="test1-result">等待测试...</p>
+    </div>
+    
+    <div class="test">
+        <h2>测试2: 总价计算</h2>
+        <div class="price-display">
+            硬件总价: <span id="testHardwareTotal">¥0</span><br>
+            服务费: <span id="testServiceFee">¥299</span><br>
+            总计: <span id="testGrandTotal">¥299</span>
+        </div>
+        <p id="test2-result">等待计算...</p>
+    </div>
+    
+    <div class="test">
+        <h2>测试3: 控制台输出</h2>
+        <p>打开浏览器控制台(F12 → Console)查看详细日志</p>
+        <div id="console-output" style="background: #f8f9fa; padding: 10px; border-radius: 5px; font-family: monospace; height: 150px; overflow-y: auto;"></div>
+    </div>
+    
+    <script>
+        // 重写console.log以在页面上显示
+        const originalLog = console.log;
+        const consoleOutput = document.getElementById('console-output');
+        
+        console.log = function(...args) {
+            originalLog.apply(console, args);
+            const message = args.map(arg => 
+                typeof arg === 'object' ? JSON.stringify(arg) : arg
+            ).join(' ');
+            
+            const line = document.createElement('div');
+            line.textContent = `> ${message}`;
+            consoleOutput.appendChild(line);
+            consoleOutput.scrollTop = consoleOutput.scrollHeight;
+        };
+        
+        console.warn = function(...args) {
+            originalLog.apply(console, ['⚠️', ...args]);
+            const message = args.join(' ');
+            const line = document.createElement('div');
+            line.textContent = `⚠️ ${message}`;
+            line.style.color = '#f59e0b';
+            consoleOutput.appendChild(line);
+            consoleOutput.scrollTop = consoleOutput.scrollHeight;
+        };
+        
+        console.error = function(...args) {
+            originalLog.apply(console, ['❌', ...args]);
+            const message = args.join(' ');
+            const line = document.createElement('div');
+            line.textContent = `❌ ${message}`;
+            line.style.color = '#dc3545';
+            consoleOutput.appendChild(line);
+            consoleOutput.scrollTop = consoleOutput.scrollHeight;
+        };
+    </script>
+    
+    <!-- 加载总价修复脚本 -->
+    <script src="fix-total-price.js"></script>
+    
+    <script>
+        // 初始化测试
+        console.log('🧪 开始总价计算测试...');
+        
+        // 模拟选择硬件
+        document.getElementById('simulateSelect').addEventListener('click', function() {
+            console.log('🎯 模拟选择硬件...');
+            
+            const test1Result = document.getElementById('test1-result');
+            const test2Result = document.getElementById('test2-result');
+            
+            // 重置选择状态
+            document.querySelectorAll('.hardware-item').forEach(item => {
+                item.classList.remove('selected');
+            });
+            
+            // 模拟选择三个硬件
+            const selections = [
+                { element: document.querySelector('[data-category="cpu"]'), price: 2999 },
+                { element: document.querySelector('[data-category="gpu"]'), price: 8999 },
+                { element: document.querySelector('[data-category="ram"]'), price: 1099 }
+            ];
+            
+            let totalHardware = 0;
+            selections.forEach((selection, index) => {
+                setTimeout(() => {
+                    // 模拟点击
+                    selection.element.classList.add('selected');
+                    console.log(`✅ 选择: ${selection.element.dataset.name} - ¥${selection.price}`);
+                    
+                    totalHardware += selection.price;
+                    
+                    // 更新测试显示
+                    const hardwareTotal = totalHardware;
+                    const serviceFee = 299;
+                    const grandTotal = hardwareTotal + serviceFee;
+                    
+                    document.getElementById('testHardwareTotal').textContent = `¥${hardwareTotal}`;
+                    document.getElementById('testGrandTotal').textContent = `¥${grandTotal}`;
+                    
+                    if (index === selections.length - 1) {
+                        test1Result.innerHTML = `✅ 已选择 ${selections.length} 个硬件`;
+                        test1Result.style.color = '#198754';
+                        test1Result.parentElement.className = 'test pass';
+                        
+                        test2Result.innerHTML = `✅ 计算正确:<br>硬件: ¥${hardwareTotal}<br>服务费: ¥${serviceFee}<br>总计: ¥${grandTotal}`;
+                        test2Result.style.color = '#198754';
+                        test2Result.parentElement.className = 'test pass';
+                        
+                        console.log(`📊 测试结果: 硬件 ¥${hardwareTotal} + 服务费 ¥${serviceFee} = 总计 ¥${grandTotal}`);
+                    }
+                }, index * 1000);
+            });
+        });
+        
+        // 自动运行测试
+        setTimeout(() => {
+            console.log('🔍 检查总价修复脚本状态...');
+            
+            if (typeof window.selectedHardware !== 'undefined') {
+                console.log('✅ 总价修复脚本已加载');
+                console.log('📋 当前选择状态:', window.selectedHardware);
+            } else {
+                console.warn('⚠️ 总价修复脚本未正确加载');
+            }
+        }, 2000);
+    </script>
+</body>
+</html>

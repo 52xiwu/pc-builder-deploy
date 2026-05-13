@@ -1,0 +1,64 @@
+id,category,price,priceSource,stock,listPrice
+# ═══════════════════════════════════════════════════════════════════
+# 价格批量更新 CSV 模板
+# 说明：
+#   1. 第一行为 header，请勿删除；# 开头的行会被忽略
+#   2. id 必填，必须与 hardware-v2.json 中的 id 完全一致
+#   3. price 必填，单位：元，不含人民币符号
+#   4. priceSource：manual（手动）/ import（第三方导入）/ api（接口同步）
+#   5. stock / listPrice 选填，不填则保留原值
+#   6. 建议每次更新只填写有变动的行，减少出错概率
+# 示例：
+#   cpu-001,cpu,4199,manual,50,4999
+#   gpu-001,gpu,11999,import,20,13999
+# ═══════════════════════════════════════════════════════════════════
+
+# CPU
+cpu-001,cpu,6999,manual,18,7499
+cpu-002,cpu,2999,manual,35,3299
+cpu-003,cpu,4299,manual,28,4999
+cpu-004,cpu,38999,api,4,41999
+cpu-005,cpu,1499,manual,60,1799
+
+# GPU
+gpu-001,gpu,19999,manual,5,21999
+gpu-002,gpu,13999,manual,12,15999
+gpu-003,gpu,2999,manual,55,3499
+
+# 内存
+ram-001,ram,999,manual,80,1199
+ram-002,ram,499,import,120,599
+
+# 存储
+ssd-001,ssd,1099,manual,48,1399
+ssd-002,ssd,899,import,75,1099
+
+# 散热器
+cool-001,cooling,649,manual,40,749
+cool-002,cooling,2499,manual,15,2799
+
+# 电源
+psu-001,psu,899,manual,55,1099
+psu-002,psu,1299,manual,30,1499
+
+# 机箱
+case-001,case,899,manual,35,1099
+case-002,case,399,import,90,499
+
+# 主板
+mb-001,motherboard,7999,manual,6,8999
+mb-002,motherboard,469,import,110,569
+
+# 显示器
+mon-001,monitor,9999,manual,8,11999
+mon-002,monitor,999,import,140,1299
+
+# 键盘
+kb-001,keyboard,1499,manual,25,1799
+kb-002,keyboard,129,import,200,169
+
+# 鼠标
+mouse-001,mouse,1199,manual,42,1399
+
+# 耳机
+hs-001,headset,1999,manual,20,2499

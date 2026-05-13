@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>调试页面</title>
+    <style>
+        body { font-family: Arial, sans-serif; padding: 20px; }
+        .success { color: green; }
+        .error { color: red; }
+    </style>
+</head>
+<body>
+    <h1>网站调试页面</h1>
+    
+    <h2>1. 基本连接测试</h2>
+    <div id="connection-test">测试中...</div>
+    
+    <h2>2. JavaScript测试</h2>
+    <div id="js-test">测试中...</div>
+    
+    <h2>3. 文件检查</h2>
+    <div id="file-test">测试中...</div>
+    
+    <h2>4. 问题诊断</h2>
+    <div id="diagnosis">诊断中...</div>
+    
+    <script>
+        // 1. 基本连接测试
+        document.getElementById('connection-test').innerHTML = 
+            '<span class="success">✅ 页面已加载，连接正常</span>';
+        
+        // 2. JavaScript测试
+        try {
+            document.getElementById('js-test').innerHTML = 
+                '<span class="success">✅ JavaScript运行正常</span>';
+        } catch (e) {
+            document.getElementById('js-test').innerHTML = 
+                `<span class="error">❌ JavaScript错误: ${e.message}</span>`;
+        }
+        
+        // 3. 文件检查
+        fetch(window.location.href)
+            .then(response => {
+                if (response.ok) {
+                    document.getElementById('file-test').innerHTML = 
+                        '<span class="success">✅ 主页面文件可访问</span>';
+                } else {
+                    document.getElementById('file-test').innerHTML = 
+                        `<span class="error">❌ 主页面访问失败: ${response.status}</span>`;
+                }
+            })
+            .catch(error => {
+                document.getElementById('file-test').innerHTML = 
+                    `<span class="error">❌ 网络错误: ${error.message}</span>`;
+            });
+        
+        // 4. 问题诊断
+        setTimeout(() => {
+            const diagnosis = [];
+            
+            // 检查控制台错误
+            if (typeof console !== 'undefined') {
+                diagnosis.push('✅ 控制台可用');
+            }
+            
+            // 检查DOM
+            if (document.body && document.head) {
+                diagnosis.push('✅ DOM结构正常');
+            }
+            
+            // 检查常见问题
+            const scripts = document.querySelectorAll('script');
+            diagnosis.push(`✅ 找到 ${scripts.length} 个脚本标签`);
+            
+            const styles = document.querySelectorAll('link[rel="stylesheet"], style');
+            diagnosis.push(`✅ 找到 ${styles.length} 个样式标签`);
+            
+            document.getElementById('diagnosis').innerHTML = 
+                diagnosis.map(item => `<div>${item}</div>`).join('');
+        }, 1000);
+    </script>
+</body>
+</html>

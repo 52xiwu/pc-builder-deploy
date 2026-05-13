@@ -103,7 +103,7 @@ async function notifyFeishu(order) {
         { tag: 'hr' },
         {
           tag: 'markdown',
-          content: `📞 **客户手机：** ${order.user?.phone || '未填'}　🏪 **门店电话：** ${contact.tel}（仅限门店查询）\n💳 **支付说明：** ${order.paymentHint}`
+          content: `📞 **客户手机：** ${order.user?.phone || '未填'}　🏪 **门店电话：** 15148605173（仅限门店查询）\n💳 **支付说明：** ${order.paymentHint}`
         }
       ]
     }

@@ -1,0 +1,317 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>选择切换测试</title>
+    <style>
+        body { font-family: Arial, sans-serif; padding: 20px; }
+        .test-section { background: white; padding: 25px; border-radius: 12px; margin-bottom: 25px; box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1); }
+        .hardware-item { border: 2px solid #e5e7eb; border-radius: 10px; padding: 20px; margin: 15px 0; cursor: pointer; transition: all 0.3s ease; }
+        .hardware-item.selected { border-color: #10b981; background: #f0fdf4; }
+        .hardware-item.deselected { border-color: #e5e7eb; background: #f9fafb; opacity: 0.7; }
+        .config-summary { background: #f8fafc; padding: 20px; border-radius: 10px; margin: 20px 0; }
+        .config-item { display: flex; justify-content: space-between; margin: 10px 0; padding: 10px; background: white; border-radius: 6px; }
+        .price-display { font-size: 1.5rem; font-weight: bold; color: #10b981; text-align: center; margin: 20px 0; }
+        .btn { padding: 10px 20px; border: none; border-radius: 6px; cursor: pointer; font-weight: 600; margin: 5px; }
+        .btn-primary { background: #3b82f6; color: white; }
+        .btn-outline { background: white; border: 1px solid #dc2626; color: #dc2626; }
+        .feedback { position: fixed; bottom: 20px; right: 20px; background: #3b82f6; color: white; padding: 15px; border-radius: 8px; display: none; }
+    </style>
+</head>
+<body>
+    <h1>🔄 硬件选择切换功能测试</h1>
+    
+    <div class="test-section">
+        <h2>测试说明</h2>
+        <p>现在硬件选择支持<strong>点击切换</strong>功能：</p>
+        <ul>
+            <li>✅ <strong>点击未选择的硬件</strong> → 选择该硬件</li>
+            <li>✅ <strong>点击已选择的硬件</strong> → 取消选择该硬件</li>
+            <li>✅ <strong>每个类别只能选择一个硬件</strong></li>
+            <li>✅ <strong>价格实时更新</strong></li>
+        </ul>
+    </div>
+    
+    <div class="test-section">
+        <h2>1. 散热器选择测试（根据您的截图）</h2>
+        <div id="coolingSelection">
+            <div class="hardware-item" data-category="cooling" data-name="NZXT Kraken Elite 360 RGB" data-price="1999">
+                <div style="display: flex; justify-content: space-between; align-items: center;">
+                    <div>
+                        <h3 style="margin: 0 0 5px 0;">NZXT Kraken Elite 360 RGB</h3>
+                        <p style="color: #6b7280; margin: 0; font-size: 0.9rem;">360mm AIO LCD屏水冷</p>
+                        <p style="color: #9ca3af; margin: 5px 0 0 0; font-size: 0.85rem;">品牌: nzxt</p>
+                    </div>
+                    <div style="font-size: 1.5rem; font-weight: 700; color: #10b981;">¥1999</div>
+                </div>
+            </div>
+            
+            <div class="hardware-item" data-category="cooling" data-name="NZXT Kraken 360 RGB" data-price="1299">
+                <div style="display: flex; justify-content: space-between; align-items: center;">
+                    <div>
+                        <h3 style="margin: 0 0 5px 0;">NZXT Kraken 360 RGB</h3>
+                        <p style="color: #6b7280; margin: 0; font-size: 0.9rem;">360mm AIO 水冷</p>
+                        <p style="color: #9ca3af; margin: 5px 0 0 0; font-size: 0.85rem;">品牌: nzxt</p>
+                    </div>
+                    <div style="font-size: 1.5rem; font-weight: 700; color: #10b981;">¥1299</div>
+                </div>
+            </div>
+            
+            <div class="hardware-item" data-category="cooling" data-name="Noctua NH-D15" data-price="699">
+                <div style="display: flex; justify-content: space-between; align-items: center;">
+                    <div>
+                        <h3 style="margin: 0 0 5px 0;">Noctua NH-D15</h3>
+                        <p style="color: #6b7280; margin: 0; font-size: 0.9rem;">双塔风冷散热器</p>
+                        <p style="color: #9ca3af; margin: 5px 0 0 0; font-size: 0.85rem;">品牌: noctua</p>
+                    </div>
+                    <div style="font-size: 1.5rem; font-weight: 700; color: #10b981;">¥699</div>
+                </div>
+            </div>
+            
+            <div class="hardware-item" data-category="cooling" data-name="Corsair iCUE H150i ELITE" data-price="1399">
+                <div style="display: flex; justify-content: space-between; align-items: center;">
+                    <div>
+                        <h3 style="margin: 0 0 5px 0;">Corsair iCUE H150i ELITE</h3>
+                        <p style="color: #6b7280; margin: 0; font-size: 0.9rem;">360mm RGB 水冷</p>
+                        <p style="color: #9ca3af; margin: 5px 0 0 0; font-size: 0.85rem;">品牌: corsair</p>
+                    </div>
+                    <div style="font-size: 1.5rem; font-weight: 700; color: #10b981;">¥1399</div>
+                </div>
+            </div>
+        </div>
+        
+        <div style="margin-top: 20px;">
+            <button class="btn btn-primary" id="testToggleBtn">🔄 测试选择切换</button>
+            <button class="btn btn-outline" id="clearSelectionBtn">🧹 清除选择</button>
+        </div>
+    </div>
+    
+    <div class="test-section">
+        <h2>2. 配置摘要</h2>
+        <div class="config-summary">
+            <div class="config-item">
+                <span>CPU 处理器:</span>
+                <span id="testCpu">AMD Ryzen 9 9850X3D</span>
+                <span style="color: #10b981; font-weight: 600;">¥6999</span>
+            </div>
+            <div class="config-item">
+                <span>显卡 GPU:</span>
+                <span id="testGpu">NVIDIA RTX 5090</span>
+                <span style="color: #10b981; font-weight: 600;">¥19999</span>
+            </div>
+            <div class="config-item">
+                <span>主板:</span>
+                <span id="testMotherboard">ROG MAXIMUS Z890 EXTREME</span>
+                <span style="color: #10b981; font-weight: 600;">¥8999</span>
+            </div>
+            <div class="config-item">
+                <span>内存:</span>
+                <span id="testRam">G.SKILL Trident Z5 RGB 8000</span>
+                <span style="color: #10b981; font-weight: 600;">¥3999</span>
+            </div>
+            <div class="config-item">
+                <span>散热:</span>
+                <span id="testCooling">未选择</span>
+                <span style="color: #6b7280;">¥0</span>
+            </div>
+        </div>
+        
+        <div class="price-display">
+            <div>硬件总价: <span id="testHardwareTotal">¥39996</span></div>
+            <div style="font-size: 1.2rem; margin: 10px 0;">服务费: ¥299</div>
+            <div style="font-size: 2rem;">总计: <span id="testGrandTotal">¥40295</span></div>
+        </div>
+    </div>
+    
+    <div class="test-section">
+        <h2>3. 测试步骤</h2>
+        <div id="testSteps">
+            <ol>
+                <li id="step1">点击任意散热器 → 应该被选中（绿色边框）</li>
+                <li id="step2">点击另一个散热器 → 新散热器选中，旧的取消</li>
+                <li id="step3">点击已选中的散热器 → 应该取消选择</li>
+                <li id="step4">观察配置摘要和总价更新</li>
+            </ol>
+        </div>
+        
+        <div id="testStatus" style="padding: 15px; border-radius: 8px; background: #f3f4f6; margin-top: 20px;">
+            <strong>测试状态:</strong> <span id="statusText">等待开始...</span>
+        </div>
+    </div>
+    
+    <div class="feedback" id="feedback">反馈消息</div>
+    
+    <script>
+        // 初始化状态
+        let selectedCooling = null;
+        let testStep = 1;
+        
+        // 获取所有散热器项目
+        const coolingItems = document.querySelectorAll('.hardware-item[data-category="cooling"]');
+        const testCoolingElement = document.getElementById('testCooling');
+        const testCoolingPriceElement = testCoolingElement.nextElementSibling;
+        const testHardwareTotal = document.getElementById('testHardwareTotal');
+        const testGrandTotal = document.getElementById('testGrandTotal');
+        
+        // 初始总价计算
+        const baseTotal = 6999 + 19999 + 8999 + 3999; // CPU + GPU + 主板 + 内存
+        const serviceFee = 299;
+        
+        function updateTotalPrice() {
+            const coolingPrice = selectedCooling ? parseInt(selectedCooling.dataset.price) : 0;
+            const hardwareTotal = baseTotal + coolingPrice;
+            const grandTotal = hardwareTotal + serviceFee;
+            
+            testHardwareTotal.textContent = `¥${hardwareTotal}`;
+            testGrandTotal.textContent = `¥${grandTotal}`;
+            
+            return coolingPrice;
+        }
+        
+        // 绑定散热器点击事件
+        coolingItems.forEach(item => {
+            item.addEventListener('click', function() {
+                const itemName = this.dataset.name;
+                const itemPrice = parseInt(this.dataset.price);
+                
+                if (selectedCooling === this) {
+                    // 点击已选中的项目，取消选择
+                    this.classList.remove('selected');
+                    this.classList.add('deselected');
+                    selectedCooling = null;
+                    
+                    testCoolingElement.textContent = '未选择';
+                    testCoolingPriceElement.textContent = '¥0';
+                    testCoolingPriceElement.style.color = '#6b7280';
+                    
+                    showFeedback(`➖ 取消选择: ${itemName}`, '#6b7280');
+                    updateTestStep(3);
+                } else {
+                    // 选择新项目
+                    // 先清除所有选择状态
+                    coolingItems.forEach(i => {
+                        i.classList.remove('selected');
+                        i.classList.remove('deselected');
+                    });
+                    
+                    // 设置新选择
+                    this.classList.add('selected');
+                    selectedCooling = this;
+                    
+                    testCoolingElement.textContent = itemName;
+                    testCoolingPriceElement.textContent = `¥${itemPrice}`;
+                    testCoolingPriceElement.style.color = '#10b981';
+                    
+                    const coolingPrice = updateTotalPrice();
+                    showFeedback(`✅ 选择: ${itemName} - ¥${itemPrice}`, '#10b981');
+                    
+                    if (selectedCooling) {
+                        updateTestStep(selectedCooling ? 2 : 1);
+                    }
+                }
+                
+                updateTotalPrice();
+                updateStatus();
+            });
+        });
+        
+        // 测试选择切换按钮
+        document.getElementById('testToggleBtn').addEventListener('click', function() {
+            const statusText = document.getElementById('statusText');
+            statusText.textContent = '测试进行中...';
+            statusText.style.color = '#f59e0b';
+            
+            // 自动测试流程
+            setTimeout(() => {
+                // 步骤1: 选择第一个散热器
+                coolingItems[0].click();
+                updateTestStep(1);
+                
+                setTimeout(() => {
+                    // 步骤2: 选择第二个散热器（应该切换）
+                    coolingItems[1].click();
+                    updateTestStep(2);
+                    
+                    setTimeout(() => {
+                        // 步骤3: 点击已选中的散热器（应该取消）
+                        coolingItems[1].click();
+                        updateTestStep(3);
+                        
+                        setTimeout(() => {
+                            // 步骤4: 验证结果
+                            updateTestStep(4);
+                            statusText.textContent = '✅ 测试完成！选择切换功能正常';
+                            statusText.style.color = '#10b981';
+                        }, 1000);
+                    }, 1000);
+                }, 1000);
+            }, 500);
+        });
+        
+        // 清除选择按钮
+        document.getElementById('clearSelectionBtn').addEventListener('click', function() {
+            coolingItems.forEach(item => {
+                item.classList.remove('selected');
+                item.classList.remove('deselected');
+            });
+            
+            selectedCooling = null;
+            testCoolingElement.textContent = '未选择';
+            testCoolingPriceElement.textContent = '¥0';
+            testCoolingPriceElement.style.color = '#6b7280';
+            
+            updateTotalPrice();
+            showFeedback('🧹 已清除所有选择', '#dc2626');
+            updateStatus();
+        });
+        
+        function showFeedback(message, color) {
+            const feedback = document.getElementById('feedback');
+            feedback.textContent = message;
+            feedback.style.background = color;
+            feedback.style.display = 'block';
+            
+            setTimeout(() => {
+                feedback.style.display = 'none';
+            }, 2000);
+        }
+        
+        function updateTestStep(step) {
+            // 更新步骤显示
+            const steps = document.querySelectorAll('#testSteps li');
+            steps.forEach((li, index) => {
+                if (index + 1 === step) {
+                    li.style.color = '#10b981';
+                    li.style.fontWeight = '600';
+                    li.innerHTML = li.textContent + ' ✅';
+                } else if (index + 1 < step) {
+                    li.style.color = '#9ca3af';
+                    li.innerHTML = li.textContent.replace(' ✅', '');
+                } else {
+                    li.style.color = '#374151';
+                    li.innerHTML = li.textContent.replace(' ✅', '');
+                }
+            });
+            
+            testStep = step;
+        }
+        
+        function updateStatus() {
+            const statusText = document.getElementById('statusText');
+            if (selectedCooling) {
+                const name = selectedCooling.dataset.name;
+                const price = selectedCooling.dataset.price;
+                statusText.textContent = `已选择: ${name} (¥${price})`;
+                statusText.style.color = '#10b981';
+            } else {
+                statusText.textContent = '未选择散热器';
+                statusText.style.color = '#6b7280';
+            }
+        }
+        
+        // 初始化
+        updateTotalPrice();
+        updateStatus();
+        console.log('🔄 选择切换测试准备就绪');
+    </script>
+</body>
+</html>

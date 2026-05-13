@@ -1,0 +1,167 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://aixiwu.cn/schemas/hardware-v2.json",
+  "title": "HardwareItem",
+  "description": "联信装机 · 硬件商品数据 schema v2（含价格元数据）",
+  "type": "object",
+  "required": ["id", "category", "name", "brand", "price", "priceUpdatedAt", "priceSource"],
+
+  "properties": {
+    "id": {
+      "type": "string",
+      "description": "全局唯一标识，格式：{category}-{seq}，如 cpu-001",
+      "pattern": "^[a-z]+-\\d+$",
+      "examples": ["cpu-001", "gpu-042"]
+    },
+    "category": {
+      "type": "string",
+      "enum": ["cpu","gpu","motherboard","ram","storage","cooling","psu","case","monitor","keyboard","mouse","headset"],
+      "description": "硬件大类"
+    },
+    "subCategory": {
+      "type": "string",
+      "description": "细分，如 cpu 下分 'gaming'|'workstation'|'budget'"
+    },
+
+    "name":         { "type": "string", "minLength": 2 },
+    "brand":        { "type": "string", "description": "品牌标识符，如 nvidia/asus/corsair" },
+    "brandName":    { "type": "string", "description": "品牌中文名，如 华硕/英伟达" },
+    "series":       { "type": "string", "description": "系列名，如 ROG/RTX 40" },
+
+    "specs":        { "type": "string",  "description": "规格摘要，供前端展示" },
+    "specDetails": {
+      "type": "object",
+      "description": "结构化规格字段（按类型不同）",
+      "properties": {
+        "cores":         { "type": "integer", "description": "CPU 核心数" },
+        "threads":       { "type": "integer", "description": "CPU 线程数" },
+        "baseFreq":      { "type": "number",  "description": "基础频率 GHz" },
+        "boostFreq":     { "type": "number",  "description": "加速频率 GHz" },
+        "socket":        { "type": "string",  "description": "CPU 插槽 / 主板插槽" },
+        "chipset":       { "type": "string",  "description": "芯片组" },
+        "formFactor":    { "type": "string",  "description": "板型：atx/micro-atx/mini-itx/e-atx" },
+        "tdp":           { "type": "integer", "description": "热设计功耗 W" },
+        "vram":          { "type": "integer", "description": "显存 GB（GPU）" },
+        "vramType":      { "type": "string",  "description": "显存类型，如 GDDR6X" },
+        "busWidth":      { "type": "integer", "description": "显存位宽 bit" },
+        "power":         { "type": "integer", "description": "整卡功耗 W（电源参考）" },
+        "length":        { "type": "integer", "description": "显卡长度 mm" },
+        "height":        { "type": "integer", "description": "散热器高度 mm" },
+        "capacity":      { "type": "integer", "description": "容量 GB（内存/硬盘）" },
+        "speed":         { "type": "integer", "description": "频率 MHz（内存）或 读写 MB/s（硬盘）" },
+        "type":          { "type": "string",  "description": "类型：ddr4/ddr5/nvme/sata/2.5inch/3.5inch" },
+        "interface_":    { "type": "string",  "description": "接口协议，如 pcie4/pcie5/usb3.2" },
+        "readSpeed":     { "type": "integer", "description": "顺序读取 MB/s" },
+        "writeSpeed":    { "type": "integer", "description": "顺序写入 MB/s" },
+        "rgb":           { "type": "boolean", "description": "是否支持 RGB" },
+        "warrantyMonths":{ "type": "integer", "description": "保修期，月" },
+
+        "efficiencyRating": { "type": "string", "description": "PSU 能效等级：80+Bronze/Silver/Gold/Platinum/Titanium" },
+        "modularType":       { "type": "string", "description": "PSU 模组类型：full/modular/semi" },
+        "fanSize":           { "type": "integer", "description": "PSU 风扇尺寸 mm" },
+        "ratedPower":        { "type": "integer", "description": "PSU 额定功率 W" },
+
+        "material":          { "type": "string", "description": "机箱材质：钢/铝/钢化玻璃/塑料" },
+        "maxGpuLength":      { "type": "integer", "description": "机箱最大支持显卡长度 mm" },
+        "maxCoolerHeight":   { "type": "integer", "description": "机箱最大支持散热器高度 mm" },
+        "driveBays":         { "type": "string",  "description": "硬盘位：3.5\" x N / 2.5\" x N" },
+        "motherboardFormFactors": {
+          "type": "array", "items": { "type": "string" },
+          "description": "主板兼容板型列表：atx/micro-atx/mini-itx/e-atx"
+        },
+
+        "panelType":         { "type": "string", "description": "显示器面板：IPS/VA/MiniLED/OLED/WOLED/TN" },
+        "refreshRate":       { "type": "integer", "description": "刷新率 Hz" },
+        "resolution":         { "type": "string", "description": "分辨率：1920x1080 / 2560x1440 / 3840x2160" },
+        "responseTime":       { "type": "string", "description": "响应时间：0.03ms GTG / 1ms MPRT" },
+        "brightness":         { "type": "integer", "description": "亮度 cd/m²" },
+        "contrastRatio":      { "type": "string", "description": "对比度：1000:1 / 1000000:1" },
+        "screenSize":         { "type": "integer", "description": "屏幕尺寸 英寸" },
+        "syncTech":           { "type": "string", "description": "同步技术：G-Sync/FreeSync/G-Sync Compatible" },
+        "hdr":                { "type": "string", "description": "HDR 标准：HDR400/HDR600/HDR1000/杜比视界" },
+
+        "switchType":         { "type": "string", "description": "键盘轴体：机械/磁轴/薄膜" },
+        "switchBrand":        { "type": "string", "description": "轴体品牌/型号：cherry-red/TTC-speed/Gateron" },
+        "layout":             { "type": "string", "description": "键盘配列：full/tkl/65%/60%" },
+        "backlight":          { "type": "string", "description": "背光：rgb/单色/无" },
+        "connectionType":     { "type": "string", "description": "连接方式：usb/wireless/bt+usb/dongle" },
+        "antiGhosting":       { "type": "string", "description": "全键无冲：全键/N键" },
+        "keycaps":            { "type": "string", "description": "键帽材质：PBT/ABS/POM" },
+
+        "sensor":             { "type": "string", "description": "鼠标传感器型号" },
+        "weight":             { "type": "integer", "description": "鼠标重量 g（不含线）" },
+        "buttons":            { "type": "integer", "description": "按键数量" },
+        "maxDpi":             { "type": "integer", "description": "最大 DPI" },
+        "pollingRate":        { "type": "string", "description": "回报率：125/500/1000/4000Hz" },
+
+        "surroundSound":      { "type": "string", "description": "环绕声：虚拟7.1/物理7.1/2.0" },
+        "microphone":         { "type": "string", "description": "麦克风：降噪/可拆卸/收起式" },
+        "frequencyResponse":   { "type": "string", "description": "频响范围：20Hz-20kHz" },
+        "impedance":           { "type": "string", "description": "阻抗：32Ω/64Ω" },
+        "noiseCancelling":    { "type": "boolean", "description": "主动降噪" }
+      }
+    },
+
+    "tags": {
+      "type": "array",
+      "items": { "type": "string" },
+      "description": "筛选标签：gaming/workstation/budget/rgb/all-in-one",
+      "examples": [["gaming","rgb"], ["workstation"], ["budget"]]
+    },
+
+    "price": {
+      "type": "number",
+      "minimum": 0,
+      "description": "当前售价（元），含税"
+    },
+    "priceUpdatedAt": {
+      "type": "string",
+      "format": "date-time",
+      "description": "价格最后更新时间（ISO 8601）"
+    },
+    "priceSource": {
+      "type": "string",
+      "enum": ["manual","api","import","initial"],
+      "description": "数据来源：manual=手动录入 api=开放平台同步 import=批量导入 initial=初始数据"
+    },
+
+    "stock":      { "type": "integer", "minimum": 0, "description": "当前库存" },
+    "stockStatus":{ "type": "string", "enum": ["in_stock","low_stock","out_of_stock","discontinued"], "default": "in_stock" },
+
+    "images": {
+      "type": "array",
+      "items": { "type": "string", "format": "uri" },
+      "description": "商品图 URL 列表，第一张为封面"
+    },
+    "officialUrl": {
+      "type": "string", "format": "uri",
+      "description": "厂商官网产品页"
+    },
+    "jdUrl": {
+      "type": "string", "format": "uri",
+      "description": "京东商品页（用于比价链接）"
+    },
+    "taobaoUrl": {
+      "type": "string", "format": "uri",
+      "description": "淘宝商品页"
+    },
+
+    "flags": {
+      "type": "object",
+      "properties": {
+        "isBundle":    { "type": "boolean", "default": false, "description": "是否套装（多个部件捆绑）" },
+        "isRefurbished": { "type": "boolean", "default": false, "description": "是否官翻/翻新" },
+        "isFeatured": { "type": "boolean", "default": false, "description": "首页精选标记" }
+      }
+    },
+
+    "listPrice":   { "type": "number", "description": "建议零售价（划线价），用于显示折扣" },
+    "cost":        { "type": "number", "description": "成本价（仅管理后台可见，不对外暴露）" },
+
+    "createdAt":   { "type": "string", "format": "date-time" },
+    "updatedAt":   { "type": "string", "format": "date-time" },
+    "publishedAt": { "type": "string", "format": "date-time", "description": "上架时间" }
+  },
+
+  "additionalProperties": false
+}
