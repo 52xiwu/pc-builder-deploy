@@ -406,11 +406,12 @@ body {
   display: flex;
   align-items: center;
   justify-content: center;
-  opacity: 0;
+  opacity: 0.45;
   transition: opacity 0.2s, background 0.2s, color 0.2s;
 }
 .tts-btn svg { width: 14px; height: 14px; display: block; }
 .tts-btn:hover {
+  opacity: 1;
   background: rgba(0, 229, 255, 0.16);
   color: var(--cyan);
 }
@@ -560,6 +561,44 @@ body {
   50% { transform: scale(1.08); }
 }
 .btn-mic svg { width: 20px; height: 20px; display: block; }
+
+.voice-bar {
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 0 16px;
+  margin-bottom: 6px;
+  cursor: pointer;
+  user-select: none;
+}
+.voice-label {
+  font-size: 11px;
+  color: var(--text-muted);
+  font-family: var(--font-mono);
+}
+.voice-btn {
+  border: none;
+  background: rgba(0, 229, 255, 0.08);
+  border: 1px solid rgba(0, 229, 255, 0.18);
+  border-radius: 6px;
+  padding: 3px 10px;
+  font-size: 12px;
+  font-family: var(--font);
+  color: var(--cyan);
+  cursor: pointer;
+  transition: background 0.2s, border-color 0.2s;
+}
+.voice-btn:hover {
+  background: rgba(0, 229, 255, 0.16);
+  border-color: rgba(0, 229, 255, 0.4);
+}
+.voice-arrow {
+  width: 14px;
+  height: 14px;
+  color: var(--text-muted);
+  flex-shrink: 0;
+}
 
 /* ── 滚动条 ── */
 #chatArea::-webkit-scrollbar { width: 4px; }
@@ -981,6 +1020,13 @@ body {
   <!-- 聊天区 -->
   <div id="chatArea"></div>
 
+  <!-- 音色选择栏 -->
+  <div class="voice-bar" id="voiceBar">
+    <span class="voice-label">音色</span>
+    <button class="voice-btn" id="voiceName">晓晓 (女声)</button>
+    <svg class="voice-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
+  </div>
+
   <!-- 输入栏 -->
   <div class="input-wrap">
     <div class="input-bar">
@@ -1290,32 +1336,88 @@ body {
   btnMic.addEventListener('click', toggleVoice);
 
   // ── TTS 朗读 ──────────────────────────────────────────────
+  const VOICES = [
+    { name: '晓晓 (女声)',        voice: 'zh-CN-XiaoxiaoNeural' },
+    { name: '晓伊 (女声)',        voice: 'zh-CN-XiaoyiNeural'   },
+    { name: '云健 (男声)',        voice: 'zh-CN-YunjianNeural'   },
+    { name: '云希 (男声)',        voice: 'zh-CN-YunxiNeural'     },
+    { name: '云夏 (男声)',        voice: 'zh-CN-YunxiaNeural'    },
+    { name: '云扬 (男声)',        voice: 'zh-CN-YunyangNeural'   },
+    { name: '小北 (东北女声)',    voice: 'zh-CN-liaoning-XiaobeiNeural' },
+    { name: '小妮 (陕西女声)',    voice: 'zh-CN-shaanxi-XiaoniNeural' },
+    { name: '希tera (香港女声)', voice: 'zh-HK-HiuGaaiNeural'   },
+    { name: '惜 ter (香港女声)', voice: 'zh-HK-HiuMaanNeural'   },
+    { name: '雲龍 (香港男声)',    voice: 'zh-HK-WanLungNeural'   },
+    { name: '小喬 (台湾女声)',    voice: 'zh-TW-HsiaoChenNeural' },
+  ];
+  let currentVoiceIdx = 0;
+  let currentAudio = null;
+
   function stopAllTts() {
-    speechSynthesis.cancel();
+    if (currentAudio) { currentAudio.pause(); currentAudio.currentTime = 0; currentAudio = null; }
     document.querySelectorAll('.tts-btn.playing').forEach(b => b.classList.remove('playing'));
   }
 
+  async function speakText(text, btn) {
+    stopAllTts();
+    btn.classList.add('playing');
+    try {
+      const res = await fetch('/api/tts', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ text, voice: VOICES[currentVoiceIdx].voice }),
+      });
+      if (!res.ok) throw new Error((await res.json()).error || res.status);
+      const blob = await res.blob();
+      const url = URL.createObjectURL(blob);
+      const audio = new Audio(url);
+      currentAudio = audio;
+      audio.onended = () => { btn.classList.remove('playing'); URL.revokeObjectURL(url); currentAudio = null; };
+      audio.onerror = () => { btn.classList.remove('playing'); URL.revokeObjectURL(url); currentAudio = null; };
+      audio.play();
+    } catch (e) {
+      btn.classList.remove('playing');
+      console.error('[TTS] error:', e.message);
+    }
+  }
+
+  // 更新音色按钮文字
+  function updateVoiceBtn() {
+    const v = VOICES[currentVoiceIdx];
+    const vb = document.getElementById('voiceName');
+    if (vb) vb.textContent = v.name;
+  }
+
+  // 双击 TTS 按钮切换音色
+  chatArea.addEventListener('dblclick', e => {
+    const btn = e.target.closest('.tts-btn');
+    if (!btn) return;
+    stopAllTts();
+    currentVoiceIdx = (currentVoiceIdx + 1) % VOICES.length;
+    updateVoiceBtn();
+  });
+
+  // 单击 TTS 按钮播放
   chatArea.addEventListener('click', e => {
     const btn = e.target.closest('.tts-btn');
     if (!btn) return;
     const row = btn.closest('.msg-row');
-    const text = row ? row.querySelector('.ai-text')?.innerText : '';
+    const text = row ? (row.querySelector('.ai-text')?.innerText || '').trim() : '';
     if (!text) return;
-
     if (btn.classList.contains('playing')) {
       stopAllTts();
       return;
     }
-    stopAllTts();
+    speakText(text, btn);
+  });
 
-    const utter = new SpeechSynthesisUtterance(text);
-    utter.lang = 'zh-CN';
-    utter.rate = 1.1;
-    utter.pitch = 1.0;
-    btn.classList.add('playing');
-    utter.onend = () => btn.classList.remove('playing');
-    utter.onerror = () => btn.classList.remove('playing');
-    speechSynthesis.speak(utter);
+  // 单击音色栏切换音色
+  document.addEventListener('click', e => {
+    const vb = e.target.closest('.voice-bar');
+    if (!vb) return;
+    stopAllTts();
+    currentVoiceIdx = (currentVoiceIdx + 1) % VOICES.length;
+    updateVoiceBtn();
   });
 
   // ── 快速入口 ──────────────────────────────────────────────

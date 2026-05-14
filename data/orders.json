@@ -3556,5 +3556,218 @@
     "wecomError": null,
     "createdTs": 1778692680120,
     "customerTel": "13800002222"
+  },
+  {
+    "orderId": "ORD1778699188982",
+    "createdAt": "2026/5/14 03:06:28",
+    "user": {
+      "name": "52xiwu",
+      "email": "52xiwu",
+      "nickname": "52xiwu",
+      "phone": "15148605555"
+    },
+    "total": 26887,
+    "rows": [
+      {
+        "category": "处理器",
+        "name": "AMD Ryzen 9 7950X",
+        "brand": "AMD",
+        "specs": "16核32线程 / 5.7GHz / 170W",
+        "unitPrice": 3499,
+        "subtotal": 3499
+      },
+      {
+        "category": "显卡",
+        "name": "RTX 4060 Ti",
+        "brand": "NVIDIA",
+        "specs": "8GB GDDR6 / 165W",
+        "unitPrice": 2999,
+        "subtotal": 2999
+      },
+      {
+        "category": "主板",
+        "name": "MSI MEG X670E ACE",
+        "brand": "MSI",
+        "specs": "AMD X670E / DDR5 / AM5",
+        "unitPrice": 4999,
+        "subtotal": 4999
+      },
+      {
+        "category": "内存",
+        "name": "Corsair Vengeance 32GB",
+        "brand": "Corsair",
+        "specs": "DDR5-6000 / 2×16GB / CL30",
+        "unitPrice": 899,
+        "subtotal": 899
+      },
+      {
+        "category": "存储",
+        "name": "Samsung 990 Pro 2TB",
+        "brand": "Samsung",
+        "specs": "NVMe PCIe 4.0 / 7450MB/s",
+        "unitPrice": 1299,
+        "subtotal": 1299
+      },
+      {
+        "category": "散热",
+        "name": "Corsair iCUE H150i Elite",
+        "brand": "Corsair",
+        "specs": "360mm AIO / RGB",
+        "unitPrice": 1599,
+        "subtotal": 1599
+      },
+      {
+        "category": "电源",
+        "name": "be quiet! Straight Power 850W",
+        "brand": "be quiet!",
+        "specs": "850W / 80+ Gold / 半模组",
+        "unitPrice": 899,
+        "subtotal": 899
+      },
+      {
+        "category": "机箱",
+        "name": "Corsair 5000D Airflow",
+        "brand": "Corsair",
+        "specs": "ATX / 高气流 / 遮线仓门",
+        "unitPrice": 999,
+        "subtotal": 999
+      },
+      {
+        "category": "显示器",
+        "name": "Samsung Odyssey G8",
+        "brand": "Samsung",
+        "specs": "34\" 准4K 175Hz / Mini LED / 1000R",
+        "unitPrice": 6999,
+        "subtotal": 6999
+      },
+      {
+        "category": "键盘",
+        "name": "Razer BlackWidow V4 Pro",
+        "brand": "Razer",
+        "specs": "绿轴 / 全键RGB / 音量轮",
+        "unitPrice": 999,
+        "subtotal": 999
+      },
+      {
+        "category": "鼠标",
+        "name": "Corsair Darkstar Wireless",
+        "brand": "Corsair",
+        "specs": "无线 / 90h续航 / 90g",
+        "unitPrice": 599,
+        "subtotal": 599
+      },
+      {
+        "category": "耳麦",
+        "name": "Razer BlackShark V2 Pro",
+        "brand": "Razer",
+        "specs": "无线 / Triforce 50mm / HyperClear",
+        "unitPrice": 799,
+        "subtotal": 799
+      }
+    ],
+    "paymentHint": "实体店支付，以门店确认为准；在线支付未开通",
+    "contact": {
+      "tel": "15148605555",
+      "wechat": "88278867"
+    },
+    "cartSnapshot": [
+      {
+        "id": "cfg_1778699155674",
+        "type": "config",
+        "items": [
+          {
+            "name": "AMD Ryzen 9 7950X",
+            "price": 3499,
+            "category": "处理器",
+            "brand": "AMD",
+            "specs": "16核32线程 / 5.7GHz / 170W"
+          },
+          {
+            "name": "RTX 4060 Ti",
+            "price": 2999,
+            "category": "显卡",
+            "brand": "NVIDIA",
+            "specs": "8GB GDDR6 / 165W"
+          },
+          {
+            "name": "MSI MEG X670E ACE",
+            "price": 4999,
+            "category": "主板",
+            "brand": "MSI",
+            "specs": "AMD X670E / DDR5 / AM5"
+          },
+          {
+            "name": "Corsair Vengeance 32GB",
+            "price": 899,
+            "category": "内存",
+            "brand": "Corsair",
+            "specs": "DDR5-6000 / 2×16GB / CL30"
+          },
+          {
+            "name": "Samsung 990 Pro 2TB",
+            "price": 1299,
+            "category": "存储",
+            "brand": "Samsung",
+            "specs": "NVMe PCIe 4.0 / 7450MB/s"
+          },
+          {
+            "name": "Corsair iCUE H150i Elite",
+            "price": 1599,
+            "category": "散热",
+            "brand": "Corsair",
+            "specs": "360mm AIO / RGB"
+          },
+          {
+            "name": "be quiet! Straight Power 850W",
+            "price": 899,
+            "category": "电源",
+            "brand": "be quiet!",
+            "specs": "850W / 80+ Gold / 半模组"
+          },
+          {
+            "name": "Corsair 5000D Airflow",
+            "price": 999,
+            "category": "机箱",
+            "brand": "Corsair",
+            "specs": "ATX / 高气流 / 遮线仓门"
+          },
+          {
+            "name": "Samsung Odyssey G8",
+            "price": 6999,
+            "category": "显示器",
+            "brand": "Samsung",
+            "specs": "34\" 准4K 175Hz / Mini LED / 1000R"
+          },
+          {
+            "name": "Razer BlackWidow V4 Pro",
+            "price": 999,
+            "category": "键盘",
+            "brand": "Razer",
+            "specs": "绿轴 / 全键RGB / 音量轮"
+          },
+          {
+            "name": "Corsair Darkstar Wireless",
+            "price": 599,
+            "category": "鼠标",
+            "brand": "Corsair",
+            "specs": "无线 / 90h续航 / 90g"
+          },
+          {
+            "name": "Razer BlackShark V2 Pro",
+            "price": 799,
+            "category": "耳麦",
+            "brand": "Razer",
+            "specs": "无线 / Triforce 50mm / HyperClear"
+          }
+        ],
+        "totalPrice": 26887,
+        "quantity": 1,
+        "createdAt": "2026-05-13T19:05:55.674Z"
+      }
+    ],
+    "wecomNotified": true,
+    "wecomError": null,
+    "createdTs": 1778699188982,
+    "customerTel": "15148605555"
   }
 ]

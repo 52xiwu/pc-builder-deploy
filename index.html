@@ -1186,17 +1186,10 @@
                 window.location.href = url;
             } catch (e) { err.textContent = '网络异常，请稍后重试'; }
         }
-        btn.addEventListener('click', async function (e) {
+        // 我的AI：直接跳转聊天页面
+        btn.addEventListener('click', function (e) {
             e.preventDefault();
-            try {
-                const res = await fetch('/api/myai/config?_=' + Date.now());
-                const data = await res.json();
-                if (data.success && data.config.redirect_url) {
-                    window.location.href = data.config.redirect_url;
-                    return;
-                }
-            } catch (e) { /* ignore */ }
-            openModal();
+            window.location.href = '/myai.html';
         });
 
         cancel.addEventListener('click', closeModal);

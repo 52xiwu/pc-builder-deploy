@@ -20,7 +20,7 @@ app.use(express.static('/home/ubuntu/www/pc-builder')); // 服务前端文件
 
 // 登录后页面
 app.get('/myai', (req, res) => {
-    res.sendFile('/home/ubuntu/www/pc-builder/user-dashboard.html');
+    res.sendFile('/home/ubuntu/www/pc-builder/myai.html');
 });
 
 // 加载 panabit 路由
@@ -53,6 +53,73 @@ app.post('/api/myai/config', async (req, res) => {
         res.json({ success: true, message: '配置已保存' });
     } catch(e) {
         res.json({ success: false, message: e.message });
+    }
+});
+
+// 装机顾问聊天接口
+app.post('/api/chat', async (req, res) => {
+    const { message } = req.body;
+    if (!message || typeof message !== 'string' || message.trim().length === 0) {
+        return res.status(400).json({ error: '消息不能为空' });
+    }
+    if (message.length > 2000) {
+        return res.status(400).json({ error: '消息不能超过2000字' });
+    }
+
+    const apiKey = process.env.MINIMAX_API_KEY;
+    if (!apiKey) {
+        return res.status(500).json({ error: 'AI服务未配置API Key' });
+    }
+
+    const systemPrompt = `你是一位专业、热情的电脑装机顾问，服务于联信装机平台。
+
+你的职责：
+1. 根据用户需求推荐高性价比的电脑配置（游戏主机、办公电脑、生产力工作站等）
+2. 解答硬件兼容性问题（CPU主板内存搭配、电源功率计算等）
+3. 提供硬件选购建议（品牌对比、型号分析、性价比评估）
+4. 协助用户优化配置清单
+
+回答规范：
+- 语言：亲切、专业、易懂，避免过度技术 jargon，必要时用括号解释术语
+- 格式：优先用列表/分段说明复杂问题，适当用 emoji 增加可读性
+- 范围：只回答装机、硬件、数码相关问题；其他问题请委婉拒绝并引导回归主题
+- 诚实：不确定的参数/价格请说明"以实际为准"，不要编造具体型号价格`;
+
+    try {
+        const response = await fetch('https://api.minimax.chat/v1/text/chatcompletion_v2', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${apiKey}`
+            },
+            body: JSON.stringify({
+                model: 'MiniMax-Text-01',
+                messages: [
+                    { role: 'system', content: systemPrompt },
+                    { role: 'user', content: message.trim() }
+                ],
+                max_tokens: 1024,
+                temperature: 0.7
+            })
+        });
+
+        if (!response.ok) {
+            const errText = await response.text();
+            console.error('MiniMax API error:', response.status, errText);
+            return res.status(502).json({ error: `AI服务异常（${response.status}），请稍后重试` });
+        }
+
+        const data = await response.json();
+        const reply = data?.choices?.[0]?.message?.content;
+
+        if (!reply) {
+            return res.status(502).json({ error: 'AI服务返回格式异常' });
+        }
+
+        res.json({ reply: reply.trim() });
+    } catch (e) {
+        console.error('Chat API error:', e);
+        res.status(500).json({ error: '网络异常，请稍后重试' });
     }
 });
 
