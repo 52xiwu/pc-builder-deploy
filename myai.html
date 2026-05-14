@@ -1361,6 +1361,19 @@ body {
     document.querySelectorAll('.tts-btn.playing').forEach(b => b.classList.remove('playing'));
   }
 
+  function stripTtsText(raw) {
+    return raw
+      .replace(/\*\*(.+?)\*\*/g, '$1')   // **bold** → bold
+      .replace(/#{1,6}\s?/g, '')         // # heading markers
+      .replace(/\*(.+?)\*/g, '$1')        // *italic* → italic
+      .replace(/`(.+?)`/g, '$1')         // `code` → code
+      .replace(/~~(.+?)~~/g, '$1')       // ~~strike~~ → strike
+      .replace(/-{3,}/g, '')             // --- dividers
+      .replace(/[ \t]+$/gm, '')           // trailing spaces
+      .replace(/\n{3,}/g, '\n\n')        // excessive newlines
+      .trim();
+  }
+
   async function speakText(text, btn) {
     stopAllTts();
     btn.classList.add('playing');
@@ -1368,7 +1381,7 @@ body {
       const res = await fetch('/api/tts', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ text, voice: VOICES[currentVoiceIdx].voice }),
+        body: JSON.stringify({ text: stripTtsText(text), voice: VOICES[currentVoiceIdx].voice }),
       });
       if (!res.ok) throw new Error((await res.json()).error || res.status);
       const blob = await res.blob();
