@@ -519,9 +519,240 @@ body {
     padding: 12px 0 calc(max(16px, env(safe-area-inset-bottom, 12px)) + 80px);
   }
 }
-  </style>
+
+/* ══════════════════════════════════════════════════════════════
+   聊天页左右装饰层 — chat-ambient
+   全部 pointer-events: none，不影响交互
+   ══════════════════════════════════════════════════════════════ */
+.chat-ambient {
+  position: fixed;
+  inset: 0;
+  z-index: 1;
+  pointer-events: none;
+  overflow: hidden;
+}
+
+/* ① 径向柔光 — 突出中间列，压暗两侧 */
+.ca-glow {
+  position: absolute;
+  inset: 0;
+}
+.ca-glow::before {
+  content: '';
+  position: absolute;
+  left: 0; top: 15%; height: 70%;
+  width: 38%;
+  background: radial-gradient(ellipse 70% 55% at 10% 50%,
+    rgba(0,229,255,0.07) 0%, transparent 70%);
+}
+.ca-glow::after {
+  content: '';
+  position: absolute;
+  right: 0; top: 15%; height: 70%;
+  width: 38%;
+  background: radial-gradient(ellipse 70% 55% at 90% 50%,
+    rgba(167,139,250,0.07) 0%, transparent 70%);
+}
+
+/* ② 细网格背景 — dot pattern，极淡 */
+.ca-grid {
+  position: absolute;
+  inset: 0;
+  background-image:
+    radial-gradient(circle, rgba(0,229,255,0.12) 1px, transparent 1px);
+  background-size: 44px 44px;
+  mask-image: linear-gradient(to right,
+    transparent 0%, black 18%, black 82%, transparent 100%);
+  -webkit-mask-image: linear-gradient(to right,
+    transparent 0%, black 18%, black 82%, transparent 100%);
+}
+
+/* ③ 悬浮硬件轮廓 — SVG 线稿，模糊 + 缓慢呼吸 */
+.ca-icon {
+  position: absolute;
+  opacity: 0.06;
+  filter: blur(1.2px);
+  will-change: transform, opacity;
+}
+.ca-icon svg {
+  display: block;
+}
+@keyframes ca-float-a {
+  0%,100% { transform: translateY(0px) rotate(0deg); opacity: 0.05; }
+  50%       { transform: translateY(-18px) rotate(3deg); opacity: 0.10; }
+}
+@keyframes ca-float-b {
+  0%,100% { transform: translateY(0px) rotate(0deg); opacity: 0.06; }
+  50%       { transform: translateY(14px) rotate(-2deg); opacity: 0.11; }
+}
+.ca-icon-a {
+  left: 5%;
+  top: 20%;
+  width: 120px;
+  animation: ca-float-a 16s ease-in-out infinite;
+}
+.ca-icon-b {
+  right: 5%;
+  bottom: 22%;
+  width: 90px;
+  animation: ca-float-b 20s ease-in-out infinite;
+}
+.ca-icon-c {
+  left: 11%;
+  bottom: 30%;
+  width: 60px;
+  animation: ca-float-a 13s ease-in-out infinite reverse;
+}
+.ca-icon-d {
+  right: 10%;
+  top: 35%;
+  width: 55px;
+  animation: ca-float-b 17s ease-in-out infinite reverse;
+}
+
+/* ④ 竖向光边 — 让中间列「浮」在背景上 */
+.ca-edge {
+  position: absolute;
+  top: 0; bottom: 0;
+  width: 1px;
+}
+.ca-edge::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    to bottom,
+    transparent 0%,
+    rgba(0,229,255,0.12) 20%,
+    rgba(0,229,255,0.20) 50%,
+    rgba(0,229,255,0.12) 80%,
+    transparent 100%
+  );
+}
+.ca-edge::after {
+  content: '';
+  position: absolute;
+  inset: -4px;
+  background: linear-gradient(
+    to bottom,
+    transparent 0%,
+    rgba(0,229,255,0.04) 20%,
+    rgba(0,229,255,0.08) 50%,
+    rgba(0,229,255,0.04) 80%,
+    transparent 100%
+  );
+  filter: blur(4px);
+}
+.ca-edge-l {
+  left: max(calc(50% - 460px), 16px);
+}
+.ca-edge-r {
+  right: max(calc(50% - 460px), 16px);
+}
+
+/* ── 响应式装饰控制 ── */
+@media (max-width: 900px) {
+  .ca-icon { display: none; }
+  .ca-edge { display: none; }
+  .ca-grid { opacity: 0.4; mask-image: none; -webkit-mask-image: none; }
+  .ca-glow::before { width: 8%; opacity: 0.6; }
+  .ca-glow::after  { width: 8%; opacity: 0.6; }
+}
+@media (max-width: 640px) {
+  .chat-ambient { display: none; }
+}
+
+/* ── 减少动效 ── */
+@media (prefers-reduced-motion: reduce) {
+  .ca-icon { animation: none !important; }
+  .ca-glow::before,
+  .ca-glow::after { transition: none !important; }
+}
+</style>
 </head>
 <body>
+
+<!-- 聊天页装饰层 — aria-hidden 纯视觉 -->
+<div class="chat-ambient" aria-hidden="true">
+  <div class="ca-glow"></div>
+  <div class="ca-grid"></div>
+
+  <!-- 悬浮硬件轮廓 SVG -->
+  <div class="ca-icon ca-icon-a">
+    <!-- CPU 方槽 -->
+    <svg viewBox="0 0 80 80" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <rect x="14" y="14" width="52" height="52" rx="6"
+        stroke="rgba(0,229,255,0.7)" stroke-width="1.5"/>
+      <rect x="22" y="22" width="36" height="36" rx="3"
+        stroke="rgba(0,229,255,0.5)" stroke-width="1"/>
+      <line x1="8"  y1="22" x2="14" y2="22" stroke="rgba(0,229,255,0.6)" stroke-width="1.5"/>
+      <line x1="8"  y1="30" x2="14" y2="30" stroke="rgba(0,229,255,0.6)" stroke-width="1.5"/>
+      <line x1="8"  y1="38" x2="14" y2="38" stroke="rgba(0,229,255,0.6)" stroke-width="1.5"/>
+      <line x1="8"  y1="46" x2="14" y2="46" stroke="rgba(0,229,255,0.6)" stroke-width="1.5"/>
+      <line x1="66" y1="22" x2="72" y2="22" stroke="rgba(0,229,255,0.6)" stroke-width="1.5"/>
+      <line x1="66" y1="30" x2="72" y2="30" stroke="rgba(0,229,255,0.6)" stroke-width="1.5"/>
+      <line x1="66" y1="38" x2="72" y2="38" stroke="rgba(0,229,255,0.6)" stroke-width="1.5"/>
+      <line x1="66" y1="46" x2="72" y2="46" stroke="rgba(0,229,255,0.6)" stroke-width="1.5"/>
+      <line x1="22" y1="8"  x2="22" y2="14" stroke="rgba(0,229,255,0.6)" stroke-width="1.5"/>
+      <line x1="30" y1="8"  x2="30" y2="14" stroke="rgba(0,229,255,0.6)" stroke-width="1.5"/>
+      <line x1="38" y1="8"  x2="38" y2="14" stroke="rgba(0,229,255,0.6)" stroke-width="1.5"/>
+      <line x1="46" y1="8"  x2="46" y2="14" stroke="rgba(0,229,255,0.6)" stroke-width="1.5"/>
+      <line x1="22" y1="66" x2="22" y2="72" stroke="rgba(0,229,255,0.6)" stroke-width="1.5"/>
+      <line x1="30" y1="66" x2="30" y2="72" stroke="rgba(0,229,255,0.6)" stroke-width="1.5"/>
+      <line x1="38" y1="66" x2="38" y2="72" stroke="rgba(0,229,255,0.6)" stroke-width="1.5"/>
+      <line x1="46" y1="66" x2="46" y2="72" stroke="rgba(0,229,255,0.6)" stroke-width="1.5"/>
+    </svg>
+  </div>
+
+  <div class="ca-icon ca-icon-b">
+    <!-- GPU 显卡 -->
+    <svg viewBox="0 0 96 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <rect x="2" y="10" width="92" height="28" rx="5"
+        stroke="rgba(167,139,250,0.7)" stroke-width="1.5"/>
+      <circle cx="20" cy="24" r="9" stroke="rgba(167,139,250,0.6)" stroke-width="1.2"/>
+      <circle cx="20" cy="24" r="4" stroke="rgba(167,139,250,0.5)" stroke-width="1"/>
+      <circle cx="48" cy="24" r="9" stroke="rgba(167,139,250,0.6)" stroke-width="1.2"/>
+      <circle cx="48" cy="24" r="4" stroke="rgba(167,139,250,0.5)" stroke-width="1"/>
+      <rect x="64" y="14" width="22" height="20" rx="2"
+        stroke="rgba(167,139,250,0.5)" stroke-width="1"/>
+      <line x1="7" y1="38" x2="16" y2="38" stroke="rgba(167,139,250,0.5)" stroke-width="1.5"/>
+      <line x1="20" y1="38" x2="28" y2="38" stroke="rgba(167,139,250,0.5)" stroke-width="1.5"/>
+      <line x1="33" y1="38" x2="41" y2="38" stroke="rgba(167,139,250,0.5)" stroke-width="1.5"/>
+      <line x1="46" y1="38" x2="54" y2="38" stroke="rgba(167,139,250,0.5)" stroke-width="1.5"/>
+    </svg>
+  </div>
+
+  <div class="ca-icon ca-icon-c">
+    <!-- 内存条 -->
+    <svg viewBox="0 0 16 56" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <rect x="1" y="4" width="14" height="48" rx="3"
+        stroke="rgba(0,229,255,0.6)" stroke-width="1.2"/>
+      <line x1="4" y1="12" x2="12" y2="12" stroke="rgba(0,229,255,0.5)" stroke-width="0.8"/>
+      <line x1="4" y1="18" x2="12" y2="18" stroke="rgba(0,229,255,0.5)" stroke-width="0.8"/>
+      <line x1="4" y1="24" x2="12" y2="24" stroke="rgba(0,229,255,0.5)" stroke-width="0.8"/>
+      <rect x="4" y="29" width="8" height="6" rx="1"
+        stroke="rgba(0,229,255,0.5)" stroke-width="0.8"/>
+    </svg>
+  </div>
+
+  <div class="ca-icon ca-icon-d">
+    <!-- 机箱侧透 -->
+    <svg viewBox="0 0 40 52" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <rect x="2" y="2" width="36" height="48" rx="4"
+        stroke="rgba(167,139,250,0.6)" stroke-width="1.2"/>
+      <rect x="6" y="6" width="28" height="30" rx="2"
+        stroke="rgba(167,139,250,0.45)" stroke-width="1"/>
+      <circle cx="10" cy="44" r="2" stroke="rgba(167,139,250,0.5)" stroke-width="0.8"/>
+      <circle cx="16" cy="44" r="2" stroke="rgba(167,139,250,0.5)" stroke-width="0.8"/>
+      <rect x="22" y="42" width="8" height="4" rx="1"
+        stroke="rgba(167,139,250,0.4)" stroke-width="0.8"/>
+    </svg>
+  </div>
+
+  <!-- 竖向光边 -->
+  <div class="ca-edge ca-edge-l"></div>
+  <div class="ca-edge ca-edge-r"></div>
+</div>
 
 <!-- 顶栏 -->
 <header class="topbar">
