@@ -1173,6 +1173,7 @@ body {
   async function sendMessage() {
     const text = msgInput.value.trim();
     if (!text || btnSend.disabled) return;
+    lastMsgByVoice = false;
 
     // 隐藏欢迎页
     const wp = document.getElementById('welcomePage');
@@ -1315,7 +1316,7 @@ body {
       if (transcript) {
         msgInput.value = transcript;
         msgInput.focus();
-      }
+        lastMsgByVoice = true;
     };
     recognition.onerror = (e) => {
       console.error('语音识别错误:', e.error);
@@ -1334,9 +1335,28 @@ body {
     }
     isRecording = false;
     btnMic.classList.remove('recording');
+    // 语音输入结束后，自动朗读 AI 回复
+    if (lastMsgByVoice) {
+      setTimeout(autoSpeakLastAi, 100);
+    }
   }
 
+  let lastMsgByVoice = false;
+
   btnMic.addEventListener('click', toggleVoice);
+
+  // ── 语音输入后自动朗读 ────────────────────────────────
+  function autoSpeakLastAi() {
+    const rows = chatArea.querySelectorAll('.msg-row.ai');
+    if (!rows.length) return;
+    const lastRow = rows[rows.length - 1];
+    const btn = lastRow.querySelector('.tts-btn');
+    if (!btn) return;
+    const text = (lastRow.querySelector('.ai-text')?.innerText || '').trim();
+    if (!text) return;
+    speakText(text, btn);
+    lastMsgByVoice = false; // 重置标志
+  }
 
   // ── TTS 朗读 ──────────────────────────────────────────────
   const VOICES = [
