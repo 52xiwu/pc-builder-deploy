@@ -190,7 +190,7 @@ body {
   display: flex;
   flex-direction: column;
   overflow: hidden;
-  padding: 0 32px;
+  padding: 58px 32px 0;
   width: 100%;
   min-height: 0;
 }
@@ -343,7 +343,7 @@ body {
   display: flex;
   flex-direction: column;
   gap: 16px;
-  padding: 12px 0 calc(max(24px, 12vh) + 88px);
+  padding: 12px 0 160px;
   scroll-behavior: smooth;
   min-height: 0;
   /* 与 .input-wrap (920px centered) 对齐 */
@@ -676,7 +676,7 @@ body {
 #chatArea::-webkit-scrollbar-thumb { background: var(--border); border-radius: 2px; }
 
 @media (max-width: 640px) {
-  .main { padding: 0 14px; }
+  .main {
   .msg-row { max-width: 88%; }
   .topbar { padding: 0 14px; }
   .input-wrap {
