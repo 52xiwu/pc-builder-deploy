@@ -1173,7 +1173,9 @@ body {
   async function sendMessage() {
     const text = msgInput.value.trim();
     if (!text || btnSend.disabled) return;
-    lastMsgByVoice = false;
+    // 保存语音输入标记，sendMessage 内部不重置（等 AI 回复到达时用）
+    const fromVoice = lastMsgByVoice;
+    if (!fromVoice) lastMsgByVoice = false;
 
     // 隐藏欢迎页
     const wp = document.getElementById('welcomePage');
@@ -1245,6 +1247,7 @@ body {
           bubble.appendChild(ttsBtn);
           if (lastMsgByVoice) {
             setTimeout(autoSpeakLastAi, 100);
+            lastMsgByVoice = false; // 重置，避免下次非语音输入也触发
           }
         }
 
