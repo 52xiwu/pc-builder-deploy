@@ -1225,10 +1225,10 @@ body {
               const content = parsed.choices?.[0]?.delta?.content || '';
               if (content) {
                 full += content;
+                // 流式过程中不插入 ttsBtn，避免按钮在中间气泡间被移动导致音频错乱
                 const txt = document.createElement('div');
                 txt.className = 'ai-text';
                 txt.innerHTML = escapeHtml(full);
-                if (ttsBtn) txt.appendChild(ttsBtn);
                 bubble.innerHTML = `<div class="ai-logo">${logoSvg}</div>`;
                 bubble.appendChild(txt);
                 scrollChat();
@@ -1238,6 +1238,9 @@ body {
         }
 
         sessionMsgs.push({ role: 'assistant', content: full });
+
+        // 流式完成后追加 TTS 按钮到气泡
+        if (ttsBtn) bubble.appendChild(ttsBtn);
 
       } else {
         const res = await fetch('/api/chat', {
@@ -1388,7 +1391,7 @@ body {
     if (vb) vb.textContent = v.name;
   }
 
-  // 双击 TTS 按钮切换音色
+  // 双击 TTS 按钮切换音色（不再自动朗读）
   chatArea.addEventListener('dblclick', e => {
     const btn = e.target.closest('.tts-btn');
     if (!btn) return;
