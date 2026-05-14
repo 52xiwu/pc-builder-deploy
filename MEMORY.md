@@ -4,7 +4,7 @@
 §
 **后台装机指南表**：链接=详情跳转（相对/绝对均可）；图片=封面图URL；正文改.html文件，不在表内；改后必点「保存修改」。
 §
-**流控到期提醒**：DB=/tmp/pc-builder/database.db（panabit表）；server.js 内 schedulePanabitCheck() 每天9点 + cron job `b45a3dca96fd` 双保险；REMIND_DAYS=[3,5,10]提前N天通知（每条只触发一次）；WEBHOOK硬编码fallback在server.js（不依赖PM2）；接口 localhost 白名单免认证（2026-05-14修复）；当前23条，距到期≤10天仅玖柒电竞(8天后，已notified10days=1)。
+**「我的AI」聊天机器人**：2026-05-14 上线；大模型从 MiniMax 切换到 DeepSeek（key 额度耗尽）；页面 /myai.html；接口 POST /api/chat（server.js）；API Key 在 .env 的 MINIMAX_API_KEY（实际存 DeepSeek key）；聊天记录不持久化
 §
 ** Aixiwu.cn 网站**：与 Hermes Agent 宿主机同服务器；代码在 /tmp/pc-builder/；备份在 /home/ubuntu/（命名规则：aixiwu-backup-YYYYMMDD-HHMMSS.tar.gz）；每天凌晨2点定时备份（计划任务）
 §
