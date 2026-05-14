@@ -10,7 +10,7 @@
 §
 **Hermes 仓库地址**：Web UI → EKKOLearnAI/hermes-web-ui；Agent/CLI → NousResearch/hermes-agent（两者不同仓库）
 §
-**PC Builder**：101.42.41.210:/tmp/pc-builder/，PM2 name=pc-builder；发版 `pm2 restart pc-builder`；.env 含 key 禁止提交 Git
+**版本号**：当前 v1.20.2（2026-05-15）；发版前自动 `git tag -a v1.x.x -m "..."` 递增；git push + pm2 restart pc-builder
 §
 **记忆 Git 同步约定**：
 - 仓库：52xiwu/pc-builder-deploy（站点代码+记忆混用）
@@ -23,3 +23,13 @@
 飞书：连接模式 websocket；用户 open_id=ou_4b6425330d6ba82fd770c59e8acd714e；连接状态 connected
 §
 后台入口已改为 /gluidcadmin（隐藏路由）；server.js 已配置，admin.html 保留不断链
+§
+**定时检测任务**：每天凌晨1点检测「信装机顾问+语音」和网站状态，cron_id=b45a3dca96fd（已建）
+
+检测清单：
+1. curl www.aixiwu.cn → HTTP 200
+2. curl www.aixiwu.cn/myai → HTTP 200
+3. myai HTML 含 btn-mic（语音按钮存在）
+4. POST /api/chat 返回非5xx（API存活）
+
+检测结果推送至当前飞书会话（origin）
