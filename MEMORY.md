@@ -6,7 +6,13 @@
 §
 **「我的AI」聊天机器人**：2026-05-14 上线；大模型从 MiniMax 切换到 DeepSeek（key 额度耗尽）；页面 /myai.html；接口 POST /api/chat（server.js）；API Key 在 .env 的 MINIMAX_API_KEY（实际存 DeepSeek key）；聊天记录不持久化
 §
-** Aixiwu.cn 网站**：与 Hermes Agent 宿主机同服务器；代码在 /tmp/pc-builder/；备份在 /home/ubuntu/（命名规则：aixiwu-backup-YYYYMMDD-HHMMSS.tar.gz）；每天凌晨2点定时备份（计划任务）
+**Aixiwu.cn 网站**：
+- 代码在 /tmp/pc-builder/
+- 备份在 /home/ubuntu/（命名规则：aixiwu-backup-YYYYMMDD-HHMMSS.tar.gz）
+- 每天凌晨2点定时备份（计划任务）
+- 发版闭环：git tag → 全仓搜 cartBtn → curl 校验 → 写 HANDOFF
+- 健康检查：curl www.aixiwu.cn/myai → HTTP 200
+- 版本号当前 v1.21.0（2026-05-15）
 §
 **Hermes 仓库地址**：Web UI → EKKOLearnAI/hermes-web-ui；Agent/CLI → NousResearch/hermes-agent（两者不同仓库）
 §
