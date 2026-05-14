@@ -388,6 +388,37 @@ body {
 .ai-text {
   flex: 1;
   min-width: 0;
+  position: relative;
+}
+
+.tts-btn {
+  position: absolute;
+  bottom: 2px;
+  right: 4px;
+  width: 26px;
+  height: 26px;
+  border: none;
+  border-radius: 6px;
+  background: rgba(0, 229, 255, 0.08);
+  border: 1px solid rgba(0, 229, 255, 0.15);
+  color: var(--text-muted);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 0;
+  transition: opacity 0.2s, background 0.2s, color 0.2s;
+}
+.tts-btn svg { width: 14px; height: 14px; display: block; }
+.tts-btn:hover {
+  background: rgba(0, 229, 255, 0.16);
+  color: var(--cyan);
+}
+.tts-btn.playing {
+  opacity: 1;
+  background: rgba(0, 229, 255, 0.18);
+  color: var(--cyan);
+  border-color: rgba(0, 229, 255, 0.4);
 }
 
 .msg-time {
@@ -496,6 +527,39 @@ body {
   box-shadow: 0 4px 28px rgba(0, 229, 255, 0.45);
 }
 .btn-send:disabled { opacity: 0.45; cursor: not-allowed; filter: none; }
+
+.btn-mic {
+  flex-shrink: 0;
+  width: 44px;
+  height: 44px;
+  border: none;
+  border-radius: 10px;
+  background: rgba(0, 229, 255, 0.1);
+  border: 1px solid rgba(0, 229, 255, 0.2);
+  color: var(--cyan);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background 0.2s, border-color 0.2s, box-shadow 0.2s;
+}
+.btn-mic:hover {
+  background: rgba(0, 229, 255, 0.18);
+  border-color: rgba(0, 229, 255, 0.4);
+  box-shadow: 0 0 12px rgba(0, 229, 255, 0.2);
+}
+.btn-mic.recording {
+  background: rgba(255, 80, 80, 0.18);
+  border-color: rgba(255, 80, 80, 0.5);
+  color: #ff5050;
+  box-shadow: 0 0 16px rgba(255, 80, 80, 0.3);
+  animation: pulse-mic 1s ease-in-out infinite;
+}
+@keyframes pulse-mic {
+  0%, 100% { transform: scale(1); }
+  50% { transform: scale(1.08); }
+}
+.btn-mic svg { width: 20px; height: 20px; display: block; }
 
 /* ── 滚动条 ── */
 #chatArea::-webkit-scrollbar { width: 4px; }
@@ -921,6 +985,14 @@ body {
   <div class="input-wrap">
     <div class="input-bar">
       <textarea id="msgInput" class="msg-input" placeholder="向 AI 发送消息..." autocomplete="off" rows="1"></textarea>
+      <button type="button" class="btn-mic" id="btnMic" title="语音输入">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M12 2a3 3 0 0 1 3 3v7a3 3 0 0 1-6 0V5a3 3 0 0 1 3-3z"/>
+          <path d="M19 10v2a7 7 0 0 1-14 0v-2"/>
+          <line x1="12" y1="19" x2="12" y2="22"/>
+          <line x1="8" y1="22" x2="16" y2="22"/>
+        </svg>
+      </button>
       <button type="button" class="btn-send" id="btnSend">发送</button>
     </div>
   </div>
@@ -1025,7 +1097,7 @@ body {
     const row = document.createElement('div');
     row.className = `msg-row ${role}`;
     if (role === 'ai') {
-      row.innerHTML = `<div class="msg-bubble"><div class="ai-logo">${logoSvg}</div><div class="ai-text">${escapeHtml(text)}</div></div><div class="msg-time">${timeStr}</div>`;
+      row.innerHTML = `<div class="msg-bubble"><div class="ai-logo">${logoSvg}</div><div class="ai-text">${escapeHtml(text)}<button class="tts-btn" title="朗读"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/><path d="M19.07 4.93a10 10 0 0 1 0 14.14M15.54 8.46a5 5 0 0 1 0 7.07"/></svg></button></div></div><div class="msg-time">${timeStr}</div>`;
     } else {
       row.innerHTML = `<div class="msg-bubble">${escapeHtml(text)}</div><div class="msg-time">${timeStr}</div>`;
     }
@@ -1092,6 +1164,7 @@ body {
 
         const aiRow = addBubble('ai', '', formatTime());
         const bubble = aiRow.querySelector('.msg-bubble');
+        const ttsBtn = aiRow.querySelector('.tts-btn');
 
         while (true) {
           const { done, value } = await reader.read();
@@ -1106,7 +1179,12 @@ body {
               const content = parsed.choices?.[0]?.delta?.content || '';
               if (content) {
                 full += content;
-                bubble.textContent = full;
+                const txt = document.createElement('div');
+                txt.className = 'ai-text';
+                txt.innerHTML = escapeHtml(full);
+                if (ttsBtn) txt.appendChild(ttsBtn);
+                bubble.innerHTML = `<div class="ai-logo">${logoSvg}</div>`;
+                bubble.appendChild(txt);
                 scrollChat();
               }
             } catch {}
@@ -1154,6 +1232,90 @@ body {
       e.preventDefault();
       sendMessage();
     }
+  });
+
+  // ── 语音输入 ──────────────────────────────────────────────
+  const btnMic = document.getElementById('btnMic');
+  let recognition = null;
+  let isRecording = false;
+
+  function toggleVoice() {
+    if (!('webkitSpeechRecognition' in window) && !('SpeechRecognition' in window)) {
+      alert('当前浏览器不支持语音识别，建议使用 Chrome。');
+      return;
+    }
+    if (isRecording) {
+      stopVoice();
+      return;
+    }
+    const SR = window.SpeechRecognition || window.webkitSpeechRecognition;
+    recognition = new SR();
+    recognition.lang = 'zh-CN';
+    recognition.continuous = true;
+    recognition.interimResults = true;
+
+    recognition.onstart = () => {
+      isRecording = true;
+      btnMic.classList.add('recording');
+    };
+    recognition.onresult = (e) => {
+      let transcript = '';
+      for (let i = e.resultIndex; i < e.results.length; i++) {
+        transcript += e.results[i][0].transcript;
+      }
+      if (transcript) {
+        msgInput.value = transcript;
+        msgInput.focus();
+      }
+    };
+    recognition.onerror = (e) => {
+      console.error('语音识别错误:', e.error);
+      stopVoice();
+    };
+    recognition.onend = () => {
+      stopVoice();
+    };
+    recognition.start();
+  }
+
+  function stopVoice() {
+    if (recognition) {
+      recognition.stop();
+      recognition = null;
+    }
+    isRecording = false;
+    btnMic.classList.remove('recording');
+  }
+
+  btnMic.addEventListener('click', toggleVoice);
+
+  // ── TTS 朗读 ──────────────────────────────────────────────
+  function stopAllTts() {
+    speechSynthesis.cancel();
+    document.querySelectorAll('.tts-btn.playing').forEach(b => b.classList.remove('playing'));
+  }
+
+  chatArea.addEventListener('click', e => {
+    const btn = e.target.closest('.tts-btn');
+    if (!btn) return;
+    const row = btn.closest('.msg-row');
+    const text = row ? row.querySelector('.ai-text')?.innerText : '';
+    if (!text) return;
+
+    if (btn.classList.contains('playing')) {
+      stopAllTts();
+      return;
+    }
+    stopAllTts();
+
+    const utter = new SpeechSynthesisUtterance(text);
+    utter.lang = 'zh-CN';
+    utter.rate = 1.1;
+    utter.pitch = 1.0;
+    btn.classList.add('playing');
+    utter.onend = () => btn.classList.remove('playing');
+    utter.onerror = () => btn.classList.remove('playing');
+    speechSynthesis.speak(utter);
   });
 
   // ── 快速入口 ──────────────────────────────────────────────
