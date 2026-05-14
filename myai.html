@@ -1240,8 +1240,13 @@ body {
 
         sessionMsgs.push({ role: 'assistant', content: full });
 
-        // 流式完成后追加 TTS 按钮到气泡
-        if (ttsBtn) bubble.appendChild(ttsBtn);
+        // 流式完成后追加 TTS 按钮到气泡，并触发自动朗读（语音输入场景）
+        if (ttsBtn) {
+          bubble.appendChild(ttsBtn);
+          if (lastMsgByVoice) {
+            setTimeout(autoSpeakLastAi, 100);
+          }
+        }
 
       } else {
         const res = await fetch('/api/chat', {
@@ -1336,10 +1341,6 @@ body {
     }
     isRecording = false;
     btnMic.classList.remove('recording');
-    // 语音输入结束后，自动朗读 AI 回复
-    if (lastMsgByVoice) {
-      setTimeout(autoSpeakLastAi, 100);
-    }
   }
 
   let lastMsgByVoice = false;
