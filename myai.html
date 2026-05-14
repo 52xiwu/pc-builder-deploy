@@ -146,6 +146,28 @@ body {
   font-family: var(--font-mono);
 }
 
+.btn-home {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 30px;
+  height: 30px;
+  border-radius: 6px;
+  background: rgba(0, 229, 255, 0.08);
+  border: 1px solid rgba(0, 229, 255, 0.2);
+  color: rgba(0, 229, 255, 0.7);
+  cursor: pointer;
+  text-decoration: none;
+  transition: background 0.2s, border-color 0.2s, color 0.2s;
+  flex-shrink: 0;
+}
+.btn-home:hover {
+  background: rgba(0, 229, 255, 0.15);
+  border-color: rgba(0, 229, 255, 0.4);
+  color: var(--cyan);
+}
+.btn-home svg { width: 16px; height: 16px; display: block; }
+
 /* ── 两侧装饰 ── */
 .deco-left,
 .deco-right {
@@ -942,6 +964,12 @@ body {
     </div>
   </div>
   <div class="topbar-right">
+    <a href="/" class="btn-home" title="返回主页" aria-label="返回主页">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+        <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/>
+        <polyline points="9 22 9 12 15 12 15 22"/>
+      </svg>
+    </a>
     <span class="status-dot"></span>
     <span class="status-text" id="connStatus">已连接</span>
   </div>
