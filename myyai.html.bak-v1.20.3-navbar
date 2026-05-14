@@ -1,0 +1,1693 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>装机顾问 AI</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <style>
+:root {
+  --bg-void:    #060616;
+  --bg-deep:    #0c0820;
+  --bg-mid:     #12082e;
+  --bg-surface: rgba(18, 10, 40, 0.55);
+  --bg-card:    rgba(16, 10, 38, 0.60);
+  --bg-glass:   rgba(14, 8, 34, 0.50);
+  --border:     rgba(0, 229, 255, 0.10);
+  --border-hover: rgba(0, 229, 255, 0.28);
+  --text-primary:   #f0e6ff;
+  --text-secondary: #a89cc8;
+  --text-muted:     #6b6180;
+  --cyan:       #00e5ff;
+  --cyan-dim:   rgba(0, 229, 255, 0.14);
+  --cyan-glow:  rgba(0, 229, 255, 0.35);
+  --cyan-deep:  rgba(0, 229, 255, 0.07);
+  --purple:     #a78bfa;
+  --purple-dim: rgba(167, 139, 250, 0.15);
+  --purple-glow:rgba(167, 139, 250, 0.30);
+  --shadow-card: 0 8px 32px rgba(0,0,0,0.45);
+  --shadow-glow: 0 0 24px rgba(0, 229, 255, 0.12);
+  --radius-lg:  20px;
+  --radius-md:  14px;
+  --radius-sm:  10px;
+  --font: 'Inter', -apple-system, BlinkMacSystemFont, 'PingFang SC', sans-serif;
+  --font-mono: 'JetBrains Mono', monospace;
+}
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+body {
+  height: 100vh;
+  font-family: var(--font);
+  background: var(--bg-void);
+  background-image:
+    radial-gradient(ellipse 80% 50% at 50% -10%, rgba(0,229,255,0.07) 0%, transparent 60%),
+    radial-gradient(ellipse 50% 40% at 100% 100%, rgba(167,139,250,0.06) 0%, transparent 60%);
+  color: var(--text-primary);
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* ── 顶部导航栏（来自主页） ── */
+.navbar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: 1000;
+    min-height: 60px;
+    background: rgba(255, 255, 255, 0.97);
+    backdrop-filter: blur(12px);
+    border-bottom: 1px solid rgba(0, 229, 255, 0.12);
+    box-shadow: 0 2px 12px rgba(0,0,0,0.25);
+}
+.nav-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0.85rem 1.5rem;
+    min-height: 60px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+.nav-logo {
+    display: flex;
+    align-items: center;
+    gap: 0.65rem;
+    text-decoration: none;
+    flex-shrink: 0;
+}
+.nav-logo-icon {
+    width: 36px;
+    height: 36px;
+    flex-shrink: 0;
+}
+.nav-logo-text {
+    display: flex;
+    flex-direction: column;
+    line-height: 1.2;
+}
+.nav-logo-text h1 {
+    font-size: 1.15rem;
+    font-weight: 700;
+    background: linear-gradient(135deg, #2563eb, #8b5cf6);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+}
+.nav-logo-eng {
+    font-size: 0.68rem;
+    color: #6b7280;
+    font-weight: 500;
+}
+.nav-menu {
+    display: flex;
+    gap: 1.8rem;
+}
+.nav-link {
+    display: flex;
+    align-items: center;
+    gap: 0.4rem;
+    color: #4b5563;
+    text-decoration: none;
+    font-weight: 500;
+    font-size: 0.9rem;
+    padding: 0.4rem 0;
+    position: relative;
+    transition: color 0.2s ease;
+    white-space: nowrap;
+}
+.nav-link:hover { color: #2563eb; }
+.nav-link.active { color: #2563eb; }
+.nav-link.active::after {
+    content: '';
+    position: absolute;
+    bottom: -2px;
+    left: 0;
+    right: 0;
+    height: 2px;
+    background: #2563eb;
+    border-radius: 99px;
+}
+.nav-link-ai {
+    color: #8b5cf6 !important;
+    font-weight: 600;
+}
+.nav-link-ai:hover { color: #7c3aed !important; }
+
+/* ── 顶栏（原myai topbar） ── */
+.topbar {
+    position: fixed;
+    top: 60px;
+    left: 0;
+    right: 0;
+    z-index: 999;
+    height: 52px;
+    background: rgba(6, 6, 22, 0.92);
+    backdrop-filter: blur(16px);
+    border-bottom: 1px solid var(--border);
+    display: flex;
+    align-items: center;
+    padding: 0 14px;
+}
+
+.topbar-left {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.ai-logo-icon {
+  width: 38px;
+  height: 38px;
+  border-radius: 11px;
+  border: 1.5px solid rgba(0,229,255,0.3);
+  overflow: hidden;
+  background: radial-gradient(circle at 35% 30%, #1a3a5a, #060c20);
+  box-shadow: 0 0 16px rgba(0,229,255,0.18), 0 0 32px rgba(0,229,255,0.06) inset;
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 5px;
+}
+
+.ai-logo-icon svg {
+  width: 100%;
+  height: 100%;
+  display: block;
+}
+
+.topbar-info .app-name {
+  font-size: 14px;
+  font-weight: 700;
+  color: var(--text-primary);
+  letter-spacing: 0.01em;
+}
+.topbar-info .app-sub {
+  font-size: 11px;
+  color: var(--text-muted);
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.pro-badge {
+  font-size: 9px;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  padding: 1px 5px 2px;
+  border-radius: 4px;
+  background: linear-gradient(135deg, rgba(0,229,255,0.2), rgba(167,139,250,0.18));
+  border: 1px solid rgba(0,229,255,0.35);
+  color: #e8ffff;
+  box-shadow: 0 0 10px rgba(0,229,255,0.15);
+  font-family: var(--font-mono);
+}
+
+.topbar-right {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.status-dot {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: var(--cyan);
+  box-shadow: 0 0 8px var(--cyan);
+  animation: pulse-dot 2s ease-in-out infinite;
+}
+@keyframes pulse-dot {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.4; }
+}
+
+.status-text {
+  font-size: 12px;
+  font-weight: 500;
+  color: var(--cyan);
+  font-family: var(--font-mono);
+}
+
+.topbar-right {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.deco-left,
+.deco-right {
+  position: fixed;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 60px;
+  pointer-events: none;
+  opacity: 0.6;
+  z-index: 0;
+}
+.deco-left  { left: 16px; }
+.deco-right { right: 16px; }
+.deco-left svg,
+.deco-right svg { width: 100%; height: auto; display: block; }
+
+/* ── 主内容 ── */
+.main {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  padding: 112px 32px 0; /* 112px = navbar(60px) + topbar(52px) */
+  width: 100%;
+  min-height: 0;
+}
+
+#welcomePage {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  gap: 20px;
+  padding: 20px max(24px, 12vh);
+  overflow: hidden;
+}
+
+.welcome-icon {
+  width: 80px;
+  height: 80px;
+  border-radius: 16px;
+  border: 1.5px solid rgba(0,229,255,0.3);
+  overflow: hidden;
+  background: radial-gradient(circle at 35% 30%, #1a3a5a, #060c20);
+  box-shadow: 0 0 32px rgba(0,229,255,0.2), 0 0 64px rgba(0,229,255,0.06) inset;
+}
+.welcome-icon svg { display: block; width: 100%; height: 100%; }
+
+/* ── Hero 品牌区 ── */
+.welcome-brand {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 14px;
+}
+
+.wb-icon {
+  width: 72px;
+  height: 72px;
+  border-radius: 18px;
+  border: 1.5px solid rgba(0, 229, 255, 0.35);
+  overflow: hidden;
+  background: radial-gradient(circle at 35% 30%, #1a3a5a, #060c20);
+  box-shadow:
+    0 0 0 1px rgba(0, 229, 255, 0.12) inset,
+    0 0 40px rgba(0, 229, 255, 0.25),
+    0 0 80px rgba(0, 229, 255, 0.08) inset,
+    0 12px 32px rgba(0, 0, 0, 0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 10px;
+}
+.wb-icon svg {
+  width: 100%;
+  height: 100%;
+  display: block;
+  filter: drop-shadow(0 0 8px rgba(0, 245, 255, 0.4));
+}
+
+.wb-text {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 5px;
+}
+
+.wb-name {
+  font-size: 13px;
+  font-weight: 600;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: rgba(180, 240, 255, 0.88);
+  text-shadow: 0 0 20px rgba(0, 229, 255, 0.45);
+  font-family: var(--font-mono);
+}
+
+.wb-sub {
+  font-size: 11px;
+  color: var(--text-muted);
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.wb-sub .pro-badge {
+  font-size: 9px;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  padding: 1px 5px 2px;
+  border-radius: 4px;
+  background: linear-gradient(135deg, rgba(0,229,255,0.2), rgba(167,139,250,0.18));
+  border: 1px solid rgba(0,229,255,0.35);
+  color: #e8ffff;
+  box-shadow: 0 0 10px rgba(0,229,255,0.15);
+  font-family: var(--font-mono);
+}
+
+#welcomePage h2 {
+  font-size: 22px;
+  font-weight: 800;
+  color: var(--text-primary);
+  letter-spacing: -0.01em;
+}
+
+#welcomePage p {
+  font-size: 14px;
+  color: var(--text-secondary);
+  line-height: 1.7;
+  max-width: 480px;
+}
+
+/* 快捷提示 — 换行方案 */
+.quick-prompts {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px 10px;
+  justify-content: center;
+  align-content: center;
+  width: min(920px, 100%);
+  margin: 0 auto;
+  padding: 4px max(16px, 4vw);
+  box-sizing: border-box;
+}
+.quick-prompts::-webkit-scrollbar { display: none; }
+.qp-btn {
+  flex-shrink: 0;
+  padding: 9px 18px;
+  border-radius: 20px;
+  border: 1px solid var(--border);
+  background: var(--bg-glass);
+  color: var(--text-secondary);
+  font-size: 13px;
+  font-weight: 500;
+  cursor: pointer;
+  font-family: var(--font);
+  white-space: nowrap;
+  transition: border-color 0.2s, background 0.2s, color 0.2s, box-shadow 0.2s;
+}
+.qp-btn:hover {
+  border-color: var(--cyan);
+  background: var(--cyan-dim);
+  color: var(--cyan);
+  box-shadow: 0 0 16px rgba(0,229,255,0.15);
+}
+
+/* ── 聊天区 ── */
+#chatArea {
+  flex: 1;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  padding: 12px 0 calc(max(24px, 12vh) + 88px);
+  scroll-behavior: smooth;
+  min-height: 0;
+  /* 与 .input-wrap (920px centered) 对齐 */
+  max-width: min(920px, 100%);
+  margin: 0 auto;
+  width: 100%;
+}
+
+.msg-row {
+  display: flex;
+  flex-direction: column;
+  max-width: min(920px, 100%);
+  margin: 0 auto;
+}
+.msg-row.user { align-items: flex-end; }
+.msg-row.ai   { align-items: flex-start; }
+
+.msg-bubble {
+  position: relative;
+  padding: 12px 16px;
+  border-radius: var(--radius-md);
+  font-size: 14px;
+  line-height: 1.65;
+  white-space: pre-wrap;
+  word-break: break-word;
+}
+.user .msg-bubble {
+  background: linear-gradient(135deg, var(--cyan), var(--purple));
+  color: #060616;
+  font-weight: 600;
+  border-bottom-right-radius: 4px;
+  box-shadow: 0 4px 20px rgba(0,229,255,0.25);
+}
+.user .msg-bubble::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  background: linear-gradient(135deg, rgba(255,255,255,0.15) 0%, transparent 60%);
+  pointer-events: none;
+}
+.ai .msg-bubble {
+  background: rgba(20, 14, 50, 0.85);
+  border: 1px solid rgba(0, 229, 255, 0.20);
+  border-bottom: 1px solid rgba(0, 229, 255, 0.30);
+  color: #e0d8ff;
+  border-bottom-left-radius: 4px;
+  box-shadow: 0 4px 24px rgba(0,0,0,0.5);
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+}
+.ai-logo {
+  flex-shrink: 0;
+  width: 32px;
+  height: 32px;
+  margin-top: 1px;
+}
+.ai-logo svg {
+  width: 100%;
+  height: 100%;
+  display: block;
+}
+.ai-text {
+  flex: 1;
+  min-width: 0;
+  position: relative;
+}
+
+.tts-btn {
+  position: absolute;
+  bottom: 2px;
+  right: 4px;
+  width: 26px;
+  height: 26px;
+  border: none;
+  border-radius: 6px;
+  background: rgba(0, 229, 255, 0.08);
+  border: 1px solid rgba(0, 229, 255, 0.15);
+  color: var(--text-muted);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 0.45;
+  transition: opacity 0.2s, background 0.2s, color 0.2s;
+}
+.tts-btn svg { width: 14px; height: 14px; display: block; }
+.tts-btn:hover {
+  opacity: 1;
+  background: rgba(0, 229, 255, 0.16);
+  color: var(--cyan);
+}
+.tts-btn.playing {
+  opacity: 1;
+  background: rgba(0, 229, 255, 0.18);
+  color: var(--cyan);
+  border-color: rgba(0, 229, 255, 0.4);
+}
+
+.msg-time {
+  font-size: 10px;
+  color: var(--text-muted);
+  margin-top: 5px;
+  padding: 0 4px;
+  font-family: var(--font-mono);
+}
+
+/* typing */
+.typing-wrap {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 12px 16px;
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-md);
+  border-bottom-left-radius: 4px;
+  align-self: flex-start;
+  box-shadow: var(--shadow-card);
+}
+.typing-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--cyan);
+  animation: blink 1.2s ease-in-out infinite;
+}
+.typing-dot:nth-child(2) { animation-delay: 0.2s; }
+.typing-dot:nth-child(3) { animation-delay: 0.4s; }
+@keyframes blink {
+  0%, 100% { opacity: 0.2; transform: scale(0.8); }
+  50%       { opacity: 1;   transform: scale(1); }
+}
+
+/* ── 输入区 ── */
+.input-wrap {
+  position: fixed;
+  bottom: max(24px, 12vh);
+  left: 50%;
+  transform: translateX(-50%);
+  width: min(920px, 94vw);
+  z-index: 100;
+}
+
+.input-bar {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  background: rgba(14, 8, 34, 0.8);
+  backdrop-filter: blur(24px);
+  -webkit-backdrop-filter: blur(24px);
+  border: 1px solid rgba(0, 229, 255, 0.2);
+  border-radius: 18px;
+  padding: 10px 16px;
+  box-shadow:
+    0 0 0 1px rgba(0, 229, 255, 0.06) inset,
+    0 12px 48px rgba(0, 0, 0, 0.55),
+    0 0 32px rgba(0, 229, 255, 0.1);
+}
+
+.msg-input {
+  flex: 1;
+  min-width: 0;
+  min-height: 52px;
+  max-height: 120px;
+  padding: 12px 16px;
+  border-radius: 12px;
+  border: 1px solid rgba(0, 229, 255, 0.12);
+  background: rgba(6, 6, 22, 0.7);
+  color: var(--text-primary);
+  font-size: 15px;
+  font-family: var(--font);
+  outline: none;
+  resize: none;
+  line-height: 1.5;
+  transition: border-color 0.2s, box-shadow 0.2s;
+  overflow-y: auto;
+}
+.msg-input::placeholder { color: var(--text-muted); }
+.msg-input:focus {
+  border-color: rgba(0, 229, 255, 0.4);
+  box-shadow: 0 0 0 3px rgba(0, 229, 255, 0.08), 0 0 16px rgba(0, 229, 255, 0.1);
+}
+
+.btn-send {
+  flex-shrink: 0;
+  height: 52px;
+  padding: 0 28px;
+  border: none;
+  border-radius: 12px;
+  font-weight: 700;
+  font-size: 15px;
+  font-family: var(--font);
+  cursor: pointer;
+  background: linear-gradient(135deg, var(--cyan), var(--purple));
+  color: #060616;
+  box-shadow: 0 4px 20px rgba(0, 229, 255, 0.3);
+  transition: filter 0.2s, box-shadow 0.2s;
+  white-space: nowrap;
+}
+.btn-send:hover {
+  filter: brightness(1.1);
+  box-shadow: 0 4px 28px rgba(0, 229, 255, 0.45);
+}
+.btn-send:disabled { opacity: 0.45; cursor: not-allowed; filter: none; }
+
+.btn-mic {
+  flex-shrink: 0;
+  width: 44px;
+  height: 44px;
+  border: none;
+  border-radius: 10px;
+  background: rgba(0, 229, 255, 0.1);
+  border: 1px solid rgba(0, 229, 255, 0.2);
+  color: var(--cyan);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background 0.2s, border-color 0.2s, box-shadow 0.2s;
+}
+.btn-mic:hover {
+  background: rgba(0, 229, 255, 0.18);
+  border-color: rgba(0, 229, 255, 0.4);
+  box-shadow: 0 0 12px rgba(0, 229, 255, 0.2);
+}
+.btn-mic.recording {
+  background: rgba(255, 80, 80, 0.18);
+  border-color: rgba(255, 80, 80, 0.5);
+  color: #ff5050;
+  box-shadow: 0 0 16px rgba(255, 80, 80, 0.3);
+  animation: pulse-mic 1s ease-in-out infinite;
+}
+@keyframes pulse-mic {
+  0%, 100% { transform: scale(1); }
+  50% { transform: scale(1.08); }
+}
+.btn-mic svg { width: 20px; height: 20px; display: block; }
+
+.voice-bar {
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 0 16px;
+  margin-bottom: 6px;
+  cursor: pointer;
+  user-select: none;
+}
+
+.voice-sep {
+  width: 1px;
+  height: 18px;
+  background: rgba(255,255,255,0.15);
+  margin: 0 4px;
+}
+
+.auto-tts-label {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  cursor: pointer;
+  font-size: 12px;
+  color: rgba(255,255,255,0.65);
+  white-space: nowrap;
+}
+
+.auto-tts-label input { display: none; }
+
+.toggle-track {
+  position: relative;
+  width: 32px;
+  height: 18px;
+  background: rgba(255,255,255,0.15);
+  border-radius: 9px;
+  transition: background 0.2s;
+}
+
+.auto-tts-label input:checked + .toggle-track {
+  background: #00c8ea;
+}
+
+.toggle-thumb {
+  position: absolute;
+  top: 2px;
+  left: 2px;
+  width: 14px;
+  height: 14px;
+  background: #fff;
+  border-radius: 50%;
+  transition: left 0.2s;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.3);
+}
+
+.auto-tts-label input:checked + .toggle-track .toggle-thumb {
+  left: 16px;
+}
+.voice-label {
+  font-size: 11px;
+  color: var(--text-muted);
+  font-family: var(--font-mono);
+}
+.voice-btn {
+  border: none;
+  background: rgba(0, 229, 255, 0.08);
+  border: 1px solid rgba(0, 229, 255, 0.18);
+  border-radius: 6px;
+  padding: 3px 10px;
+  font-size: 12px;
+  font-family: var(--font);
+  color: var(--cyan);
+  cursor: pointer;
+  transition: background 0.2s, border-color 0.2s;
+}
+.voice-btn:hover {
+  background: rgba(0, 229, 255, 0.16);
+  border-color: rgba(0, 229, 255, 0.4);
+}
+.voice-arrow {
+  width: 14px;
+  height: 14px;
+  color: var(--text-muted);
+  flex-shrink: 0;
+}
+
+/* ── 滚动条 ── */
+#chatArea::-webkit-scrollbar { width: 4px; }
+#chatArea::-webkit-scrollbar-track { background: transparent; }
+#chatArea::-webkit-scrollbar-thumb { background: var(--border); border-radius: 2px; }
+
+@media (max-width: 640px) {
+  .main { padding: 0 14px; }
+  .msg-row { max-width: 88%; }
+  .topbar { padding: 0 14px; }
+  .input-wrap {
+    bottom: max(16px, env(safe-area-inset-bottom, 12px));
+    width: min(94vw, 100%);
+    left: 50%;
+    transform: translateX(-50%);
+  }
+  #welcomePage {
+    padding: 20px max(16px, env(safe-area-inset-bottom, 12px));
+  }
+  #chatArea {
+    padding: 12px 0 calc(max(16px, env(safe-area-inset-bottom, 12px)) + 80px);
+  }
+}
+
+/* ══════════════════════════════════════════════════════════════
+   聊天页左右装饰层 — chat-ambient
+   全部 pointer-events: none，不影响交互
+   ══════════════════════════════════════════════════════════════ */
+.chat-ambient {
+  position: fixed;
+  inset: 0;
+  z-index: 1;
+  pointer-events: none;
+  overflow: hidden;
+}
+
+/* ① 径向柔光 — 突出中间列，压暗两侧 */
+.ca-glow {
+  position: absolute;
+  inset: 0;
+}
+.ca-glow::before {
+  content: '';
+  position: absolute;
+  left: 0; top: 15%; height: 70%;
+  width: 38%;
+  background: radial-gradient(ellipse 70% 55% at 10% 50%,
+    rgba(0,229,255,0.07) 0%, transparent 70%);
+}
+.ca-glow::after {
+  content: '';
+  position: absolute;
+  right: 0; top: 15%; height: 70%;
+  width: 38%;
+  background: radial-gradient(ellipse 70% 55% at 90% 50%,
+    rgba(167,139,250,0.07) 0%, transparent 70%);
+}
+
+/* ② 细网格背景 — dot pattern，极淡 */
+.ca-grid {
+  position: absolute;
+  inset: 0;
+  background-image:
+    radial-gradient(circle, rgba(0,229,255,0.12) 1px, transparent 1px);
+  background-size: 44px 44px;
+  mask-image: linear-gradient(to right,
+    transparent 0%, black 18%, black 82%, transparent 100%);
+  -webkit-mask-image: linear-gradient(to right,
+    transparent 0%, black 18%, black 82%, transparent 100%);
+}
+
+/* ③ 悬浮硬件轮廓 — SVG 线稿，模糊 + 缓慢呼吸 */
+.ca-icon {
+  position: absolute;
+  opacity: 0.06;
+  filter: blur(1.2px);
+  will-change: transform, opacity;
+}
+.ca-icon svg {
+  display: block;
+}
+@keyframes ca-float-a {
+  0%,100% { transform: translateY(0px) rotate(0deg); opacity: 0.05; }
+  50%       { transform: translateY(-18px) rotate(3deg); opacity: 0.10; }
+}
+@keyframes ca-float-b {
+  0%,100% { transform: translateY(0px) rotate(0deg); opacity: 0.06; }
+  50%       { transform: translateY(14px) rotate(-2deg); opacity: 0.11; }
+}
+.ca-icon-a {
+  left: 5%;
+  top: 20%;
+  width: 120px;
+  animation: ca-float-a 16s ease-in-out infinite;
+}
+.ca-icon-b {
+  right: 5%;
+  bottom: 22%;
+  width: 90px;
+  animation: ca-float-b 20s ease-in-out infinite;
+}
+.ca-icon-c {
+  left: 11%;
+  bottom: 30%;
+  width: 60px;
+  animation: ca-float-a 13s ease-in-out infinite reverse;
+}
+.ca-icon-d {
+  right: 10%;
+  top: 35%;
+  width: 55px;
+  animation: ca-float-b 17s ease-in-out infinite reverse;
+}
+
+/* ④ 竖向光边 — 让中间列「浮」在背景上 */
+.ca-edge {
+  position: absolute;
+  top: 0; bottom: 0;
+  width: 1px;
+}
+.ca-edge::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    to bottom,
+    transparent 0%,
+    rgba(0,229,255,0.12) 20%,
+    rgba(0,229,255,0.20) 50%,
+    rgba(0,229,255,0.12) 80%,
+    transparent 100%
+  );
+}
+.ca-edge::after {
+  content: '';
+  position: absolute;
+  inset: -4px;
+  background: linear-gradient(
+    to bottom,
+    transparent 0%,
+    rgba(0,229,255,0.04) 20%,
+    rgba(0,229,255,0.08) 50%,
+    rgba(0,229,255,0.04) 80%,
+    transparent 100%
+  );
+  filter: blur(4px);
+}
+.ca-edge-l {
+  left: max(calc(50% - 460px), 16px);
+}
+.ca-edge-r {
+  right: max(calc(50% - 460px), 16px);
+}
+
+/* ── 响应式装饰控制 ── */
+@media (max-width: 900px) {
+  .ca-icon { display: none; }
+  .ca-edge { display: none; }
+  .ca-grid { opacity: 0.4; mask-image: none; -webkit-mask-image: none; }
+  .ca-glow::before { width: 8%; opacity: 0.6; }
+  .ca-glow::after  { width: 8%; opacity: 0.6; }
+}
+@media (max-width: 640px) {
+  .chat-ambient { display: none; }
+}
+
+/* ── 减少动效 ── */
+@media (prefers-reduced-motion: reduce) {
+  .ca-icon { animation: none !important; }
+  .ca-glow::before,
+  .ca-glow::after { transition: none !important; }
+}
+</style>
+</head>
+<body>
+
+<!-- 顶部导航栏 -->
+<nav class="navbar" role="navigation" aria-label="主导航">
+  <div class="nav-container">
+    <a href="/" class="nav-logo" aria-label="联信装机 — 返回首页">
+      <div class="nav-logo-icon">
+        <svg viewBox="0 0 40 40" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false">
+          <defs>
+            <linearGradient id="lxNavLG" x1="0%" y1="0%" x2="100%" y2="100%">
+              <stop offset="0%" stop-color="#7dffff"/>
+              <stop offset="45%" stop-color="#00c8ea"/>
+              <stop offset="100%" stop-color="#a78bfa"/>
+            </linearGradient>
+            <linearGradient id="lxNavLG2" x1="0" y1="0" x2="0" y2="1">
+              <stop offset="0" stop-color="#152238"/>
+              <stop offset="1" stop-color="#060b14"/>
+            </linearGradient>
+            <linearGradient id="lxNavLG3" x1="0" y1="0" x2="1" y2="0">
+              <stop offset="0%" stop-color="#00f5ff" stop-opacity="0"/>
+              <stop offset="50%" stop-color="#00f5ff" stop-opacity="0.35"/>
+              <stop offset="100%" stop-color="#00f5ff" stop-opacity="0"/>
+            </linearGradient>
+          </defs>
+          <rect x="3" y="5" width="34" height="23" rx="5.5" fill="url(#lxNavLG2)" stroke="url(#lxNavLG)" stroke-width="1.45"/>
+          <rect x="7" y="9" width="26" height="13" rx="2.2" fill="#030810" stroke="rgba(0,229,255,0.14)" stroke-width="0.6"/>
+          <rect x="9" y="11" width="10" height="2.4" rx="1.2" fill="url(#lxNavLG)"/>
+          <rect x="9" y="15.4" width="17" height="2.4" rx="1.2" fill="url(#lxNavLG)" opacity="0.5"/>
+          <rect x="9" y="19.8" width="12" height="1.7" rx="0.85" fill="url(#lxNavLG)" opacity="0.32"/>
+          <rect x="7" y="9" width="26" height="6" rx="2.2" fill="url(#lxNavLG3)"/>
+          <path d="M15 28.5h10l-1.4 4.8h-7.2z" fill="url(#lxNavLG)"/>
+          <ellipse cx="20" cy="34.2" rx="9" ry="1.4" fill="#00e5ff" opacity="0.25"/>
+        </svg>
+      </div>
+      <div class="nav-logo-text">
+        <h1>联信装机</h1>
+        <span class="nav-logo-eng">PC Builder <b>Pro</b></span>
+      </div>
+    </a>
+    <div class="nav-menu">
+      <a href="/#home" class="nav-link"><i class="fas fa-home"></i> 首页</a>
+      <a href="/#builder" class="nav-link"><i class="fas fa-tools"></i> 装机配置</a>
+      <a href="/#products" class="nav-link"><i class="fas fa-microchip"></i> 硬件商城</a>
+      <a href="/#guides" class="nav-link"><i class="fas fa-book"></i> 装机指南</a>
+      <a href="/#presets" class="nav-link"><i class="fas fa-star"></i> 热门配置</a>
+      <a href="/myai" class="nav-link nav-link-ai active"><i class="fas fa-robot"></i> 我的AI</a>
+    </div>
+  </div>
+</nav>
+
+<!-- 聊天页装饰层 — aria-hidden 纯视觉 -->
+<div class="chat-ambient" aria-hidden="true">
+  <div class="ca-glow"></div>
+  <div class="ca-grid"></div>
+
+  <!-- 悬浮硬件轮廓 SVG -->
+  <div class="ca-icon ca-icon-a">
+    <!-- CPU 方槽 -->
+    <svg viewBox="0 0 80 80" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <rect x="14" y="14" width="52" height="52" rx="6"
+        stroke="rgba(0,229,255,0.7)" stroke-width="1.5"/>
+      <rect x="22" y="22" width="36" height="36" rx="3"
+        stroke="rgba(0,229,255,0.5)" stroke-width="1"/>
+      <line x1="8"  y1="22" x2="14" y2="22" stroke="rgba(0,229,255,0.6)" stroke-width="1.5"/>
+      <line x1="8"  y1="30" x2="14" y2="30" stroke="rgba(0,229,255,0.6)" stroke-width="1.5"/>
+      <line x1="8"  y1="38" x2="14" y2="38" stroke="rgba(0,229,255,0.6)" stroke-width="1.5"/>
+      <line x1="8"  y1="46" x2="14" y2="46" stroke="rgba(0,229,255,0.6)" stroke-width="1.5"/>
+      <line x1="66" y1="22" x2="72" y2="22" stroke="rgba(0,229,255,0.6)" stroke-width="1.5"/>
+      <line x1="66" y1="30" x2="72" y2="30" stroke="rgba(0,229,255,0.6)" stroke-width="1.5"/>
+      <line x1="66" y1="38" x2="72" y2="38" stroke="rgba(0,229,255,0.6)" stroke-width="1.5"/>
+      <line x1="66" y1="46" x2="72" y2="46" stroke="rgba(0,229,255,0.6)" stroke-width="1.5"/>
+      <line x1="22" y1="8"  x2="22" y2="14" stroke="rgba(0,229,255,0.6)" stroke-width="1.5"/>
+      <line x1="30" y1="8"  x2="30" y2="14" stroke="rgba(0,229,255,0.6)" stroke-width="1.5"/>
+      <line x1="38" y1="8"  x2="38" y2="14" stroke="rgba(0,229,255,0.6)" stroke-width="1.5"/>
+      <line x1="46" y1="8"  x2="46" y2="14" stroke="rgba(0,229,255,0.6)" stroke-width="1.5"/>
+      <line x1="22" y1="66" x2="22" y2="72" stroke="rgba(0,229,255,0.6)" stroke-width="1.5"/>
+      <line x1="30" y1="66" x2="30" y2="72" stroke="rgba(0,229,255,0.6)" stroke-width="1.5"/>
+      <line x1="38" y1="66" x2="38" y2="72" stroke="rgba(0,229,255,0.6)" stroke-width="1.5"/>
+      <line x1="46" y1="66" x2="46" y2="72" stroke="rgba(0,229,255,0.6)" stroke-width="1.5"/>
+    </svg>
+  </div>
+
+  <div class="ca-icon ca-icon-b">
+    <!-- GPU 显卡 -->
+    <svg viewBox="0 0 96 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <rect x="2" y="10" width="92" height="28" rx="5"
+        stroke="rgba(167,139,250,0.7)" stroke-width="1.5"/>
+      <circle cx="20" cy="24" r="9" stroke="rgba(167,139,250,0.6)" stroke-width="1.2"/>
+      <circle cx="20" cy="24" r="4" stroke="rgba(167,139,250,0.5)" stroke-width="1"/>
+      <circle cx="48" cy="24" r="9" stroke="rgba(167,139,250,0.6)" stroke-width="1.2"/>
+      <circle cx="48" cy="24" r="4" stroke="rgba(167,139,250,0.5)" stroke-width="1"/>
+      <rect x="64" y="14" width="22" height="20" rx="2"
+        stroke="rgba(167,139,250,0.5)" stroke-width="1"/>
+      <line x1="7" y1="38" x2="16" y2="38" stroke="rgba(167,139,250,0.5)" stroke-width="1.5"/>
+      <line x1="20" y1="38" x2="28" y2="38" stroke="rgba(167,139,250,0.5)" stroke-width="1.5"/>
+      <line x1="33" y1="38" x2="41" y2="38" stroke="rgba(167,139,250,0.5)" stroke-width="1.5"/>
+      <line x1="46" y1="38" x2="54" y2="38" stroke="rgba(167,139,250,0.5)" stroke-width="1.5"/>
+    </svg>
+  </div>
+
+  <div class="ca-icon ca-icon-c">
+    <!-- 内存条 -->
+    <svg viewBox="0 0 16 56" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <rect x="1" y="4" width="14" height="48" rx="3"
+        stroke="rgba(0,229,255,0.6)" stroke-width="1.2"/>
+      <line x1="4" y1="12" x2="12" y2="12" stroke="rgba(0,229,255,0.5)" stroke-width="0.8"/>
+      <line x1="4" y1="18" x2="12" y2="18" stroke="rgba(0,229,255,0.5)" stroke-width="0.8"/>
+      <line x1="4" y1="24" x2="12" y2="24" stroke="rgba(0,229,255,0.5)" stroke-width="0.8"/>
+      <rect x="4" y="29" width="8" height="6" rx="1"
+        stroke="rgba(0,229,255,0.5)" stroke-width="0.8"/>
+    </svg>
+  </div>
+
+  <div class="ca-icon ca-icon-d">
+    <!-- 机箱侧透 -->
+    <svg viewBox="0 0 40 52" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <rect x="2" y="2" width="36" height="48" rx="4"
+        stroke="rgba(167,139,250,0.6)" stroke-width="1.2"/>
+      <rect x="6" y="6" width="28" height="30" rx="2"
+        stroke="rgba(167,139,250,0.45)" stroke-width="1"/>
+      <circle cx="10" cy="44" r="2" stroke="rgba(167,139,250,0.5)" stroke-width="0.8"/>
+      <circle cx="16" cy="44" r="2" stroke="rgba(167,139,250,0.5)" stroke-width="0.8"/>
+      <rect x="22" y="42" width="8" height="4" rx="1"
+        stroke="rgba(167,139,250,0.4)" stroke-width="0.8"/>
+    </svg>
+  </div>
+
+  <!-- 竖向光边 -->
+  <div class="ca-edge ca-edge-l"></div>
+  <div class="ca-edge ca-edge-r"></div>
+</div>
+
+<!-- 顶栏 -->
+<header class="topbar">
+  <div class="topbar-left">
+    <div class="ai-logo-icon">
+      <svg viewBox="0 0 40 40" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+        <defs>
+          <linearGradient id="myAIhdrLG" x1="0%" y1="0%" x2="100%" y2="100%">
+            <stop offset="0%" stop-color="#7dffff"/>
+            <stop offset="45%" stop-color="#00c8ea"/>
+            <stop offset="100%" stop-color="#a78bfa"/>
+          </linearGradient>
+          <linearGradient id="myAIhdrBG" x1="0" y1="0" x2="0" y2="1">
+            <stop offset="0" stop-color="#152238"/>
+            <stop offset="1" stop-color="#060b14"/>
+          </linearGradient>
+          <linearGradient id="myAIhdrGL" x1="0" y1="0" x2="1" y2="0">
+            <stop offset="0%" stop-color="#00f5ff" stop-opacity="0"/>
+            <stop offset="50%" stop-color="#00f5ff" stop-opacity="0.35"/>
+            <stop offset="100%" stop-color="#00f5ff" stop-opacity="0"/>
+          </linearGradient>
+        </defs>
+        <rect x="3" y="5" width="34" height="23" rx="5.5" fill="url(#myAIhdrBG)" stroke="url(#myAIhdrLG)" stroke-width="1.45"/>
+        <rect x="7" y="9" width="26" height="13" rx="2.2" fill="#030810" stroke="rgba(0,229,255,0.14)" stroke-width="0.6"/>
+        <rect x="9" y="11" width="10" height="2.4" rx="1.2" fill="url(#myAIhdrLG)"/>
+        <rect x="9" y="15.4" width="17" height="2.4" rx="1.2" fill="url(#myAIhdrLG)" opacity="0.5"/>
+        <rect x="9" y="19.8" width="12" height="1.7" rx="0.85" fill="url(#myAIhdrLG)" opacity="0.32"/>
+        <rect x="7" y="9" width="26" height="6" rx="2.2" fill="url(#myAIhdrGL)"/>
+        <path d="M15 28.5h10l-1.4 4.8h-7.2z" fill="url(#myAIhdrLG)"/>
+        <ellipse cx="20" cy="34.2" rx="9" ry="1.4" fill="#00e5ff" opacity="0.25"/>
+      </svg>
+    </div>
+    <div class="topbar-info">
+      <div class="app-name">联信装机</div>
+      <div class="app-sub">PC Builder <span class="pro-badge">PRO</span></div>
+    </div>
+  </div>
+  <div class="topbar-right">
+    <span class="status-dot"></span>
+    <span class="status-text" id="connStatus">已连接</span>
+  </div>
+</header>
+
+<!-- 两侧装饰：PC硬件图标 -->
+<div class="deco-left" aria-hidden="true">
+  <svg viewBox="0 0 60 120" xmlns="http://www.w3.org/2000/svg">
+    <!-- CPU -->
+    <rect x="10" y="10" width="40" height="40" rx="4" fill="none" stroke="rgba(0,229,255,0.18)" stroke-width="1.2"/>
+    <rect x="18" y="18" width="24" height="24" rx="2" fill="rgba(0,229,255,0.06)" stroke="rgba(0,229,255,0.3)" stroke-width="1"/>
+    <line x1="30" y1="10" x2="30" y2="6" stroke="rgba(0,229,255,0.3)" stroke-width="1.2"/>
+    <line x1="20" y1="10" x2="20" y2="6" stroke="rgba(0,229,255,0.3)" stroke-width="1.2"/>
+    <line x1="40" y1="10" x2="40" y2="6" stroke="rgba(0,229,255,0.3)" stroke-width="1.2"/>
+    <line x1="30" y1="50" x2="30" y2="54" stroke="rgba(0,229,255,0.3)" stroke-width="1.2"/>
+    <line x1="20" y1="50" x2="20" y2="54" stroke="rgba(0,229,255,0.3)" stroke-width="1.2"/>
+    <line x1="40" y1="50" x2="40" y2="54" stroke="rgba(0,229,255,0.3)" stroke-width="1.2"/>
+    <line x1="10" y1="30" x2="6" y2="30" stroke="rgba(0,229,255,0.3)" stroke-width="1.2"/>
+    <line x1="10" y1="20" x2="6" y2="20" stroke="rgba(0,229,255,0.3)" stroke-width="1.2"/>
+    <line x1="10" y1="40" x2="6" y2="40" stroke="rgba(0,229,255,0.3)" stroke-width="1.2"/>
+    <line x1="50" y1="30" x2="54" y2="30" stroke="rgba(0,229,255,0.3)" stroke-width="1.2"/>
+    <line x1="50" y1="20" x2="54" y2="20" stroke="rgba(0,229,255,0.3)" stroke-width="1.2"/>
+    <line x1="50" y1="40" x2="54" y2="40" stroke="rgba(0,229,255,0.3)" stroke-width="1.2"/>
+    <text x="30" y="38" text-anchor="middle" font-family="JetBrains Mono,monospace" font-size="7" fill="rgba(0,229,255,0.5)">CPU</text>
+    <!-- GPU chip -->
+    <rect x="10" y="65" width="40" height="20" rx="3" fill="rgba(167,139,250,0.06)" stroke="rgba(167,139,250,0.25)" stroke-width="1"/>
+    <rect x="16" y="71" width="12" height="8" rx="1" fill="rgba(167,139,250,0.12)" stroke="rgba(167,139,250,0.4)" stroke-width="0.8"/>
+    <rect x="32" y="71" width="12" height="8" rx="1" fill="rgba(167,139,250,0.12)" stroke="rgba(167,139,250,0.4)" stroke-width="0.8"/>
+    <text x="30" y="82" text-anchor="middle" font-family="JetBrains Mono,monospace" font-size="6" fill="rgba(167,139,250,0.5)">GPU</text>
+    <!-- RAM slot -->
+    <rect x="10" y="95" width="40" height="14" rx="2" fill="none" stroke="rgba(0,229,255,0.12)" stroke-width="1"/>
+    <rect x="14" y="98" width="6" height="8" rx="1" fill="rgba(0,229,255,0.08)" stroke="rgba(0,229,255,0.25)" stroke-width="0.8"/>
+    <rect x="22" y="98" width="6" height="8" rx="1" fill="rgba(0,229,255,0.08)" stroke="rgba(0,229,255,0.25)" stroke-width="0.8"/>
+    <rect x="30" y="98" width="6" height="8" rx="1" fill="rgba(0,229,255,0.08)" stroke="rgba(0,229,255,0.25)" stroke-width="0.8"/>
+    <rect x="38" y="98" width="6" height="8" rx="1" fill="rgba(0,229,255,0.08)" stroke="rgba(0,229,255,0.25)" stroke-width="0.8"/>
+    <text x="30" y="106" text-anchor="middle" font-family="JetBrains Mono,monospace" font-size="5" fill="rgba(0,229,255,0.35)">DDR5</text>
+  </svg>
+</div>
+
+<div class="deco-right" aria-hidden="true">
+  <svg viewBox="0 0 60 120" xmlns="http://www.w3.org/2000/svg">
+    <!-- Motherboard trace pattern -->
+    <rect x="10" y="10" width="40" height="40" rx="4" fill="none" stroke="rgba(0,229,255,0.12)" stroke-width="1"/>
+    <line x1="10" y1="20" x2="50" y2="20" stroke="rgba(0,229,255,0.1)" stroke-width="0.8"/>
+    <line x1="10" y1="30" x2="50" y2="30" stroke="rgba(0,229,255,0.1)" stroke-width="0.8"/>
+    <line x1="10" y1="40" x2="50" y2="40" stroke="rgba(0,229,255,0.1)" stroke-width="0.8"/>
+    <line x1="20" y1="10" x2="20" y2="50" stroke="rgba(0,229,255,0.1)" stroke-width="0.8"/>
+    <line x1="30" y1="10" x2="30" y2="50" stroke="rgba(0,229,255,0.1)" stroke-width="0.8"/>
+    <line x1="40" y1="10" x2="40" y2="50" stroke="rgba(0,229,255,0.1)" stroke-width="0.8"/>
+    <circle cx="20" cy="20" r="2.5" fill="rgba(0,229,255,0.2)" stroke="rgba(0,229,255,0.5)" stroke-width="0.8"/>
+    <circle cx="40" cy="30" r="2.5" fill="rgba(167,139,250,0.2)" stroke="rgba(167,139,250,0.5)" stroke-width="0.8"/>
+    <circle cx="30" cy="40" r="2.5" fill="rgba(0,229,255,0.2)" stroke="rgba(0,229,255,0.5)" stroke-width="0.8"/>
+    <text x="30" y="56" text-anchor="middle" font-family="JetBrains Mono,monospace" font-size="6" fill="rgba(0,229,255,0.35)">PCB</text>
+    <!-- PSU -->
+    <rect x="10" y="65" width="40" height="28" rx="3" fill="rgba(0,229,255,0.04)" stroke="rgba(0,229,255,0.2)" stroke-width="1"/>
+    <rect x="16" y="71" width="28" height="4" rx="1" fill="rgba(0,229,255,0.1)" stroke="rgba(0,229,255,0.3)" stroke-width="0.8"/>
+    <rect x="16" y="78" width="20" height="4" rx="1" fill="rgba(167,139,250,0.1)" stroke="rgba(167,139,250,0.3)" stroke-width="0.8"/>
+    <rect x="16" y="85" width="24" height="4" rx="1" fill="rgba(0,229,255,0.1)" stroke="rgba(0,229,255,0.3)" stroke-width="0.8"/>
+    <text x="30" y="100" text-anchor="middle" font-family="JetBrains Mono,monospace" font-size="6" fill="rgba(0,229,255,0.35)">850W</text>
+    <!-- FAN -->
+    <circle cx="30" cy="112" r="8" fill="none" stroke="rgba(0,229,255,0.15)" stroke-width="1"/>
+    <circle cx="30" cy="112" r="3" fill="rgba(0,229,255,0.08)" stroke="rgba(0,229,255,0.3)" stroke-width="0.8"/>
+    <line x1="30" y1="104" x2="30" y2="108" stroke="rgba(0,229,255,0.25)" stroke-width="1.2"/>
+    <line x1="30" y1="116" x2="30" y2="120" stroke="rgba(0,229,255,0.25)" stroke-width="1.2"/>
+    <line x1="22" y1="112" x2="26" y2="112" stroke="rgba(0,229,255,0.25)" stroke-width="1.2"/>
+    <line x1="34" y1="112" x2="38" y2="112" stroke="rgba(0,229,255,0.25)" stroke-width="1.2"/>
+    <text x="30" y="123" text-anchor="middle" font-family="JetBrains Mono,monospace" font-size="5" fill="rgba(0,229,255,0.25)">FAN</text>
+  </svg>
+</div>
+
+<!-- 主内容 -->
+<main class="main">
+  <!-- 欢迎页 -->
+  <div id="welcomePage">
+    <!-- 品牌区 -->
+    <div class="welcome-brand">
+      <div class="wb-icon">
+        <svg viewBox="0 0 40 40" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+          <defs>
+            <linearGradient id="myAIwbLG" x1="0%" y1="0%" x2="100%" y2="100%">
+              <stop offset="0%" stop-color="#7dffff"/>
+              <stop offset="45%" stop-color="#00c8ea"/>
+              <stop offset="100%" stop-color="#a78bfa"/>
+            </linearGradient>
+            <linearGradient id="myAIwbBG" x1="0" y1="0" x2="0" y2="1">
+              <stop offset="0" stop-color="#152238"/>
+              <stop offset="1" stop-color="#060b14"/>
+            </linearGradient>
+            <linearGradient id="myAIwbGL" x1="0" y1="0" x2="1" y2="0">
+              <stop offset="0%" stop-color="#00f5ff" stop-opacity="0"/>
+              <stop offset="50%" stop-color="#00f5ff" stop-opacity="0.35"/>
+              <stop offset="100%" stop-color="#00f5ff" stop-opacity="0"/>
+            </linearGradient>
+          </defs>
+          <rect x="3" y="5" width="34" height="23" rx="5.5" fill="url(#myAIwbBG)" stroke="url(#myAIwbLG)" stroke-width="1.45"/>
+          <rect x="7" y="9" width="26" height="13" rx="2.2" fill="#030810" stroke="rgba(0,229,255,0.14)" stroke-width="0.6"/>
+          <rect x="9" y="11" width="10" height="2.4" rx="1.2" fill="url(#myAIwbLG)"/>
+          <rect x="9" y="15.4" width="17" height="2.4" rx="1.2" fill="url(#myAIwbLG)" opacity="0.5"/>
+          <rect x="9" y="19.8" width="12" height="1.7" rx="0.85" fill="url(#myAIwbLG)" opacity="0.32"/>
+          <rect x="7" y="9" width="26" height="6" rx="2.2" fill="url(#myAIwbGL)"/>
+          <path d="M15 28.5h10l-1.4 4.8h-7.2z" fill="url(#myAIwbLG)"/>
+          <ellipse cx="20" cy="34.2" rx="9" ry="1.4" fill="#00e5ff" opacity="0.25"/>
+        </svg>
+      </div>
+      <div class="wb-text">
+        <span class="wb-name">联信装机</span>
+        <span class="wb-sub">PC Builder <span class="pro-badge">PRO</span></span>
+      </div>
+    </div>
+
+    <h2>你好！我是你的装机顾问</h2>
+    <p>我可以帮你推荐电脑配置、解答硬件兼容性、评估性价比，<br>以及任何装机相关的问题。</p>
+    <div class="quick-prompts">
+      <button class="qp-btn" data-msg="🎮 游戏主机推荐">🎮 游戏主机推荐</button>
+      <button class="qp-btn" data-msg="⚔️ 配置兼容性检查">⚔️ 配置兼容性检查</button>
+      <button class="qp-btn" data-msg="💻 CPU 选择建议">💻 CPU 选择建议</button>
+      <button class="qp-btn" data-msg="🔍 显卡对比分析">🔍 显卡对比分析</button>
+      <button class="qp-btn" data-msg="📚 装机步骤与避坑">📚 装机步骤与避坑</button>
+      <button class="qp-btn" data-msg="⚡ 电源与散热参考">⚡ 电源与散热参考</button>
+      <button class="qp-btn" data-msg="💰 预算分配指南">💰 预算分配指南</button>
+    </div>
+  </div>
+
+  <!-- 聊天区 -->
+  <div id="chatArea"></div>
+
+  <!-- 音色选择栏 -->
+  <div class="voice-bar" id="voiceBar">
+    <span class="voice-label">音色</span>
+    <button class="voice-btn" id="voiceName">晓晓 (女声)</button>
+    <svg class="voice-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
+    <div class="voice-sep"></div>
+    <label class="auto-tts-label" title="发送后自动朗读 AI 回复">
+      <span>自动朗读</span>
+      <input type="checkbox" id="autoTtsToggle">
+      <span class="toggle-track"><span class="toggle-thumb"></span></span>
+    </label>
+  </div>
+
+  <!-- 输入栏 -->
+  <div class="input-wrap">
+    <div class="input-bar">
+      <textarea id="msgInput" class="msg-input" placeholder="向 AI 发送消息..." autocomplete="off" rows="1"></textarea>
+      <button type="button" class="btn-mic" id="btnMic" title="语音输入">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M12 2a3 3 0 0 1 3 3v7a3 3 0 0 1-6 0V5a3 3 0 0 1 3-3z"/>
+          <path d="M19 10v2a7 7 0 0 1-14 0v-2"/>
+          <line x1="12" y1="19" x2="12" y2="22"/>
+          <line x1="8" y1="22" x2="16" y2="22"/>
+        </svg>
+      </button>
+      <button type="button" class="btn-send" id="btnSend">发送</button>
+    </div>
+  </div>
+</main>
+
+<script>
+(function () {
+  const TAU = Math.PI * 2;
+
+  // ── 头像动画 ─────────────────────────────────────────────
+  function drawSphere(cv) {
+    const ctx = cv.getContext('2d');
+    const w = cv.width, h = cv.height, cx = w / 2, cy = h / 2;
+    const t = Date.now() * 0.002;
+    ctx.clearRect(0, 0, w, h);
+
+    // 主体球
+    const grd = ctx.createRadialGradient(cx - 4, cy - 6, 2, cx, cy, 18);
+    grd.addColorStop(0,   '#b0f4ff');
+    grd.addColorStop(0.4, '#00d4f0');
+    grd.addColorStop(1,   '#060c20');
+    ctx.fillStyle = grd;
+    ctx.beginPath();
+    ctx.arc(cx, cy, 18, 0, TAU);
+    ctx.fill();
+
+    // 紫色光点轨道
+    for (let i = 0; i < 14; i++) {
+      const a = (i / 14) * TAU + t * 0.7;
+      const r = 12 + Math.sin(i * 1.6 + t) * 2;
+      const alpha = 0.2 + (i % 4) * 0.1;
+      ctx.fillStyle = `rgba(167, 139, 250, ${alpha})`;
+      ctx.beginPath();
+      ctx.arc(cx + Math.cos(a) * r * 0.9, cy + Math.sin(a) * r * 0.75, 1.1, 0, TAU);
+      ctx.fill();
+    }
+
+    // 青色高光
+    for (let i = 0; i < 8; i++) {
+      const a = (i / 8) * TAU - t * 0.4;
+      const r = 15 + Math.sin(i * 2.1 + t) * 2;
+      ctx.fillStyle = `rgba(0, 229, 255, 0.25)`;
+      ctx.beginPath();
+      ctx.arc(cx + Math.cos(a) * r * 0.85, cy + Math.sin(a) * r * 0.7, 0.9, 0, TAU);
+      ctx.fill();
+    }
+  }
+
+  function loopSpheres() {
+    drawSphere(document.getElementById('sphereCv'));
+    drawSphere(document.getElementById('sphereCv2'));
+    requestAnimationFrame(loopSpheres);
+  }
+
+  // ── 聊天逻辑 ──────────────────────────────────────────────
+  const chatArea = document.getElementById('chatArea');
+  const msgInput = document.getElementById('msgInput');
+  const btnSend  = document.getElementById('btnSend');
+  let sessionMsgs = [];
+
+  function scrollChat() {
+    chatArea.scrollTop = chatArea.scrollHeight;
+  }
+
+  function escapeHtml(str) {
+    return str.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+  }
+
+  function formatTime() {
+    const now = new Date();
+    return [now.getHours(), now.getMinutes()].map(v => String(v).padStart(2,'0')).join(':');
+  }
+
+  function addBubble(role, text, timeStr) {
+    const logoSvg = `<svg viewBox="0 0 40 40" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+      <defs>
+        <linearGradient id="lxAI" x1="0%" y1="0%" x2="100%" y2="100%">
+          <stop offset="0%" stop-color="#7dffff"/>
+          <stop offset="45%" stop-color="#00c8ea"/>
+          <stop offset="100%" stop-color="#a78bfa"/>
+        </linearGradient>
+        <linearGradient id="lxAI2" x1="0" y1="0" x2="0" y2="1">
+          <stop offset="0" stop-color="#152238"/>
+          <stop offset="1" stop-color="#060b14"/>
+        </linearGradient>
+        <linearGradient id="lxAI3" x1="0" y1="0" x2="1" y2="0">
+          <stop offset="0%" stop-color="#00f5ff" stop-opacity="0"/>
+          <stop offset="50%" stop-color="#00f5ff" stop-opacity="0.35"/>
+          <stop offset="100%" stop-color="#00f5ff" stop-opacity="0"/>
+        </linearGradient>
+      </defs>
+      <rect x="3" y="5" width="34" height="23" rx="5.5" fill="url(#lxAI2)" stroke="url(#lxAI)" stroke-width="1.45"/>
+      <rect x="7" y="9" width="26" height="13" rx="2.2" fill="#030810" stroke="rgba(0,229,255,0.14)" stroke-width="0.6"/>
+      <rect x="9" y="11" width="10" height="2.4" rx="1.2" fill="url(#lxAI)"/>
+      <rect x="9" y="15.4" width="17" height="2.4" rx="1.2" fill="url(#lxAI)" opacity="0.5"/>
+      <rect x="9" y="19.8" width="12" height="1.7" rx="0.85" fill="url(#lxAI)" opacity="0.32"/>
+      <rect x="7" y="9" width="26" height="6" rx="2.2" fill="url(#lxAI3)"/>
+      <path d="M15 28.5h10l-1.4 4.8h-7.2z" fill="url(#lxAI)"/>
+      <ellipse cx="20" cy="34.2" rx="9" ry="1.4" fill="#00e5ff" opacity="0.25"/>
+    </svg>`;
+
+    const row = document.createElement('div');
+    row.className = `msg-row ${role}`;
+    if (role === 'ai') {
+      row.innerHTML = `<div class="msg-bubble"><div class="ai-logo">${logoSvg}</div><div class="ai-text">${escapeHtml(text)}<button class="tts-btn" title="朗读"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/><path d="M19.07 4.93a10 10 0 0 1 0 14.14M15.54 8.46a5 5 0 0 1 0 7.07"/></svg></button></div></div><div class="msg-time">${timeStr}</div>`;
+    } else {
+      row.innerHTML = `<div class="msg-bubble">${escapeHtml(text)}</div><div class="msg-time">${timeStr}</div>`;
+    }
+    chatArea.appendChild(row);
+    scrollChat();
+    return row;
+  }
+
+  function showTyping() {
+    const wrap = document.createElement('div');
+    wrap.className = 'msg-row ai';
+    wrap.id = 'typingEl';
+    wrap.innerHTML = `<div class="typing-wrap"><span class="typing-dot"></span><span class="typing-dot"></span><span class="typing-dot"></span></div>`;
+    chatArea.appendChild(wrap);
+    scrollChat();
+  }
+
+  function removeTyping() {
+    document.getElementById('typingEl')?.remove();
+  }
+
+  function setLoading(on) {
+    btnSend.disabled = on;
+    msgInput.disabled = on;
+  }
+
+  async function sendMessage() {
+    const text = msgInput.value.trim();
+    if (!text || btnSend.disabled) return;
+    // 保存语音输入标记，sendMessage 内部不重置（等 AI 回复到达时用）
+    const fromVoice = lastMsgByVoice;
+    if (!fromVoice) lastMsgByVoice = false;
+
+    // 隐藏欢迎页
+    const wp = document.getElementById('welcomePage');
+    if (wp) wp.style.display = 'none';
+
+    addBubble('user', text, formatTime());
+    sessionMsgs.push({ role: 'user', content: text });
+    msgInput.value = '';
+    setLoading(true);
+
+    showTyping();
+
+    try {
+      const useStream = false; // 后端返回普通JSON，暂不支持SSE流式
+
+      if (useStream) {
+        const res = await fetch('/api/chat', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ messages: sessionMsgs, stream: true })
+        });
+
+        removeTyping();
+
+        if (!res.ok) {
+          const err = await res.json().catch(() => ({}));
+          addBubble('ai', `❌ 请求失败：${err.reply || err.error || res.status}`, formatTime());
+          setLoading(false);
+          return;
+        }
+
+        const reader = res.body.getReader();
+        const decoder = new TextDecoder();
+        let full = '';
+
+        const aiRow = addBubble('ai', '', formatTime());
+        const bubble = aiRow.querySelector('.msg-bubble');
+        const ttsBtn = aiRow.querySelector('.tts-btn');
+
+        while (true) {
+          const { done, value } = await reader.read();
+          if (done) break;
+          const chunk = decoder.decode(value, { stream: true });
+          for (const line of chunk.split('\n')) {
+            if (!line.startsWith('data: ')) continue;
+            const data = line.slice(6).trim();
+            if (data === '[DONE]') continue;
+            try {
+              const parsed = JSON.parse(data);
+              const content = parsed.choices?.[0]?.delta?.content || '';
+              if (content) {
+                full += content;
+                // 流式过程中不插入 ttsBtn，避免按钮在中间气泡间被移动导致音频错乱
+                const txt = document.createElement('div');
+                txt.className = 'ai-text';
+                txt.innerHTML = escapeHtml(full);
+                bubble.innerHTML = `<div class="ai-logo">${logoSvg}</div>`;
+                bubble.appendChild(txt);
+                scrollChat();
+              }
+            } catch {}
+          }
+        }
+
+        sessionMsgs.push({ role: 'assistant', content: full });
+
+        // 流式完成后追加 TTS 按钮到气泡，并触发自动朗读（语音输入场景）
+        if (ttsBtn) {
+          bubble.appendChild(ttsBtn);
+          if (lastMsgByVoice || document.getElementById('autoTtsToggle')?.checked) {
+            setTimeout(autoSpeakLastAi, 100);
+          }
+          // 只在语音输入路径重置，避免打字的残留
+          if (lastMsgByVoice) lastMsgByVoice = false;
+        }
+
+      } else {
+        const res = await fetch('/api/chat', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ messages: sessionMsgs, stream: false })
+        });
+
+        removeTyping();
+
+        if (!res.ok) {
+          const err = await res.json().catch(() => ({}));
+          addBubble('ai', `❌ 请求失败：${err.reply || err.error || res.status}`, formatTime());
+          setLoading(false);
+          return;
+        }
+
+        const data = await res.json();
+        const reply = data.reply || 'AI未返回有效内容';
+        const aiRow = addBubble('ai', reply, formatTime());
+        sessionMsgs.push({ role: 'assistant', content: reply });
+        if (lastMsgByVoice || document.getElementById('autoTtsToggle')?.checked) {
+          const ttsBtn = aiRow.querySelector('.tts-btn');
+          if (ttsBtn) {
+            setTimeout(() => autoSpeakLastAi(), 100);
+          }
+          lastMsgByVoice = false;
+        }
+      }
+
+      document.getElementById('connStatus').textContent = '已连接';
+
+    } catch (e) {
+      removeTyping();
+      addBubble('ai', `❌ 网络错误：${e.message}`, formatTime());
+      document.getElementById('connStatus').textContent = '离线';
+    }
+
+    setLoading(false);
+  }
+
+  btnSend.addEventListener('click', sendMessage);
+  msgInput.addEventListener('keydown', e => {
+    if (e.key === 'Enter' && !e.shiftKey) {
+      e.preventDefault();
+      sendMessage();
+    }
+  });
+
+  // ── 语音输入 ──────────────────────────────────────────────
+  const btnMic = document.getElementById('btnMic');
+  let recognition = null;
+  let isRecording = false;
+
+  function toggleVoice() {
+    if (!('webkitSpeechRecognition' in window) && !('SpeechRecognition' in window)) {
+      alert('当前浏览器不支持语音识别，建议使用 Chrome。');
+      return;
+    }
+    if (isRecording) {
+      stopVoice();
+      return;
+    }
+    const SR = window.SpeechRecognition || window.webkitSpeechRecognition;
+    recognition = new SR();
+    recognition.lang = 'zh-CN';
+    recognition.continuous = true;
+    recognition.interimResults = true;
+
+    recognition.onstart = () => {
+      isRecording = true;
+      btnMic.classList.add('recording');
+    };
+    recognition.onresult = (e) => {
+      let transcript = '';
+      for (let i = e.resultIndex; i < e.results.length; i++) {
+        transcript += e.results[i][0].transcript;
+      }
+      if (transcript) {
+        msgInput.value = transcript;
+        msgInput.focus();
+        lastMsgByVoice = true;
+      }
+    };
+    recognition.onerror = (e) => {
+      console.error('语音识别错误:', e.error);
+      stopVoice();
+    };
+    recognition.onend = () => {
+      stopVoice();
+    };
+    recognition.start();
+  }
+
+  function stopVoice() {
+    if (recognition) {
+      recognition.stop();
+      recognition = null;
+    }
+    isRecording = false;
+    btnMic.classList.remove('recording');
+  }
+
+  let lastMsgByVoice = false;
+
+  btnMic.addEventListener('click', toggleVoice);
+
+  // ── 语音输入后自动朗读 ────────────────────────────────
+  function autoSpeakLastAi() {
+    const rows = chatArea.querySelectorAll('.msg-row.ai');
+    if (!rows.length) return;
+    const lastRow = rows[rows.length - 1];
+    const btn = lastRow.querySelector('.tts-btn');
+    if (!btn) return;
+    const text = (lastRow.querySelector('.ai-text')?.innerText || '').trim();
+    if (!text) return;
+    speakText(text, btn);
+    lastMsgByVoice = false; // 重置标志
+  }
+
+  // ── TTS 朗读 ──────────────────────────────────────────────
+  const VOICES = [
+    { name: '晓晓 (女声)',        voice: 'zh-CN-XiaoxiaoNeural' },
+    { name: '晓伊 (女声)',        voice: 'zh-CN-XiaoyiNeural'   },
+    { name: '云健 (男声)',        voice: 'zh-CN-YunjianNeural'   },
+    { name: '云希 (男声)',        voice: 'zh-CN-YunxiNeural'     },
+    { name: '云夏 (男声)',        voice: 'zh-CN-YunxiaNeural'    },
+    { name: '云扬 (男声)',        voice: 'zh-CN-YunyangNeural'   },
+    { name: '小北 (东北女声)',    voice: 'zh-CN-liaoning-XiaobeiNeural' },
+    { name: '小妮 (陕西女声)',    voice: 'zh-CN-shaanxi-XiaoniNeural' },
+    { name: '希tera (香港女声)', voice: 'zh-HK-HiuGaaiNeural'   },
+    { name: '惜 ter (香港女声)', voice: 'zh-HK-HiuMaanNeural'   },
+    { name: '雲龍 (香港男声)',    voice: 'zh-HK-WanLungNeural'   },
+    { name: '小喬 (台湾女声)',    voice: 'zh-TW-HsiaoChenNeural' },
+  ];
+  let currentVoiceIdx = 0;
+  let currentAudio = null;
+
+  function stopAllTts() {
+    if (currentAudio) { currentAudio.pause(); currentAudio.currentTime = 0; currentAudio = null; }
+    document.querySelectorAll('.tts-btn.playing').forEach(b => b.classList.remove('playing'));
+  }
+
+  function stripTtsText(raw) {
+    return raw
+      .replace(/\p{Emoji}/gu, '')         // 所有 emoji 图标
+      .replace(/\*\*(.+?)\*\*/g, '$1')   // **bold** → bold
+      .replace(/#{1,6}\s?/g, '')         // # heading markers
+      .replace(/\*(.+?)\*/g, '$1')        // *italic* → italic
+      .replace(/`(.+?)`/g, '$1')         // `code` → code
+      .replace(/~~(.+?)~~/g, '$1')       // ~~strike~~ → strike
+      .replace(/-{3,}/g, '')             // --- dividers
+      .replace(/[ \t]+$/gm, '')           // trailing spaces
+      .replace(/\n{3,}/g, '\n\n')        // excessive newlines
+      .trim();
+  }
+
+  async function speakText(text, btn) {
+    stopAllTts();
+    btn.classList.add('playing');
+    try {
+      const res = await fetch('/api/tts', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ text: stripTtsText(text), voice: VOICES[currentVoiceIdx].voice }),
+      });
+      if (!res.ok) throw new Error((await res.json()).error || res.status);
+      const blob = await res.blob();
+      const url = URL.createObjectURL(blob);
+      const audio = new Audio(url);
+      currentAudio = audio;
+      audio.onended = () => { btn.classList.remove('playing'); URL.revokeObjectURL(url); currentAudio = null; };
+      audio.onerror = () => { btn.classList.remove('playing'); URL.revokeObjectURL(url); currentAudio = null; };
+      audio.play();
+    } catch (e) {
+      btn.classList.remove('playing');
+      console.error('[TTS] error:', e.message);
+    }
+  }
+
+  // 更新音色按钮文字
+  function updateVoiceBtn() {
+    const v = VOICES[currentVoiceIdx];
+    const vb = document.getElementById('voiceName');
+    if (vb) vb.textContent = v.name;
+  }
+
+  // 双击 TTS 按钮切换音色（不再自动朗读）
+  chatArea.addEventListener('dblclick', e => {
+    const btn = e.target.closest('.tts-btn');
+    if (!btn) return;
+    stopAllTts();
+    currentVoiceIdx = (currentVoiceIdx + 1) % VOICES.length;
+    updateVoiceBtn();
+  });
+
+  // 单击 TTS 按钮播放
+  chatArea.addEventListener('click', e => {
+    const btn = e.target.closest('.tts-btn');
+    if (!btn) return;
+    const row = btn.closest('.msg-row');
+    const text = row ? (row.querySelector('.ai-text')?.innerText || '').trim() : '';
+    if (!text) return;
+    if (btn.classList.contains('playing')) {
+      stopAllTts();
+      return;
+    }
+    speakText(text, btn);
+  });
+
+  // 单击音色栏切换音色
+  document.addEventListener('click', e => {
+    const vb = e.target.closest('.voice-bar');
+    if (!vb) return;
+    stopAllTts();
+    currentVoiceIdx = (currentVoiceIdx + 1) % VOICES.length;
+    updateVoiceBtn();
+  });
+
+  // ── 快速入口 ──────────────────────────────────────────────
+  document.querySelectorAll('.qp-btn').forEach(btn => {
+    btn.addEventListener('click', () => {
+      const msg = btn.getAttribute('data-msg');
+      msgInput.value = msg;
+      sendMessage();
+    });
+  });
+
+  // ── 离开提示 ──────────────────────────────────────────────
+  window.addEventListener('beforeunload', e => {
+    if (sessionMsgs.length > 0) {
+      e.preventDefault();
+      e.returnValue = '';
+    }
+  });
+
+  // 头像动画已移除（顶栏改用 SVG）
+  // loopSpheres();
+
+})();
+</script>
+</body>
+</html>
