@@ -589,45 +589,7 @@ body {
   margin: 0 4px;
 }
 
-.auto-tts-label {
-  display: flex;
-  align-items: center;
-  gap: 7px;
-  cursor: pointer;
-  font-size: 12px;
-  color: rgba(255,255,255,0.65);
-  white-space: nowrap;
-}
 
-.auto-tts-label input { display: none; }
-
-.toggle-track {
-  position: relative;
-  width: 32px;
-  height: 18px;
-  background: rgba(255,255,255,0.15);
-  border-radius: 9px;
-  transition: background 0.2s;
-}
-
-.auto-tts-label input:checked + .toggle-track {
-  background: #00c8ea;
-}
-
-.toggle-thumb {
-  position: absolute;
-  top: 2px;
-  left: 2px;
-  width: 14px;
-  height: 14px;
-  background: #fff;
-  border-radius: 50%;
-  transition: left 0.2s;
-  box-shadow: 0 1px 3px rgba(0,0,0,0.3);
-}
-
-.auto-tts-label input:checked + .toggle-track .toggle-thumb {
-  left: 16px;
 }
 .voice-label {
   font-size: 11px;
@@ -875,12 +837,7 @@ body {
     <button class="voice-btn" id="voiceName">晓晓 (女声)</button>
     <svg class="voice-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
     <div class="voice-sep"></div>
-    <label class="auto-tts-label" title="发送后自动朗读 AI 回复">
-      <span>自动朗读</span>
-      <input type="checkbox" id="autoTtsToggle">
-      <span class="toggle-track"><span class="toggle-thumb"></span></span>
-    </label>
-  </div>
+    </div>
 
   <!-- 输入栏 -->
   <div class="input-wrap">
@@ -1029,9 +986,6 @@ body {
     const text = msgInput.value.trim();
     if (!text || btnSend.disabled) return;
     stopAllVoicePlay(); // 发送文字消息时停止正在播放的语音
-    // 保存语音输入标记，sendMessage 内部不重置（等 AI 回复到达时用）
-    const fromVoice = lastMsgByVoice;
-    if (!fromVoice) lastMsgByVoice = false;
 
     // 隐藏欢迎页
     const wp = document.getElementById('welcomePage');
@@ -1098,31 +1052,9 @@ body {
 
         sessionMsgs.push({ role: 'assistant', content: full });
 
-        // 流式完成后追加 TTS 按钮到气泡，并触发自动朗读（语音输入场景）
+        // 流式完成后追加 TTS 按钮到气泡
         if (ttsBtn) {
           bubble.appendChild(ttsBtn);
-          if (lastMsgByVoice || document.getElementById('autoTtsToggle')?.checked) {
-            // 立即后台预加载 TTS
-            (async () => {
-              try {
-                const res2 = await fetch('/api/tts', {
-                  method: 'POST',
-                  headers: { 'Content-Type': 'application/json' },
-                  body: JSON.stringify({ text: stripTtsText(full), voice: VOICES[currentVoiceIdx].voice }),
-                });
-                if (res2.ok) {
-                  const blob = await res2.blob();
-                  if (blob.size > 0) {
-                    if (cachedTtsUrl) URL.revokeObjectURL(cachedTtsUrl);
-                    cachedTtsUrl = URL.createObjectURL(blob);
-                  }
-                }
-              } catch (_) {}
-            })();
-            setTimeout(autoSpeakLastAi, 200);
-          }
-          // 只在语音输入路径重置，避免打字的残留
-          if (lastMsgByVoice) lastMsgByVoice = false;
         }
 
       } else {
@@ -1143,35 +1075,8 @@ body {
 
         const data = await res.json();
         const reply = data.reply || 'AI未返回有效内容';
-        const aiRow = addBubble('ai', reply, formatTime());
+        addBubble('ai', reply, formatTime());
         sessionMsgs.push({ role: 'assistant', content: reply });
-
-        // 语音输入场景：立即预加载 TTS，AI 回复出现后立刻开始播放
-        if (lastMsgByVoice || document.getElementById('autoTtsToggle')?.checked) {
-          const ttsBtn = aiRow.querySelector('.tts-btn');
-          if (ttsBtn) {
-            // 立即后台预加载 TTS，不阻塞
-            (async () => {
-              try {
-                const res2 = await fetch('/api/tts', {
-                  method: 'POST',
-                  headers: { 'Content-Type': 'application/json' },
-                  body: JSON.stringify({ text: stripTtsText(reply), voice: VOICES[currentVoiceIdx].voice }),
-                });
-                if (res2.ok) {
-                  const blob = await res2.blob();
-                  if (blob.size > 0) {
-                    if (cachedTtsUrl) URL.revokeObjectURL(cachedTtsUrl);
-                    cachedTtsUrl = URL.createObjectURL(blob);
-                  }
-                }
-              } catch (_) {}
-            })();
-            // 稍等一小段时间让 TTS 缓冲，然后立即播放
-            setTimeout(() => autoSpeakLastAi(), 200);
-          }
-          lastMsgByVoice = false;
-        }
       }
 
       document.getElementById('connStatus').textContent = '已连接';
@@ -1401,9 +1306,6 @@ body {
         const reply = data.reply || 'AI未返回有效内容';
         addBubble('ai', reply, formatTime());
         sessionMsgs.push({ role: 'assistant', content: reply });
-        // 触发自动朗读
-        const ttsBtn = chatArea.querySelector('.msg-row.ai:last-child .tts-btn');
-        if (ttsBtn) setTimeout(() => autoSpeakLastAi(), 100);
         document.getElementById('connStatus').textContent = '已连接';
       } catch (e) {
         removeTyping();
@@ -1478,22 +1380,6 @@ body {
   btnMic.addEventListener('touchstart', (e) => { e.preventDefault(); if (!isRecording) startRecording(); }, { passive: false });
   btnMic.addEventListener('touchend', (e) => { e.preventDefault(); if (isRecording) stopRecording(); }, { passive: false });
   btnMic.addEventListener('contextmenu', (e) => e.preventDefault());
-
-  // ── 语音输入后自动朗读 ────────────────────────────────
-  function autoSpeakLastAi() {
-    const rows = chatArea.querySelectorAll('.msg-row.ai');
-    if (!rows.length) return;
-    const lastRow = rows[rows.length - 1];
-    const btn = lastRow.querySelector('.tts-btn');
-    if (!btn) return;
-    const text = (lastRow.querySelector('.ai-text')?.innerText || '').trim();
-    if (!text) return;
-    // 优先用预加载好的缓存 TTS，否则直接调用（等 TTS 生成完再播）
-    if (!playCachedTts(btn)) {
-      speakText(text, btn);
-    }
-    lastMsgByVoice = false; // 重置标志
-  }
 
   // ── TTS 朗读 ──────────────────────────────────────────────
   const VOICES = [
