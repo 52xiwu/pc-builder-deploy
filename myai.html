@@ -1354,7 +1354,7 @@ body {
       if (!res.ok) throw new Error((await res.json()).error || res.status);
       const data = await res.json();
       transcriptText = (data.text || '').trim()
-        .replace(/小薪/g, '小信').replace(/小欣/g, '小信').replace(/小新/g, '小信').replace(/小芯/g, '小信')
+        .replace(/小心/g, '小信').replace(/小薪/g, '小信').replace(/小欣/g, '小信').replace(/小新/g, '小信').replace(/小芯/g, '小信')
         .replace(/吃机/g, '吃鸡').replace(/吃基/g, '吃鸡').replace(/吃积/g, '吃鸡').replace(/持久/g, '吃鸡')
         .replace(/英霸/g, '英雄联盟').replace(/英豪/g, '英雄联盟').replace(/英豪联盟/g, '英雄联盟').replace(/英雄联盟/g, '英雄联盟')
         .replace(/营救/g, '原神').replace(/修仙/g, '原神').replace(/修炼/g, '原神').replace(/修士/g, '原神').replace(/元神/g, '原神').replace(/永恒/g, '原神')
