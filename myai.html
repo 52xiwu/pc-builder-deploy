@@ -1102,7 +1102,24 @@ body {
         if (ttsBtn) {
           bubble.appendChild(ttsBtn);
           if (lastMsgByVoice || document.getElementById('autoTtsToggle')?.checked) {
-            setTimeout(autoSpeakLastAi, 100);
+            // 立即后台预加载 TTS
+            (async () => {
+              try {
+                const res2 = await fetch('/api/tts', {
+                  method: 'POST',
+                  headers: { 'Content-Type': 'application/json' },
+                  body: JSON.stringify({ text: stripTtsText(full), voice: VOICES[currentVoiceIdx].voice }),
+                });
+                if (res2.ok) {
+                  const blob = await res2.blob();
+                  if (blob.size > 0) {
+                    if (cachedTtsUrl) URL.revokeObjectURL(cachedTtsUrl);
+                    cachedTtsUrl = URL.createObjectURL(blob);
+                  }
+                }
+              } catch (_) {}
+            })();
+            setTimeout(autoSpeakLastAi, 200);
           }
           // 只在语音输入路径重置，避免打字的残留
           if (lastMsgByVoice) lastMsgByVoice = false;
@@ -1128,10 +1145,30 @@ body {
         const reply = data.reply || 'AI未返回有效内容';
         const aiRow = addBubble('ai', reply, formatTime());
         sessionMsgs.push({ role: 'assistant', content: reply });
+
+        // 语音输入场景：立即预加载 TTS，AI 回复出现后立刻开始播放
         if (lastMsgByVoice || document.getElementById('autoTtsToggle')?.checked) {
           const ttsBtn = aiRow.querySelector('.tts-btn');
           if (ttsBtn) {
-            setTimeout(() => autoSpeakLastAi(), 100);
+            // 立即后台预加载 TTS，不阻塞
+            (async () => {
+              try {
+                const res2 = await fetch('/api/tts', {
+                  method: 'POST',
+                  headers: { 'Content-Type': 'application/json' },
+                  body: JSON.stringify({ text: stripTtsText(reply), voice: VOICES[currentVoiceIdx].voice }),
+                });
+                if (res2.ok) {
+                  const blob = await res2.blob();
+                  if (blob.size > 0) {
+                    if (cachedTtsUrl) URL.revokeObjectURL(cachedTtsUrl);
+                    cachedTtsUrl = URL.createObjectURL(blob);
+                  }
+                }
+              } catch (_) {}
+            })();
+            // 稍等一小段时间让 TTS 缓冲，然后立即播放
+            setTimeout(() => autoSpeakLastAi(), 200);
           }
           lastMsgByVoice = false;
         }
@@ -1451,7 +1488,10 @@ body {
     if (!btn) return;
     const text = (lastRow.querySelector('.ai-text')?.innerText || '').trim();
     if (!text) return;
-    speakText(text, btn);
+    // 优先用预加载好的缓存 TTS，否则直接调用（等 TTS 生成完再播）
+    if (!playCachedTts(btn)) {
+      speakText(text, btn);
+    }
     lastMsgByVoice = false; // 重置标志
   }
 
@@ -1492,6 +1532,32 @@ body {
       .trim();
   }
 
+  // 缓存最近一次 TTS 音频（AI 回复生成完毕后直接取用，无需等待）
+  let cachedTtsUrl = null;
+  let cachedTtsAudio = null;
+
+  function playCachedTts(btn) {
+    if (!cachedTtsUrl) return false;
+    stopAllTts();
+    btn.classList.add('playing');
+    const audio = new Audio(cachedTtsUrl);
+    currentTtsAudio = audio;
+    audio.onended = () => {
+      btn.classList.remove('playing');
+      URL.revokeObjectURL(cachedTtsUrl);
+      cachedTtsUrl = null;
+      currentTtsAudio = null;
+    };
+    audio.onerror = () => {
+      btn.classList.remove('playing');
+      URL.revokeObjectURL(cachedTtsUrl);
+      cachedTtsUrl = null;
+      currentTtsAudio = null;
+    };
+    audio.play();
+    return true;
+  }
+
   async function speakText(text, btn) {
     stopAllTts();
     btn.classList.add('playing');
@@ -1502,76 +1568,14 @@ body {
         body: JSON.stringify({ text: stripTtsText(text), voice: VOICES[currentVoiceIdx].voice }),
       });
       if (!res.ok) throw new Error((await res.json()).error || res.status);
-      const stream = res.body;
-      if (!stream) throw new Error('no stream');
-
-      // MediaSource 方案：边收边播，完整支持长音频流
-      const mime = 'audio/mpeg';
-      if (!MediaSource.isTypeSupported(mime)) {
-        // fallback: 全量接收后播放
-        const buf = await res.arrayBuffer();
-        const blob = new Blob([buf], { type: mime });
-        const url = URL.createObjectURL(blob);
-        const audio = new Audio(url);
-        currentTtsAudio = audio;
-        audio.onended = () => { btn.classList.remove('playing'); URL.revokeObjectURL(url); currentTtsAudio = null; };
-        audio.onerror = () => { btn.classList.remove('playing'); URL.revokeObjectURL(url); currentTtsAudio = null; };
-        audio.play();
-        return;
-      }
-
-      const mediaSource = new MediaSource();
-      const url = URL.createObjectURL(mediaSource);
+      const blob = await res.blob();
+      if (blob.size === 0) throw new Error('empty audio');
+      const url = URL.createObjectURL(blob);
       const audio = new Audio(url);
       currentTtsAudio = audio;
-      let sourceBuffer = null;
-
-      audio.onended = () => {
-        btn.classList.remove('playing');
-        URL.revokeObjectURL(url);
-        currentTtsAudio = null;
-      };
-      audio.onerror = () => {
-        btn.classList.remove('playing');
-        URL.revokeObjectURL(url);
-        currentTtsAudio = null;
-      };
-
-      mediaSource.addEventListener('sourceopen', async () => {
-        sourceBuffer = mediaSource.addSourceBuffer(mime);
-        sourceBuffer.mode = 'segments';
-
-        // 等 buffer 首次准备好后再 play（避免浏览器因无可播放数据而静默拒绝）
-        const waitForFirstData = () => new Promise(resolve => {
-          if (!sourceBuffer.updating) { resolve(); return; }
-          sourceBuffer.addEventListener('updateend', resolve, { once: true });
-        });
-
-        const pump = async () => {
-          const reader = stream.getReader();
-          let readerDone = false;
-          try {
-            while (true) {
-              const { value, done } = await reader.read();
-              if (done) { readerDone = true; break; }
-              if (sourceBuffer.updating) {
-                await new Promise(r => sourceBuffer.addEventListener('updateend', r, { once: true }));
-              }
-              sourceBuffer.appendBuffer(value);
-              // 首次 append 后触发 play
-              if (audio.paused) {
-                await waitForFirstData();
-                audio.play().catch(() => {});
-              }
-            }
-          } catch (e) { readerError = e; }
-          return readerDone;
-        };
-
-        pump().then(done => {
-          if (!sourceBuffer.updating) mediaSource.endOfStream();
-        });
-      }, { once: true });
+      audio.onended = () => { btn.classList.remove('playing'); URL.revokeObjectURL(url); currentTtsAudio = null; };
+      audio.onerror = () => { btn.classList.remove('playing'); URL.revokeObjectURL(url); currentTtsAudio = null; };
+      audio.play();
     } catch (e) {
       btn.classList.remove('playing');
       console.error('[TTS] error:', e.message);
