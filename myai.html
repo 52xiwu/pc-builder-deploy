@@ -1375,6 +1375,7 @@ body {
 
   // 开始录音
   async function startRecording() {
+    stopAllVoicePlay(); // 录音前停止正在播放的 TTS
     isRecording = true;
     btnMic.classList.add('recording');
     msgInput.placeholder = '\u{1F3A4} 录音中... 松手发送';
