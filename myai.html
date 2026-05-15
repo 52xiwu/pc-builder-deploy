@@ -1316,7 +1316,10 @@ body {
       const res = await fetch('/api/transcribe', { method: 'POST', body: formData });
       if (!res.ok) throw new Error((await res.json()).error || res.status);
       const data = await res.json();
-      transcriptText = (data.text || '').trim() || '（未能识别，请重试）';
+      transcriptText = (data.text || '').trim()
+        .replace(/小薪/g, '小信').replace(/小欣/g, '小信')
+        .replace(/小新/g, '小信').replace(/小芯/g, '小信')
+        || '（未能识别，请重试）';
     } catch (e) {
       transcriptText = '（转写失败，请重试）';
       console.error('[transcribe]', e.message);
