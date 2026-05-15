@@ -35,7 +35,7 @@ def transcribe(audio_path):
 
         # 小模型足够 CPU 实时：tiny/base 均可
         # 首次运行自动下载模型到 ~/.cache/huggingface/
-        model = WhisperModel('base', device='cpu', compute_type='int8')
+        model = WhisperModel('base', device='cpu', compute_type='int8', local_files_only=True)
 
         # 实际推理
         segments, info = model.transcribe(
