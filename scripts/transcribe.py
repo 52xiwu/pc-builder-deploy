@@ -33,16 +33,17 @@ def transcribe(audio_path):
         # 转wav（确保 16kHz 单声道）
         wav_path = convert_to_wav(audio_path)
 
-        # 小模型足够 CPU 实时：tiny/base 均可
-        # 首次运行自动下载模型到 ~/.cache/huggingface/
-        model = WhisperModel('small', device='cpu', compute_type='int8', local_files_only=True, revision='536b0662742c02347bc0e980a01041f333bce120')
+        # base 模型：比 small 快 3-4 倍，普通话识别率差距极小
+        # int8 量化进一步提速；local_files_only 跳过 HuggingFace 网络验证
+        model = WhisperModel('base', device='cpu', compute_type='int8', local_files_only=True, revision='ebe41f70d5b6dfa9166e2c581c45c9c0cfc57b66')
 
         # 实际推理
+        # vad_filter=False：跳过 Silero VAD（加载 VAD 模型约 1-2 秒）
+        # 对单句短语音场景，Whisper 自身断句已足够
         segments, info = model.transcribe(
             wav_path,
             language='zh',
-            vad_filter=True,       # 启用 Silero VAD 智能断句
-            vad_parameters=dict(min_silence_duration_ms=300),
+            vad_filter=False,
         )
 
         full = []
