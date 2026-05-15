@@ -1317,14 +1317,23 @@ body {
       if (!res.ok) throw new Error((await res.json()).error || res.status);
       const data = await res.json();
       transcriptText = (data.text || '').trim()
-        .replace(/小薪/g, '小信').replace(/小欣/g, '小信')
-        .replace(/小新/g, '小信').replace(/小芯/g, '小信')
-        .replace(/吃机/g, '吃鸡').replace(/吃基/g, '吃鸡').replace(/吃鸡/g, '吃鸡')
-        .replace(/英雄联盟/g, '英雄联盟').replace(/英霸/g, '英雄联盟').replace(/联盟/g, '英雄联盟')
-        .replace(/营救/g, '原神').replace(/修炼/g, '原神').replace(/修士/g, '原神')
-        .replace(/大乔/g, '大乔').replace(/脚本/g, '脚本')
-        .replace(/腾讯/g, '腾讯').replace(/蒸汽/g, 'Steam')
-        .replace(/裴/G, '排除')
+        .replace(/小薪/g, '小信').replace(/小欣/g, '小信').replace(/小新/g, '小信').replace(/小芯/g, '小信')
+        .replace(/吃机/g, '吃鸡').replace(/吃基/g, '吃鸡').replace(/吃积/g, '吃鸡').replace(/持久/g, '吃鸡')
+        .replace(/英霸/g, '英雄联盟').replace(/英豪/g, '英雄联盟').replace(/英豪联盟/g, '英雄联盟').replace(/英雄联盟/g, '英雄联盟')
+        .replace(/营救/g, '原神').replace(/修仙/g, '原神').replace(/修炼/g, '原神').replace(/修士/g, '原神').replace(/元神/g, '原神').replace(/永恒/g, '原神')
+        .replace(/王者/g, '王者荣耀').replace(/王者荣耀农药/g, '王者荣耀')
+        .replace(/大乔/g, '大乔').replace(/大樵/g, '大乔').replace(/大巧/g, '大乔')
+        .replace(/永结/g, '永劫').replace(/永劫无间/g, '永劫无间').replace(/永劫留间/g, '永劫无间')
+        .replace(/永结无间/g, '永劫无间').replace(/永恒无间/g, '永劫无间')
+        .replace(/铲铲/g, '金铲铲').replace(/金灿灿/g, '金铲铲').replace(/金铲之战/g, '金铲铲之战')
+        .replace(/蛋仔派对/g, '蛋仔派对').replace(/蛋子派对/g, '蛋仔派对')
+        .replace(/永劫/g, '永劫无间').replace(/永结/g, '永劫')
+        .replace(/永劫/g, '永劫无间')
+        .replace(/穿越防线/g, '穿越火线').replace(/穿越火线/g, '穿越火线')
+        .replace(/我的世界/g, '我的世界').replace(/我的时间/g, '我的世界')
+        .replace(/塞尔达/g, '塞尔达传说').replace(/赛尔达/g, '塞尔达传说')
+        .replace(/蒸汽/g, 'Steam').replace(/斯蒂姆/g, 'Steam').replace(/斯特姆/g, 'Steam')
+        .replace(/apex/g, 'Apex英雄').replace(/Apex/g, 'Apex英雄').replace(/诶pex/g, 'Apex').replace(/诶佩克斯/g, 'Apex')
         || '（未能识别，请重试）';
     } catch (e) {
       transcriptText = '（转写失败，请重试）';

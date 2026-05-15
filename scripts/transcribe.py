@@ -35,14 +35,14 @@ def transcribe(audio_path):
 
         # 小模型足够 CPU 实时：tiny/base 均可
         # 首次运行自动下载模型到 ~/.cache/huggingface/
-        model = WhisperModel('small', device='cpu', compute_type='int8', local_files_only=True)
+        model = WhisperModel('base', device='cpu', compute_type='int8')
 
         # 实际推理
         segments, info = model.transcribe(
             wav_path,
             language='zh',
             vad_filter=True,       # 启用 Silero VAD 智能断句
-            vad_parameters=dict(min_silence_duration_ms=500),
+            vad_parameters=dict(min_silence_duration_ms=300),
         )
 
         full = []
