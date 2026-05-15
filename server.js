@@ -1209,7 +1209,7 @@ initializeDatabase().then(async () => {
         res.json({ ok: true, time: new Date().toLocaleString('zh-CN') });
     });
 
-    // Edge TTS 语音合成
+    // Edge TTS 语音合成（流式推送，浏览器可边收边播）
     app.post('/api/tts', async (req, res) => {
         const { text, voice } = req.body;
         if (!text || !voice) {
@@ -1225,16 +1225,17 @@ initializeDatabase().then(async () => {
                 pitch: '+0Hz', rate: '+10%', volume: '+0%'
             });
             const { audioStream } = await tts.toStream(text);
-            const chunks = [];
-            for await (const chunk of audioStream) chunks.push(chunk);
-            const buf = Buffer.concat(chunks);
             res.set({
                 'Content-Type': 'audio/mpeg',
-                'Content-Length': buf.length,
                 'Content-Disposition': 'inline; filename="tts.mp3"',
+                'Transfer-Encoding': 'chunked',
+                'X-Content-Type-Options': 'nosniff',
             });
-            res.send(buf);
+            res.flushHeaders();
+            for await (const chunk of audioStream) res.write(chunk);
+            res.end();
         } catch (err) {
+            if (res.headersSent) return;
             console.error('Edge TTS error:', err.message);
             res.status(500).json({ error: 'TTS 合成失败: ' + err.message });
         }
