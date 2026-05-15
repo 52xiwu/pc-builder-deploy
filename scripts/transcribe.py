@@ -37,13 +37,14 @@ def transcribe(audio_path):
         # int8 量化进一步提速；local_files_only 跳过 HuggingFace 网络验证
         model = WhisperModel('base', device='cpu', compute_type='int8', local_files_only=True, revision='ebe41f70d5b6dfa9166e2c581c45c9c0cfc57b66')
 
-        # 实际推理
-        # vad_filter=False：跳过 Silero VAD（加载 VAD 模型约 1-2 秒）
-        # 对单句短语音场景，Whisper 自身断句已足够
+        # 传入热词列表，引导 Whisper 优先匹配这些词（提升品牌名/产品名识别率）
+        # 对"小信"这类易被识别成"小心"的词尤其有效
+        extra = ['小信', '联信装机', 'aixiwu', '爱希物']
         segments, info = model.transcribe(
             wav_path,
             language='zh',
             vad_filter=False,
+            initial_prompt='。'.join(extra),   # 句间加点防止粘连
         )
 
         full = []
