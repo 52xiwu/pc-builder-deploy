@@ -876,6 +876,47 @@ initializeDatabase().then(async () => {
         }
     });
 
+    // ── 语音转文字（Whisper CPU） ─────────────────────────────
+    const { spawn } = require('child_process');
+    const TRANSCRIBE_SCRIPT = path.join(__dirname, 'scripts', 'transcribe.py');
+
+    app.post('/api/transcribe', upload.single('audio'), async (req, res) => {
+        if (!req.file) {
+            return res.status(400).json({ error: '未收到音频文件' });
+        }
+        const maxSize = 10 * 1024 * 1024; // 10MB
+        if (req.file.size > maxSize) {
+            return res.status(400).json({ error: '音频文件不能超过 10MB' });
+        }
+        const tmpDir = path.join(__dirname, 'tmp');
+        if (!fs.existsSync(tmpDir)) fs.mkdirSync(tmpDir, { recursive: true });
+        const suffix = req.file.mimetype === 'audio/webm' ? '.webm' : '.wav';
+        const tmpPath = path.join(tmpDir, `voice_${Date.now()}${suffix}`);
+        fs.writeFileSync(tmpPath, req.file.buffer);
+
+        return new Promise((resolve) => {
+            const py = spawn('python3', [TRANSCRIBE_SCRIPT, tmpPath]);
+            let stdout = '', stderr = '';
+            py.stdout.on('data', d => stdout += d);
+            py.stderr.on('data', d => stderr += d);
+            py.on('close', code => {
+                fs.unlink(tmpPath, () => {});
+                if (code !== 0) {
+                    console.error('[transcribe] error:', stderr || `exit ${code}`);
+                    res.status(500).json({ error: '语音识别失败，请稍后重试' });
+                    return resolve();
+                }
+                try {
+                    const result = JSON.parse(stdout);
+                    res.json({ text: result.text || '', lang: result.lang || 'zh' });
+                } catch {
+                    res.status(500).json({ error: '语音识别结果解析失败' });
+                }
+                resolve();
+            });
+        });
+    });
+
     app.post('/api/home-slots', requireAdmin, (req, res) => {
         try {
             const { slot, title, imageUrl, alt, link, tooltip } = req.body;
