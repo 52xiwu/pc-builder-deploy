@@ -561,10 +561,11 @@ body {
   box-shadow: 0 0 12px rgba(0, 229, 255, 0.2);
 }
 .btn-mic.recording {
-  background: rgba(255, 80, 80, 0.18);
-  border-color: rgba(255, 80, 80, 0.5);
-  color: #ff5050;
-  box-shadow: 0 0 16px rgba(255, 80, 80, 0.3);
+  background: rgba(0, 229, 255, 0.15);
+  border-color: rgba(0, 229, 255, 0.6);
+  color: #00e5ff;
+  box-shadow: 0 0 20px rgba(0, 229, 255, 0.5);
+  transform: scale(0.93);
   animation: pulse-mic 1s ease-in-out infinite;
 }
 @keyframes pulse-mic {
@@ -888,7 +889,7 @@ body {
   <div class="input-wrap">
     <div class="input-bar">
       <textarea id="msgInput" class="msg-input" placeholder="向 AI 发送消息..." autocomplete="off" rows="1"></textarea>
-      <button type="button" class="btn-mic" id="btnMic" title="语音输入">
+      <button type="button" class="btn-mic" id="btnMic" title="长按说话，松开发送">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
           <path d="M12 2a3 3 0 0 1 3 3v7a3 3 0 0 1-6 0V5a3 3 0 0 1 3-3z"/>
           <path d="M19 10v2a7 7 0 0 1-14 0v-2"/>
@@ -1193,6 +1194,7 @@ body {
   let mediaRecorder = null;
   let audioChunks = [];
   let isRecording = false;
+  const msgInput = document.getElementById('msgInput');
   let currentAudio = null;      // 当前播放中的 Audio 对象
   let currentPlayingBtn = null; // 当前播放中的播放按钮
 
@@ -1386,6 +1388,7 @@ body {
       mediaRecorder.start();
       isRecording = true;
       btnMic.classList.add('recording');
+      msgInput.placeholder = '\u{1F3A4} 录音中... 松手发送';
     } catch (e) {
       console.error('[voice] 录音失败:', e.message);
       alert('无法访问麦克风，请检查浏览器权限设置');
@@ -1399,6 +1402,7 @@ body {
     }
     isRecording = false;
     btnMic.classList.remove('recording');
+    if (msgInput.placeholder.includes('录音中')) msgInput.placeholder = '向 AI 发送消息...';
   }
 
   // 兼容旧版 Web Speech API（保留作备选），但优先用 MediaRecorder
@@ -1412,7 +1416,12 @@ body {
   }
 
   let lastMsgByVoice = false;
-  btnMic.addEventListener('click', toggleVoice);
+  btnMic.addEventListener('mousedown', (e) => { e.preventDefault(); if (!isRecording) startRecording(); });
+  btnMic.addEventListener('mouseup', (e) => { e.preventDefault(); if (isRecording) stopRecording(); });
+  btnMic.addEventListener('mouseleave', (e) => { if (isRecording) { e.preventDefault(); stopRecording(); } });
+  btnMic.addEventListener('touchstart', (e) => { e.preventDefault(); if (!isRecording) startRecording(); }, { passive: false });
+  btnMic.addEventListener('touchend', (e) => { e.preventDefault(); if (isRecording) stopRecording(); }, { passive: false });
+  btnMic.addEventListener('contextmenu', (e) => e.preventDefault());
 
   // ── 语音输入后自动朗读 ────────────────────────────────
   function autoSpeakLastAi() {
