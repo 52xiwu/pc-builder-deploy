@@ -27,3 +27,9 @@
 后台入口已改为 /gluidcadmin（隐藏路由）；server.js 已配置，admin.html 保留不断链
 §
 **Hermes Agent 七级架构**（David Ondrej）：L1 VPS部署 → L2 Discord/社交入口 → L3 Curator资源调度 → L4 GitHub自动备份 → L5 Kanban多agent协作 → L6 Holographic无限记忆 → L7 MCP服务器化。当前估计在L3中段，最大短板是L6（语义记忆）和L7（MCP协议标准化）
+§
+**DeepSeek-V4系列**（2026-05-16确认）：
+- deepseek-v4-flash：轻量版，便宜快速，正常对话
+- deepseek-v4-pro：旗舰版，推理模型风格（回答极简，有reasoning_content字段）
+- 当前额度：¥56.26 CNY（key: sk-eb2fe11067b8495e97d3910448a6dace）
+- 注意：旧记忆里"MINIMAX_API_KEY实际存DeepSeek key"那条已过时，当前我的AI和分身是独立的两套key
