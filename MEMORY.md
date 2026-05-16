@@ -25,3 +25,5 @@
 飞书：连接模式 websocket；用户 open_id=ou_4b6425330d6ba82fd770c59e8acd714e；连接状态 connected
 §
 后台入口已改为 /gluidcadmin（隐藏路由）；server.js 已配置，admin.html 保留不断链
+§
+**Hermes Agent 七级架构**（David Ondrej）：L1 VPS部署 → L2 Discord/社交入口 → L3 Curator资源调度 → L4 GitHub自动备份 → L5 Kanban多agent协作 → L6 Holographic无限记忆 → L7 MCP服务器化。当前估计在L3中段，最大短板是L6（语义记忆）和L7（MCP协议标准化）
